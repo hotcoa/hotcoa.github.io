@@ -1,0 +1,68 @@
+/* STUDY
+using overflow-hidden and float-left together
+*/
+
+.header {
+    text-align: center;
+    background: mediumpurple;
+    color: wheat;
+    padding: 40px;
+}
+
+.header h1 {
+    font-size: 40px;
+}
+
+.navbar {
+    overflow: hidden;  
+    background-color: #333;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
+    float: left;
+    /*
+    text-align: center;
+    
+    */
+}
+
+.navbar a:hover {
+    background-color: mediumpurple;
+    color:  black;
+}
+
+* {
+    box-sizing: border-box;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    height: 500px;
+}
+
+.side {
+    flex: 30%;
+    background-color: blanchedalmond;
+    padding: 20px;
+}
+
+.main {
+    flex: 70%;
+    background-color: burlywood;
+    padding: 20px;
+}
+
+@media screen and (max-width: 700px) {
+    .row {
+        flex-direction: column;
+    }
+}
+
+.footer {
+    padding: 5px;
+    text-align: center;
+    background: peachpuff;
+}

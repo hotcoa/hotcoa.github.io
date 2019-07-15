@@ -1,0 +1,31 @@
+[Responsive web design with Jonas]
+a target=”_blank”: Open in New Browser Tab (or Window) The target attribute specifies where the linked document will open when the link is clicked. The default is the current window.
+
+BLOCK:
+full linkedand line breaks.
+
+Inline:
+images, links
+
+box-sizing:
+it sets the width and height of the full box
+
+Remove all default sapcing:
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+standard width has been 960px but u can put it wide like 1140px
+
+automatically sets the element in the middle
+.container {
+    width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+"clear" is counterpart to "float"
+
+Use the background color on the div to see the layout. after you're done, remove the bg color.

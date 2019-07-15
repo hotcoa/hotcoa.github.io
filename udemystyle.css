@@ -1,0 +1,139 @@
+/*
+LEARNINGS:
+if you want to position it something, set the position to absolute and the parent should have relative position.
+relative: relative to other elements
+absolute: absolute position
+
+ box-sizing: border-box => width of element is exactly what we defined
+
+ for body, font size 15-25 px
+
+ use bigg font sizes for headlines to emphasize
+ too big size -> reduce font weight
+
+ line spacing between 120-150% to make it easy to read
+
+ if you don't sepcify , then 100% by defualt
+
+ 45-90 characters per line
+
+ Serif: long reading / story telling
+
+ Google Fonts:
+ open sans
+
+
+ Use only one base colour
+ Tool : Flat UI color => help choose base color
+ Tool: 0To255  => create darker colors
+
+To get mix of colors, use this:
+ Adobe CC Color
+ Paleton
+
+ use color to draw attention
+
+ picking the right color to draw what you want from audience
+
+ Red: power, passion
+ orange: cheerful, creative
+ yellow: happy and liveliness. curiosity, intelligence, brightness
+ green: harmony, health. MONEY. balancing effect
+ blue: patience, peace, trustworthy. most beloved color by men. professionalism, trust, honor
+ purple: power, nobility, wealth. luxry. mystery. wisdom
+ pink: romance, passivity
+ brown: relaxation, confidence, comfort, reliability
+
+ putting text on images
+ PUTTING TEXT ON IMAGES:
+ 1. use box for text. transparent box 
+ 2. overlay filter on image and then put text on top
+ 3. blur background image
+ 4. if the image is out of focus, then put text on something that's blurred
+ 5. floor fade. the image kinda fades at the bottom and put text on top.
+
+ ICONS:
+ for actions
+ feaetures
+
+Label your icons.
+Icons should be recognizable
+
+Icon fonts: vectors, scale endlessly
+Icon images: raster images don't scale
+
+INSPIRATION:
+Collect designs you like
+Try to understand everyting about them
+why do they look good?
+what do they have in common?
+how are they built in html/css?
+
+STEAL LIKE AN ARTIST
+Dribble : check this website with high quality designers
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 20px auto 0 auto;
+    width: 1140px;
+}
+
+.blog-post {
+    /*background-color: antiquewhite;*/
+    width: 75%;
+    float: left;
+    padding-right: 30px;
+    position: relative;
+}
+
+.blog-post img {
+    height: 300px;
+    width: auto;
+}
+
+.other-post {
+    /*background-color: burlywood;*/
+    width: 25%;
+    float: left;
+}
+
+.author {
+    padding-top: 20px;
+    border-top: 1px solid gray;
+}
+
+.author-text {
+    float: left;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.other {
+    margin-bottom: 100px;
+}
+
+.author img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    float: left;
+}
+
+.date {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
