@@ -16,3 +16,28 @@ web server that will host your website
 
 monitor user behaviors
 update content regularly
+
+Use normalize.css to render it consistently among browsers.
+https://necolas.github.io/normalize.css/
+
+responsivegridsyste.com -> fluid grid
+
+https://flatuicolors.com => choose color for buttons
+
+inline-block: it's like inline but it can have padding and margin. unlike normal inline elements
+
+Different states of CSS: link(normal state), visited, active(click on it) and hover
+CSS pseudo classes that sets status.
+
+https://www.0to255.com/ ==> set shade of a color
+-----------------
+
+[my portfolio]
+
+goal: show i'm beyond and above
+
+audience: hiring managers
+
+choose my color theme:
+purple?? orange? yellow? 
+
