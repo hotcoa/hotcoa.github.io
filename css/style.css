@@ -1,0 +1,8 @@
+#mymap {
+    position:relative
+}
+.mymap_title {
+    position:absolute;
+    font-size: 20px;
+    color: #fff;
+}
