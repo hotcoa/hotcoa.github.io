@@ -6,3 +6,7 @@
     font-size: 20px;
     color: #fff;
 }
+
+.mymap_title:hover { 
+    color: #009DDF;
+}
