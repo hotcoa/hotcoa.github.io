@@ -3,7 +3,8 @@
 let waveParams;
   
 function setup() {
-  createCanvas(900, 700);
+  var cnv = createCanvas(windowWidth, windowHeight);
+  cnv.style('display', 'block');
   noStroke();
   waveParams = new WaveParams({
       t: 0,
@@ -18,7 +19,14 @@ function setup() {
   });
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 function draw() {
+  let txt = createDiv('This is an HTML string!');
+  txt.position(50, 50);
+
   background(10, 10); // translucent background (creates trails)
 
   // make a x and y grid of ellipses
