@@ -41,7 +41,7 @@ $(function() {
 
         var $span=$('<a class="mymap_title" href="html/aboutme.html" target="_blank">'+txt+'</a>');
         $span.css({top: Number(top)+40+'px', left: Number(left)+20+'px', position:'absolute'});
-        $span.appendTo('#mymap');
+        //$span.appendTo('#mymap');
     })  
 })
 

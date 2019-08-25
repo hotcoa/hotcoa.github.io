@@ -1,10 +1,14 @@
 /* Background of my website */
   
 let waveParams;
+var canvas;
   
 function setup() {
-  var cnv = createCanvas(windowWidth, windowHeight);
-  cnv.style('display', 'block');
+  canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0, 0);
+  canvas.style('z-index', '-1');
+
+  //canvas.style('display', 'block');
   noStroke();
   waveParams = new WaveParams({
       t: 0,
@@ -24,9 +28,6 @@ function windowResized() {
 }
 
 function draw() {
-  let txt = createDiv('This is an HTML string!');
-  txt.position(50, 50);
-
   background(10, 10); // translucent background (creates trails)
 
   // make a x and y grid of ellipses
