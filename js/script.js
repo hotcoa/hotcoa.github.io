@@ -39,7 +39,16 @@ $(function() {
         $span.css({top: Number(top)+40+'px', left: Number(left)+20+'px', position:'absolute'});
         $span.appendTo('#mymap');*/
 
-        var $span=$('<a class="mymap_title" href="#" target="_blank">'+txt+'</a>'); //html/aboutme.html
+        var link;
+        switch (txt) {
+            case 'Who am i':
+                link = 'html/aboutme.html';
+                break;
+            default:
+                link = '#';
+                break;
+        }
+        var $span=$(`<a class="mymap_title" href="${link}" target="_blank">`+txt+'</a>');
         $span.css({top: Number(top)+20+'px', left: Number(left)+10+'px', position:'absolute'});
         $span.appendTo('#mymap');
     })  
