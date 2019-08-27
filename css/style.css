@@ -19,19 +19,22 @@ p {
 .profile_img {
     width: 40%;
     float: left;
+    margin: 30px;
+    margin-top: 50px;
     /*width:170px;
     height:170px;*/
 }
 
 .profile_desc {
     /*margin-left: 10px;*/
+    margin-right: 15%;
     margin-top: 60px;
     font-size: 25px;
     width: 40%;
     float: right;
 }
 
-.profile_desc .highlight {
-    font-size: 50px;
+.aboutme_container {
+    margin: 70px;
+    color: #e8d3d3;
 }
-
