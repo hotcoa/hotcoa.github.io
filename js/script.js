@@ -1,5 +1,5 @@
 $(function () {
-   $('.map').maphilight({ stroke: true, fill:true, fillColor: '009DDF', fillOpacity: 0.5, strokeWidth: 5, strokeColor: '009DDF', strokeOpacity: 0.5});
+   $('.map').maphilight({ stroke: true, fill:true, fillColor: 'a986e6', fillOpacity: 0.5, strokeWidth: 5, strokeColor: 'a986e6', strokeOpacity: 0.5});
 });
 
 /*
@@ -43,12 +43,15 @@ $(function() {
         switch (txt) {
             case 'Who am i':
                 link = 'html/aboutme.html';
+				break;
+			case 'Art+tech':
+                link = 'html/arttech.html';
                 break;
             default:
                 link = '#';
                 break;
         }
-        var $span=$(`<a class="mymap_title" href="${link}" target="_blank">`+txt+'</a>');
+        var $span=$(`<a class="mymap_title" href="${link}">`+txt+'</a>');
         $span.css({top: Number(top)+20+'px', left: Number(left)+10+'px', position:'absolute'});
         $span.appendTo('#mymap');
     })  
