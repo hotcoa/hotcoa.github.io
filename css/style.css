@@ -52,6 +52,7 @@
     width: 40%;
     float: left;
     margin: 30px;
+    margin-left: 3px;
     margin-top: 50px;
     /*width:170px;
     height:170px;*/
@@ -61,7 +62,7 @@
     /*margin-left: 10px;*/
     margin-right: 15%;
     margin-top: 60px;
-    font-size: 25px;
+    font-size: 19px;
     width: 40%;
     float: right;
 }
@@ -69,4 +70,13 @@
 .page_container {
     margin: 70px;
     color: #e8d3d3;
+}
+
+.uxproject .header {
+    font-weight: bold;
+    font-size: 21px;
+}
+
+.uxproject .desc {
+    font-size: 19px;
 }

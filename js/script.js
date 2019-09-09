@@ -35,24 +35,28 @@ $(function() {
         var left=coorA[0];
         var top=coorA[1];
 
-        /*var $span=$('<span class="mymap_title">'+txt+'</span>');        
-        $span.css({top: Number(top)+40+'px', left: Number(left)+20+'px', position:'absolute'});
-        $span.appendTo('#mymap');*/
-
-        var link;
+		var link;
+		var $span;
         switch (txt) {
             case 'Who am i':
                 link = 'html/aboutme.html';
 				break;
 			case 'Art+tech':
                 link = 'html/arttech.html';
+				break;
+			case 'UX/UI':
+                link = 'html/design.html';
                 break;
             default:
-                link = '#';
                 break;
-        }
-        var $span=$(`<a class="mymap_title" href="${link}">`+txt+'</a>');
-        $span.css({top: Number(top)+20+'px', left: Number(left)+10+'px', position:'absolute'});
+		}
+		if (link) {
+			$span=$(`<a class="mymap_title" href="${link}">`+txt+'</a>');
+		} else {
+			$span=$(`<span class="mymap_title">`+txt+'</span>');
+		}
+        
+        $span.css({top: Number(top)+20+'px', left: Number(left)+13+'px', position:'absolute'});
         $span.appendTo('#mymap');
     })  
 })
