@@ -41,11 +41,16 @@
 .mymap_title {
     position:absolute;
     font-size: 18px;
-    color: #fff;
+    color: #F9EFFD;
 }
 
-.mymap_title:hover { 
-    color: #009DDF;
+.mymap_title_nolink {
+    position:absolute;
+    font-size: 18px;
+}
+
+.mymap_title:hover {
+    font-weight: bold;
 }
 
 .profile_img {
