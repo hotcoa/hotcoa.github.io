@@ -46,10 +46,25 @@ $(function() {
 				link = 'html/arttech.html';
 				spaceIdx = 1;
 				break;
-			case 'UX/UI':
+			case 'User experience':
 				link = 'html/design.html';
 				spaceIdx = 2;
-                break;
+				break;
+			case 'Humanity':
+				spaceIdx = 3;
+				break;
+			case 'Party with mom':
+				spaceIdx = 4;
+				break;
+			case 'Adventure':
+				spaceIdx = 5;
+				break;
+			case 'Voice rest':
+				spaceIdx = 6;
+				break;
+			case 'Love':
+				spaceIdx = 7;
+				break;
             default:
                 break;
 		}
@@ -58,11 +73,17 @@ $(function() {
 		} else {
 			$span=$(`<span class="mymap_title_nolink">`+txt+'</span>');
 		}
-		
+
 		var spacing = [
 			{ top: 30, left: 35 },
 			{ top: 20, left: 13 },
-			{ top: 36, left: 20 },
+			{ top: 40, left: -15 },
+
+			{ top: 20, left: 20 },
+			{ top: 10, left: 10 },
+			{ top: 20, left: 0 },
+			{ top: 15, left: 25 },
+			{ top: 36, left: 40 },
 		]
         $span.css({top: Number(top) + spacing[spaceIdx].top + 'px', left: Number(left) + spacing[spaceIdx].left + 'px', position:'absolute'});
         $span.appendTo('#mymap');
