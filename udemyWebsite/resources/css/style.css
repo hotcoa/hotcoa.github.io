@@ -193,9 +193,21 @@ header {
     border-bottom: 2px solid #9b59b6;
 }
 
+
+/* ------------------------------------- */
+/* Features */
+/* ------------------------------------- */
+.section-features .long-copy {
+    margin-bottom: 40px;
+}
+
 /* ------------------------------------- */
 /* Meals */
 /* ------------------------------------- */
+
+.section-meals {
+    padding: 0;
+}
 
 .meals-showcase {
     list-style: none;
@@ -212,9 +224,20 @@ header {
 .meal-photo {
     width: 100%;
     margin: 0; /* normalize.css defines margin somewhere so need to re-define here */
+    overflow: hidden; /* the image in the child container is scaled to 1.15. So set this to hidden so that the width of image does not extend over browser width */
+    background-color: #000; /* set the bkg to black so that its child img will have slightly darker color with opacity 0.7 */
 }
 
 .meal-photo img {
+    opacity: 0.7;
     width: 100%; /* this is to make the image to be wide as its container above */
     height: auto;
+    transform: scale(1.15);
+    transition: transform 0.5s, opacity 0.5s; /* this will make the transition smooth for the Hover properties */
+}
+
+/* HOVER works on every element */
+.meal-photo img:hover {
+    opacity: 1;
+    transform: scale(1.03);
 }
