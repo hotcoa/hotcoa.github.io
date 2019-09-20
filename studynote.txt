@@ -41,3 +41,8 @@ audience: hiring managers
 choose my color theme:
 purple?? orange? yellow? 
 
+---------------------
+
+[Design Principles]
+
+use the background color to distinguish between sections

@@ -21,6 +21,15 @@ html {
     text-rendering: optimizeLegibility; /* make font render in perfect way */
 }
 
+/* ???? clear after float */
+.clearfix {zoom: 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
 /* ------------------------------------- */
 /* Reusable code */
 /* ------------------------------------- */
@@ -240,4 +249,79 @@ header {
 .meal-photo img:hover {
     opacity: 1;
     transform: scale(1.03);
+}
+
+
+/* ------------------------------------- */
+/* How It Works */
+/* ------------------------------------- */
+
+.section-steps {
+    background-color: #f4f4f4;
+}
+
+/* use FIRST-CHILD to get */
+.steps-box:first-child {
+    /* text-align work for ALL inline (block) elements. IMG is one of inline block element */
+    text-align: right;
+
+    /* make layout to be fluid. make all in percentage instead of px to make it responsive */
+    padding-right: 3%;
+
+    margin-top: 30px;
+}
+
+.steps-box:last-child {
+    padding-left: 3%;
+    margin-top: 70px;
+}
+
+.app-screen {
+    width: 40%;
+}
+
+.works-step {
+    margin-bottom: 50px;
+}
+
+/* this is similar to LAST CHILD */
+.works-step:last-of-type {
+    margin-bottom: 80px;
+}
+
+
+.works-step div {
+    color: #9b59b6;
+    
+    /* this creates square */
+    border: 2px solid #9b59b6;
+    
+    /* it doesn't force line break */
+    display: inline-block;
+
+    /* make it circle */
+    border-radius: 50%;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    
+    /* add padding within the circle */
+    padding: 5px;
+
+    /* so that number and text are side by side */
+    float: left;
+
+    font-size: 150%;
+    margin-right: 25px;    
+}
+
+.btn-app img {
+    height: 50px;
+    width: auto;
+    /* margin between buttons */
+    margin-right: 10px;
+}
+
+.section-cities ion-icon {
+    float: left;
 }
