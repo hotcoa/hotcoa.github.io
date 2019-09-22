@@ -107,6 +107,28 @@ ion-icon {
     margin-bottom: 10px;
 }
 
+/* ------- Links ------- */
+a:link,
+a:visited {
+    color: #9b59b6;
+
+    /* remove default underline */
+    text-decoration: none;
+    padding-bottom: 1px;
+
+    /* add custom underline */
+    border-bottom: 1px solid #9b59b6;
+    transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+    color: #555;
+
+    /* remove bottom line, use 'transparent' to make it cleaner  */
+    border-bottom: 1px solid transparent;
+}
+
 /* ------- Buttons ------- */
 .btn:link,
 .btn:visited {
@@ -312,7 +334,13 @@ header {
     float: left;
 
     font-size: 150%;
-    margin-right: 25px;    
+    margin-right: 25px;
+}
+
+/* TODO: what is 'link/visited/active/hover' all possible status?? */
+.btn-app:link,
+.btn-app:visited {
+    border: 0;
 }
 
 .btn-app img {
@@ -322,6 +350,37 @@ header {
     margin-right: 10px;
 }
 
+/* ------------------------------------- */
+/* Cities */
+/* ------------------------------------- */
+
 .section-cities ion-icon {
     float: left;
+}
+
+.city-feature {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.box img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.icon-small {
+    width: 30px;
+    color: #2b59b6;
+
+    display: inline-block;
+
+    text-align: center;
+    font-size: 120%;
+    margin-right: 10px;
+
+    /* Secret to align text and icons */
+    line-height: 120%;
+    vertical-align: middle;
+    margin-top: 2px; /* you can use negative value here */
 }
