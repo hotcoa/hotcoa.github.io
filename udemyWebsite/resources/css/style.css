@@ -384,3 +384,22 @@ header {
     vertical-align: middle;
     margin-top: 2px; /* you can use negative value here */
 }
+
+
+/* ------------------------------------- */
+/* Testimonials */
+/* ------------------------------------- */
+.section-testimonials {
+    /* Set the background image by setting the value directly here in CSS */
+    /* the file should be in CSS */
+    /* set linear-gradient so that it's darker, set alpha as 0.8 */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('img/back-customers.jpg');
+    
+    /* set the image to span the whole background width */
+    background-size: cover;
+
+    color: #fff;
+
+    /* Setting this as fixed makes the image stay when Scrolling */
+    background-attachment: fixed;
+}
