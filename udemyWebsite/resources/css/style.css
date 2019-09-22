@@ -100,7 +100,7 @@ h2:after {
 }
 
 /* ------- Icons ------- */
-ion-icon {
+.section-features ion-icon {
     font-size: 350%;
     display: block; /* it'll force line break */
     color: #9b59b6;
@@ -174,11 +174,15 @@ a:active {
 /* Header */
 /* ------------------------------------- */
 
+/* Sets background image as header, this makes it to cover the whole page */
 header {
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(img/polarbear.jpg);
     background-size: cover;
     background-position: center;
     height: 100vh; /* 100% of the view port */
+    
+    /* Setting this as fixed makes the image stay when Scrolling */
+    background-attachment: fixed;
 }
 
 /* this should be absolutely positioned. so that it'll be verticaly/horizontally centered */
@@ -402,4 +406,48 @@ header {
 
     /* Setting this as fixed makes the image stay when Scrolling */
     background-attachment: fixed;
+}
+
+/* Huge quotation mark */
+/* ?? why, Need to get the code from https://css-tricks.com/snippets/html/glyphs/ */
+blockquote:before {
+    content: "\201C";
+    font-size: 400%;
+    display: block;
+
+    /* Need to make sure the Parent is relative */
+    position: absolute;
+    top: -10px;
+    left: -35px;
+}
+
+blockquote {
+    padding: 2%;
+
+    /* Make sure Italic style is imported in index.html */
+    font-style: italic;
+
+    line-height: 160%;
+
+    /* setting it to relative because 'before' element has absolute position */
+    position: relative;
+
+    margin-top: 40px;
+}
+
+cite {
+    font-size: 90%;
+    margin-top: 25px;
+    display: block;
+}
+
+cite img {
+    height: 45px;
+    
+    /* make image in circle */
+    border-radius: 50%;
+    margin-right: 10px;
+    
+    /* IMG and text align in the middle */
+    vertical-align: middle;
 }
