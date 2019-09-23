@@ -451,3 +451,77 @@ cite img {
     /* IMG and text align in the middle */
     vertical-align: middle;
 }
+
+
+/* ------------------------------------- */
+/* SIGN UP */
+/* ------------------------------------- */
+
+.section-plans {
+    background-color: #f4f4f4;   
+}
+
+/* Remove bullet points from unordered list */
+.section-plans ul {
+    list-style-type: none;
+}
+
+.plan-box {
+    background-color: #fff;
+    border-radius: 5px;
+    width: 90%;
+    
+    /* Center it in the parent */
+    margin-left: 5%;
+
+    /* x, y - axis, blur */
+    box-shadow: 0 2px 2px #e8e8e8;
+}
+
+.plan-box div {
+    padding: 15px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.plan-price {
+    /* Make it big */
+    font-size: 200%;
+    margin-bottom: 10px;
+
+    /* Reduce the weight if too overwhelming */
+    font-weight: 100;
+
+    color: #b65978;
+}
+
+/* this inherits style from the parent */
+/* The parent is .plan-price. so if you set size as 100%, it's still big because it gets it from 300% */
+.plan-price span {
+    /* this is 30% of 300% */
+    font-size: 50%;
+    font-weight: 300;
+}
+
+.plan-price-meal {
+    font-size: 80%;
+}
+
+.plan-box ul li {
+    /* ?? if you use PADDING, it gives more space compared to MARGIN */
+    padding: 5px 0;
+}
+
+.plan-box div:first-child {
+    background-color: #fcfcfc;
+
+    /* ?? this doesn't seem to work! */
+    /*border-top-left-radius: 10px;
+    border-top-right-radius: 10px;*/
+}
+.plan-box div:last-child {
+    /* align the button in the center */
+    text-align: center;
+    
+    /* the last element shouldn't have border line */
+    border: 0;
+}
