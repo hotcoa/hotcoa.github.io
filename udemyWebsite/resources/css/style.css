@@ -474,6 +474,7 @@ cite img {
     /* Center it in the parent */
     margin-left: 5%;
 
+    /* !! Add box shadow !!  */
     /* x, y - axis, blur */
     box-shadow: 0 2px 2px #e8e8e8;
 }
