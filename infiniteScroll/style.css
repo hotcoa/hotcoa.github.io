@@ -88,6 +88,7 @@ body {
     border: 1px solid red;
     margin-top: 200px;
     padding: 0 20px;
+    width: 100%;
   }
 
 .message-list {

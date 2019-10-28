@@ -3,6 +3,14 @@ const messageUrl = `${baseUrl}/messages`;
 const database = []; // reserved word?
 let pageToken;
 
+const timeunit = {
+  sec: 1000,
+  min: 60*1000,
+  hr: 60*60*1000,
+  day: 24*60*60*1000,
+  // month, year
+}
+
 let callCnt = 0;
 const getMessages = (nextToken, limit) => {
   let params;
@@ -19,10 +27,40 @@ const getMessages = (nextToken, limit) => {
     pageToken = data.pageToken;
     console.log('token is ' + pageToken);
     data.messages.forEach(item => {
+      let updateTime = new Date(item.updated);
+      let timediff = Date.now() - updateTime;
+      let computedTime;
+      let displayTime;
+
+      console.log(item.updated +', '+timediff);
+      switch (timediff) {
+        case (timediff > timeunit.day):
+          computedTime = Math.floor(timediff/timeunit.day);
+          displayTime = (computedTime === 1) ? " day ago" : " days ago";
+          break;
+        case (timediff > timeunit.hr):
+          computedTime = Math.floor(timediff/timeunit.hr);
+          displayTime = (computedTime === 1) ? " hour ago" : " hours ago";
+          break;
+        case (timediff > timeunit.min):
+          computedTime = Math.floor(timediff/timeunit.min);
+          displayTime = (computedTime === 1) ? " minute ago" : " minutes ago";
+          break;
+        default:
+          computedTime = Math.floor(timediff/timeunit.sec);
+          displayTime = computedTime;
+          if (computedTime === 0) {
+            displayTime = "1 second ago";
+          } else {
+            displayTime += (computedTime === 1) ? " second ago" : " seconds ago";
+          }
+          break;
+      }
+
       database.push({
         id: item.id,
         content: item.content,
-        updated: item.updated,
+        updateTime: displayTime,
         name: item.author.name,
         photoUrl: baseUrl + item.author.photoUrl
       });
