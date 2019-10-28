@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #EEEEEE;
+    font-family: 'Roboto', sans-serif;
+  }
+
+/* ------------------------------------- */
+/* Header */
+/* ------------------------------------- */
+  path {
+    fill: white;
+  }
+
+  .top-header {
+    box-shadow: 0 2px 2px #BABABA;
+    margin: 0 0;
+    width: 100%;
+    height: 20%;
+    color: white;
+    position: fixed;
+  }
+  
+  .top-header .phone-meta {
+    background-color: #522E92;
+    height: 30%;
+  }
+
+  /* ???  */
+  .top-header .img {
+    line-height: 120%;
+    vertical-align: middle;
+  }
+/*
+  .top-header .phone-meta:after {
+      clear: both;
+  }*/
+
+  .top-header .message-menu {
+    height: 70%;
+    background-color: #673AB7;
+  }
+
+
+/* ------------------------------------- */
+/* Messages */
+/* ------------------------------------- */
+
+
+.container {
+    width: 80%;
+  }
+
+.message-list {
+    overflow: scroll;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .tile:first-child {
+      margin-top: 90px;
+  }
+
+  .tile {
+    width: 100%;
+    height: 30%;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 2px 2px #BABABA;
+    margin: 10px 20px 0 20px;
+    font-size: 2em; /* todo: change to 3em */
+  }
+  
+  .tile .header img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    float: left;
+  }
+  
+  .tile .header .meta {
+    margin-left: 70px;
+  }
+  
+  .tile .author-name {
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+  
+  .tile .update-time {
+    margin-top: 5px;
+    color: gray;
+  }
