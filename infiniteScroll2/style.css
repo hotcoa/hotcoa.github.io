@@ -1,0 +1,17 @@
+.cat-list {
+    overflow: scroll;
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .cat-tile {
+    margin: 10px 0;
+    /*height: 150px;*/
+    width: 100%;
+    border: 1px solid purple;
+  }
+  
+  .cat-tile img {
+    height: 30px;
+    width: 30px;
+  }
