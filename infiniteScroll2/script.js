@@ -264,7 +264,7 @@ const initIntersectionObserver = () => {
   observer.observe(document.querySelector("#tile-0"));
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }
-
+/*
 
 const testTouch = () => { 
     var touchsurface = document.getElementById('touchsurface'),
@@ -307,10 +307,55 @@ const testTouch = () => {
         handleswipe(swiperightBol);
         e.preventDefault();
     }, false)
-}
+}*/
+
+  
+
+  var xDown, yDown;
+  function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+  };                                                
+
+  function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+        if ( xDiff > 0 ) {
+          alert('left swiped');
+            /* left swipe */ 
+        } else {
+            /* right swipe */
+          alert('right swiped');
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            /* up swipe */ 
+        } else { 
+            /* down swipe */
+        }                                                                 
+    }
+    /* reset values */
+    xDown = null;
+    yDown = null;                                             
+  };
+
 
 window.onload = function() {
-    testTouch();
+    //testTouch();
+    var touchsurface = document.getElementById('touchsurface');
+    touchsurface.addEventListener('touchstart', handleTouchStart);
+    touchsurface.addEventListener('touchmove', handleTouchMove);
+
     var currDate = new Date();
     var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     console.log(hourMinFormat);
