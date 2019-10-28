@@ -13,19 +13,24 @@
         <script src="script.js"></script>
     </head>
     <body>
-        <div id="touchsurface" style="height: 200px; border: 20px solid blue">
-            <div style="height: 100px; border: 20px solid green"></div>
-        </div>
         <div class="top-header">
             <div class="phone-meta">
-                <img class="icon" src="resources/wifi_bar.svg"></img>
-                <img class="icon" src="resources/celullar_bar.svg"></img>
-                <img class="icon" src="resources/battery.svg"></img>
+                <div class="phone-meta-icon-wrap" style="margin-left: auto">
+                    <img class="phone-meta-icon" src="resources/wifi_bar.svg"></img>
+                </div>
+                <div class="phone-meta-icon-wrap">
+                    <img class="phone-meta-icon" src="resources/celullar_bar.svg"></img>
+                </div>
+                <div class="phone-meta-icon-wrap">
+                    <img class="phone-meta-icon" src="resources/battery.svg"></img>
+                </div>
                 <span id="header-time"></span>
             </div>
             <div class="message-menu">
-                <img class="icon" src="resources/menu.svg"></img>
-                <h1>Messages</h1>
+                <div class="menu-icon-wrap">
+                    <img id="menu-icon" src="resources/menu.svg"></img>
+                </div>
+                <div class="message-menu-title">Messages</div>
             </div>
         </div>
         <div id="container">
