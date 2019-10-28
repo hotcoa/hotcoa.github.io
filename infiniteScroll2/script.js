@@ -117,19 +117,35 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
-  for (let i = 0; i < listSize/2; i++) {
-      const tile = document.querySelector("#cat-tile-" + i);
-      remPaddingsVal += tile.offsetHeight;
-  }
+  
   console.log('push down by ' + remPaddingsVal);
   
   if (isScrollDown) {
+    for (let i = 0; i < listSize/2; i++) {
+      const tile = document.querySelector("#cat-tile-" + i);
+      database[i+firstIdx].height = tile.offsetHeight;
+      remPaddingsVal += tile.offsetHeight;
+    }
+  
+    const viewportHeight = window.innerHeight;
+    const lastTile = document.querySelector("#cat-tile-" + (listSize-1));
+    const lastElemPosY = lastTile.getBoundingClientRect().top;
+    remPaddingsVal += viewportHeight - lastElemPosY
+
   	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
 //    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
     
   } else {
-    //container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
-  	/*container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
+    for (let i = 0; i < listSize/2; i++) {
+      const idx = i + firstIdx;
+      // const tile = document.querySelector("#cat-tile-" + idx);
+      // database[i+firstIdx].height = tile.offsetHeight;
+      remPaddingsVal += database[idx].height;
+    }
+    
+    container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
+    
+    /*container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";*/
   }
 }
@@ -154,7 +170,7 @@ const topSentCallback = entry => {
     currentIndex !== 0
   ) {
     const firstIndex = getSlidingWindow(false);
-    adjustPaddings(false);
+    adjustPaddings(false, firstIndex);
     recycleDOM(firstIndex, false);
     currentIndex = firstIndex;
   }
