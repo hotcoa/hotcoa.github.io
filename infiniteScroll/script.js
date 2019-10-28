@@ -263,98 +263,51 @@ const initIntersectionObserver = () => {
   var observer = new IntersectionObserver(callback, options);
   observer.observe(document.querySelector("#tile-0"));
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
-}
-/*
+}  
 
-const testTouch = () => { 
-    var touchsurface = document.getElementById('touchsurface'),
-        startX,
-        startY,
-        dist,
-        threshold = 150, //required min distance traveled to be considered swipe
-        allowedTime = 200, // maximum time allowed to travel that distance
-        elapsedTime,
-        startTime
- 
-    function handleswipe(isrightswipe){
-        if (isrightswipe)
-            touchsurface.innerHTML = 'Congrats, you\'ve made a <span style="color:red">right swipe!</span>'
-        else{
-            touchsurface.innerHTML = 'Condition for right swipe not met yet'
-        }
-    }
- 
-    touchsurface.addEventListener('touchstart', function(e){
-        touchsurface.innerHTML = '';
-        var touchobj = e.changedTouches[0];
-        dist = 0;
-        startX = touchobj.pageX;
-        startY = touchobj.pageY;
-        startTime = new Date().getTime(); // record time when finger first makes contact with surface
-        e.preventDefault();
-    }, false)
- 
-    touchsurface.addEventListener('touchmove', function(e){
-        e.preventDefault(); // prevent scrolling when inside DIV
-    }, false)
- 
-    touchsurface.addEventListener('touchend', function(e){
-        var touchobj = e.changedTouches[0];
-        dist = touchobj.pageX - startX; // get total dist traveled by finger while in contact with surface
-        elapsedTime = new Date().getTime() - startTime; // get time elapsed
-        // check that elapsed time is within specified, horizontal dist traveled >= threshold, and vertical dist traveled <= 100
-        var swiperightBol = (elapsedTime <= allowedTime && dist >= threshold && Math.abs(touchobj.pageY - startY) <= 100);
-        handleswipe(swiperightBol);
-        e.preventDefault();
-    }, false)
-}*/
+  var touchStartX, touchStartY;
 
-  
-
-  var xDown, yDown;
   function handleTouchStart(evt) {
-    const firstTouch = getTouches(evt)[0];                                      
-    xDown = firstTouch.clientX;                                      
-    yDown = firstTouch.clientY;                                      
+    const firstTouch = (evt.touches || evt.originalEvent.touches[0])[0];
+    console.log(firstTouch);
+    console.log(firstTouch.clientX);
+    touchStartX = firstTouch.clientX;                                      
+    touchStartY = firstTouch.clientY;
+    console.log('touch start: ' + touchStartX);                                    
   };                                                
 
   function handleTouchMove(evt) {
-    if ( ! xDown || ! yDown ) {
+    /*if ( ! xDown || ! yDown ) {
         return;
-    }
+    }*/
 
-    var xUp = evt.touches[0].clientX;                                    
-    var yUp = evt.touches[0].clientY;
+    var touchX = evt.touches[0].clientX;                                    
+    var touchY = evt.touches[0].clientY;
 
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
+    var xDiff = touchX - touchStartX; //xDown - xUp;
+    var yDiff = touchY - touchStartY; // yDown - yUp;
 
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) { /*most significant*/
         if ( xDiff > 0 ) {
-          alert('left swiped');
-            /* left swipe */ 
-        } else {
             /* right swipe */
-          alert('right swiped');
+            console.log(`touch move: ${touchStartX}, ${touchX}`);   
+            evt.target.style.transform = "translateX(" + xDiff + "px)";
         }                       
-    } else {
-        if ( yDiff > 0 ) {
-            /* up swipe */ 
-        } else { 
-            /* down swipe */
-        }                                                                 
     }
-    /* reset values */
-    xDown = null;
-    yDown = null;                                             
   };
 
+  function handleTouchEnd(evt) {
+    // evt.preventDefault();?
+    // touch cancel?
+    xDown = null;
+    yDown = null;
+  }
 
 window.onload = function() {
-    //testTouch();
-    var touchsurface = document.getElementById('touchsurface');
-    touchsurface.addEventListener('touchstart', handleTouchStart);
-    touchsurface.addEventListener('touchmove', handleTouchMove);
+    var touchsurface = document.getElementById('container');
+    touchsurface.addEventListener('touchstart', handleTouchStart, false);
+    touchsurface.addEventListener('touchmove', handleTouchMove, false);
+    touchsurface.addEventListener('touchend', handleTouchEnd, false);
 
     var currDate = new Date();
     var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});

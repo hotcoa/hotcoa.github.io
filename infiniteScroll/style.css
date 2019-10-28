@@ -74,24 +74,30 @@ body {
     margin: 10px 20px 0 20px;
     font-size: 2em; /* todo: change to 3em */
   }
+
+  .tile .header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+  }
   
   .tile .header img {
-    height: 50px;
-    width: 50px;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
-    float: left;
   }
   
   .tile .header .meta {
-    margin-left: 70px;
+    margin-left: 30px;
   }
   
   .tile .author-name {
     font-weight: bold;
-    margin-bottom: 0px;
+    line-height: 40px;
   }
   
   .tile .update-time {
-    margin-top: 5px;
+    line-height: 40px;
     color: gray;
   }
