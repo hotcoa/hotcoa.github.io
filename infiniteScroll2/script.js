@@ -40,23 +40,40 @@ let listSize = 20;
 let currentIndex = 0;
 
 const initList = num => {
-	const container = document.querySelector(".cat-list");
+    const container = document.querySelector(".message-list");
   console.log('initList: ' + num);
   for (let i = 0; i < num; i++) {
     console.log(i);
-  	const tile = document.createElement("LI");
-    tile.setAttribute("class", "cat-tile");
-    tile.setAttribute("id", "cat-tile-" + i);
+    const tile = document.createElement("LI");
+      
+    /* Create list element */
+    tile.setAttribute("class", "tile");
+    tile.setAttribute("id", "tile-" + i);
+
+    const header = document.createElement("DIV");
+    header.setAttribute("class", "header");
+    const authorImg = document.createElement("IMG");
+    authorImg.setAttribute("src", database[i].photoUrl);
     
-    /*const img = document.createElement("IMG");
-    img.setAttribute("src", database[i].photoUrl);
-    tile.appendChild(img);
-  	
-    const title = document.createElement("DIV");
-    const t = document.createTextNode(database[i].id + ': ' + database[i].content);
-    title.appendChild(t);
-    tile.appendChild(title);*/
-    tile.innerHTML = database[i].id + ': ' + database[i].content;
+    const meta = document.createElement("DIV");
+    meta.setAttribute("class", "meta");
+    const authorName = document.createElement("P");
+    authorName.setAttribute("class", "author-name");
+    const updateTime = document.createElement("P");
+    updateTime.setAttribute("class", "update-time");
+    authorName.innerHTML = database[i].name;
+    updateTime.innerHTML = database[i].updateTime;
+    meta.appendChild(authorName);
+    meta.appendChild(updateTime);
+
+    header.appendChild(authorImg);
+    header.appendChild(meta);
+
+    const msg = document.createElement("DIV");
+    msg.setAttribute("class", "message");
+    msg.innerHTML = database[i].id + ': ' + database[i].content;
+    tile.appendChild(header);
+    tile.appendChild(msg); 
     container.appendChild(tile);
   }
   
@@ -89,23 +106,46 @@ const recycleDOM = (firstIndex, isScrollDown) => {
 	  getMessages(pageToken, 20).then(() => {
       for (let i = 0; i < listSize; i++) {
         const idx = i + firstIndex;
-        const tile = document.querySelector("#cat-tile-" + i);
+        const tile = document.querySelector("#tile-" + i);
         console.log(`recycle ${direction} => idx: ${idx}, db id: ${database[idx].id}`);
-        tile.innerHTML = database[idx].id + ': ' + database[idx].content;
 
-        //tile.firstElementChild.innerHTML = database[idx].id + ': ' + database[idx].content;
-        //tile.lastChild.setAttribute("src", database[idx].photoUrl);
-        //console.log('innertext is ' + tile.firstElementChild.innerHTML);
+        /* Update message tile */
+        const header = tile.getElementsByClassName("header")[0];
+        header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
+        const meta = header.getElementsByClassName("meta")[0];
+        meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
+        meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
+        tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
+
+        /*
+        <div class="tile">
+            <div class="header">
+                -- <img src="https://message-list.appspot.com/photos/william-shakespeare.jpg"></img>
+                <div class="meta">
+                    <p class="author-name">Hiyo</p>
+                    <p class="update-time">30 minutes ago</p>
+                </div>
+            </div>
+            <div class="message">
+                Her pretty looks have been mine enemies, And therefore have I invoked thee for her seal, and meant thereby Thou shouldst print more, not let that pine to aggravate thy store Buy terms divine in selling hours of dross Within be fed, without be rich no more So shalt thou feed on Death, that feeds on men, And Death once dead, there's no more to shame nor me nor you.  
+            </div>
+        </div>
+        */
       }
     });
   } else {
   	for (let i = 0; i < listSize; i++) {
         const idx = i + firstIndex;
-        const tile = document.querySelector("#cat-tile-" + i);
+        const tile = document.querySelector("#tile-" + i);
         console.log(`recycle ${direction} => idx: ${idx}, db id: ${database[idx].id}`);
-        tile.innerHTML = database[idx].id + ': ' + database[idx].content;
 
-      //tile.lastChild.setAttribute("src", database[i + firstIndex].photoUrl);
+        /* Update message tile */
+        const header = tile.getElementsByClassName("header")[0];
+        header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
+        const meta = header.getElementsByClassName("meta")[0];
+        meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
+        meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
+        tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
     }
   }
 }
@@ -113,7 +153,7 @@ const recycleDOM = (firstIndex, isScrollDown) => {
 const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
 
 const adjustPaddings = (isScrollDown, firstIdx) => {
-	const container = document.querySelector(".cat-list");
+	const container = document.querySelector(".message-list");
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
@@ -122,13 +162,13 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
   
   if (isScrollDown) {
     for (let i = 0; i < listSize/2; i++) {
-      const tile = document.querySelector("#cat-tile-" + i);
+      const tile = document.querySelector("#tile-" + i);
       database[i+firstIdx].height = tile.offsetHeight;
       remPaddingsVal += tile.offsetHeight;
     }
   
     const viewportHeight = window.innerHeight;
-    const lastTile = document.querySelector("#cat-tile-" + (listSize-1));
+    const lastTile = document.querySelector("#tile-" + (listSize-1));
     const lastElemPosY = lastTile.getBoundingClientRect().top;
     remPaddingsVal += viewportHeight - lastElemPosY
 
@@ -138,7 +178,7 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
   } else {
     for (let i = 0; i < listSize/2; i++) {
       const idx = i + firstIdx;
-      // const tile = document.querySelector("#cat-tile-" + idx);
+      // const tile = document.querySelector("#tile-" + idx);
       // database[i+firstIdx].height = tile.offsetHeight;
       remPaddingsVal += database[idx].height;
     }
@@ -153,7 +193,7 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
 const topSentCallback = entry => {
   console.log('topSentCallBack is called');
 	if (currentIndex === 20) {
-		const container = document.querySelector(".cat-list");
+		const container = document.querySelector(".message-list");
   	container.style.paddingTop = "0px";
   	container.style.paddingBottom = "0px";
   }
@@ -207,25 +247,33 @@ const botSentCallback = entry => {
 
 const initIntersectionObserver = () => {
   const options = {
-  	/* root: document.querySelector(".cat-list") */
+  	/* root: document.querySelector(".message-list") */
   }
 
   const callback = entries => {
     entries.forEach(entry => {
-      if (entry.target.id === 'cat-tile-0') {
+      if (entry.target.id === 'tile-0') {
         topSentCallback(entry);
-      } else if (entry.target.id === `cat-tile-${listSize - 1}`) {
+      } else if (entry.target.id === `tile-${listSize - 1}`) {
         botSentCallback(entry);
       }
     });
   }
 
   var observer = new IntersectionObserver(callback, options);
-  observer.observe(document.querySelector("#cat-tile-0"));
-  observer.observe(document.querySelector(`#cat-tile-${listSize - 1}`));
+  observer.observe(document.querySelector("#tile-0"));
+  observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }
 
-getMessages(pageToken, 20).then(() => {
-  initList(listSize);
-  initIntersectionObserver();
-});
+window.onload = function() {
+    var currDate = new Date();
+    var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    console.log(hourMinFormat);
+    document.getElementById("header-time").innerHTML = hourMinFormat;
+    
+    getMessages(pageToken, 20).then(() => {
+      initList(listSize);
+      initIntersectionObserver();
+    });
+}
+

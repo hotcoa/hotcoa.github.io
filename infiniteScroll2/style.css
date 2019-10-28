@@ -1,51 +1,71 @@
-/* todo: use sans-serif */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     background-color: #EEEEEE;
     font-family: 'Roboto', sans-serif;
   }
-  
-  .cat-list {
-    overflow: scroll;
-    list-style-type: none;
-    padding: 0;
+
+/* ------------------------------------- */
+/* Header */
+/* ------------------------------------- */
+  path {
+    fill: white;
   }
-  
-  .cat-tile {
-    margin: 10px 0;
-    /*height: 150px;*/
-    width: 100%;
-    border: 1px solid purple;
-  }
-  
-  .cat-tile img {
-    height: 30px;
-    width: 30px;
-  }
-  
+
   .top-header {
     box-shadow: 0 2px 2px #BABABA;
-    margin: 20px 0;
+    margin: 0 0;
     width: 500px;
+    color: white;
+    position: fixed;
+
   }
   
   .top-header .phone-meta {
     background-color: #522E92;
-    height: 20px;
+    height: 25px;
   }
-  
+
+  /* ???  */
+  .top-header .img {
+    line-height: 120%;
+    vertical-align: middle;
+  }
+/*
+  .top-header .phone-meta:after {
+      clear: both;
+  }*/
+
   .top-header .message-menu {
     height: 50px;
     background-color: #673AB7;
-    color: white;
     font-size: 20px;
   }
-  
+
+
+/* ------------------------------------- */
+/* Messages */
+/* ------------------------------------- */
+.message-list {
+    overflow: scroll;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .tile:first-child {
+      margin-top: 90px;
+  }
+
   .tile {
     width: 400px;
     background-color: white;
     padding: 15px;
     box-shadow: 0 2px 2px #BABABA;
+    margin: 10px 0;
   }
   
   .tile .header img {
