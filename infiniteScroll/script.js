@@ -324,6 +324,7 @@ function handleTouchEnd(evt) {
     } else {
       tile.style.opacity = "1";
       tile.style.transform = "translateX(0px)";
+      tile.style.transition = "transform 0.2s";
     }
   }
   
@@ -339,15 +340,16 @@ function removeTile(tileToRemove) {
 
   let tileId = parseInt(tileToRemove.dataset.tileid);
   let fetchMore = false;
+  let startAfterFetchIdx = 0;
   // re-render the remaining part
-  for (let i=0; i<=listSize-tileId; i++) {
-      let tileIdToUpdate = tileId + i;
-      console.log('update tile ' + i + ', ' + tileIdToUpdate);
-      const tile = document.querySelector("#tile-" + tileIdToUpdate);
-      
+  for (let i=0; i<listSize-tileId; i++) {
       let dbIndexToFetch = dbIdx + i;
+
       /* Update message tile */
       if (dbIndexToFetch < database.length) {
+        let tileIdToUpdate = tileId + i;
+        const tile = document.querySelector("#tile-" + tileIdToUpdate);
+        console.log('update tile ' + i + ', ' + tileIdToUpdate);
         tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
         const header = tile.getElementsByClassName("header")[0];
         header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
@@ -358,20 +360,19 @@ function removeTile(tileToRemove) {
       } else {
         if (pageToken) {
           fetchMore = true;
-        }
-        break;          
+          startAfterFetchIdx = i;
+          break;
+        }            
       }        
   }
 
   if (fetchMore) {
-    
-  }
-
-    // fetch more values
-    /* if (pageToken) {
-      getMessages(pageToken, listSize).then(() => {
-        console.log('fetched more!!');
-        // same code
+    getMessages(pageToken, listSize).then(() => {
+      for (let j=startAfterFetchIdx; j<listSize-tileId; j++) {
+        let dbIndexToFetch = dbIdx + j;
+        let tileIdToUpdate = tileId + j;
+        const tile = document.querySelector("#tile-" + tileIdToUpdate);
+        console.log('update tile ' + j + ', ' + tileIdToUpdate);
         tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
         const header = tile.getElementsByClassName("header")[0];
         header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
@@ -379,29 +380,27 @@ function removeTile(tileToRemove) {
         meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
         meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
         tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
-      });
-    }*/
-
-    // additional call if needed
+      }
+    });
   }
-
+}
   
 /*********************************/
 /* Start point */
 /*********************************/
 window.onload = function() {
-    var touchsurface = document.getElementById('container');
-    touchsurface.addEventListener('touchstart', handleTouchStart, false);
-    touchsurface.addEventListener('touchmove', handleTouchMove, false);
-    touchsurface.addEventListener('touchend', handleTouchEnd, false);
+  var touchsurface = document.getElementById('container');
+  touchsurface.addEventListener('touchstart', handleTouchStart, false);
+  touchsurface.addEventListener('touchmove', handleTouchMove, false);
+  touchsurface.addEventListener('touchend', handleTouchEnd, false);
 
-    var currDate = new Date();
-    var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    document.getElementById("header-time").innerHTML = hourMinFormat;
-    
-    getMessages(pageToken, 20).then(() => {
-      initializeList(listSize);
-      initIntersectionObserver();
-    });
+  var currDate = new Date();
+  var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  document.getElementById("header-time").innerHTML = hourMinFormat;
+  
+  getMessages(pageToken, 20).then(() => {
+    initializeList(listSize);
+    initIntersectionObserver();
+  });
 }
 
