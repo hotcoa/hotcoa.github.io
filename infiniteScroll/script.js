@@ -195,6 +195,23 @@ const recycleDOM = (firstIndex, isScrollDown) => {
 
 const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
 
+/*
+
+const adjustPaddings = isScrollDown => {
+	const container = document.querySelector(".cat-list");
+  const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
+  const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
+  const remPaddingsVal = 170 * (listSize / 2);
+	if (isScrollDown) {
+  	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
+    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
+  } else {
+  	container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
+    container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
+    
+  }
+}
+*/
 const adjustPaddings = (isScrollDown, firstIdx) => {
 	const container = document.querySelector(".message-list");
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
@@ -208,16 +225,9 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
       const tile = document.querySelector("#tile-" + i);
       database[i+firstIdx].height = tile.offsetHeight;
       remPaddingsVal += tile.offsetHeight;
-    }
-  
-    //const viewportHeight = window.innerHeight;
-    //const lastTile = document.querySelector("#tile-" + (listSize-1));
-    //const brect = lastTile.getBoundingClientRect();
-    //const lastElemPosY = lastTile.getBoundingClientRect().top;
+    }  
     remPaddingsVal += 20 * (listSize/2);
-    //let rem = brect.height - (viewportHeight - lastElemPosY);
-    //remPaddingsVal -= rem;
-    
+    //remPaddingsVal = 520 * (listSize/2);
 
   	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
     container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
@@ -230,6 +240,7 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
       remPaddingsVal += database[idx].height;
     }
     remPaddingsVal += 20 * (listSize/2);
+    // remPaddingsVal = 520 * (listSize/2);
 
     container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
@@ -238,7 +249,7 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
 
 const topSentCallback = entry => {
   console.log('topSentCallBack is called');
-	if (currentIndex === 20) {
+	if (currentIndex === 0) {
 		const container = document.querySelector(".message-list");
   	container.style.paddingTop = "0px";
   	container.style.paddingBottom = "0px";
@@ -271,6 +282,10 @@ const botSentCallback = entry => {
     console.log('botSentCallback just returned');
   	return;
   }
+  /*if (currentIndex === DBSize - listSize) {
+  	return;
+  }*/
+
   const currentY = entry.boundingClientRect.top;
   const currentRatio = entry.intersectionRatio;
   const isIntersecting = entry.isIntersecting;
