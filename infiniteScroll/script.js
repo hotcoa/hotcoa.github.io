@@ -361,7 +361,11 @@ const initIntersectionObserver = () => {
       // var yDiff = touchY - touchStartY;
   
       if (xDiff > 0) {
-        tile.style.opacity = "0.5";
+        if (xDiff > 100) {
+          tile.style.opacity = "0.7";
+        } else {
+          tile.style.opacity = "1";
+        }        
         tile.style.transform = "translateX(" + xDiff + "px)";
       } else if (xDiff <= 0) {
         tile.style.opacity = "1";
@@ -373,8 +377,22 @@ const initIntersectionObserver = () => {
   function handleTouchEnd(evt) {
     // evt.preventDefault();?
     // touch cancel?
-    xDown = null;
-    yDown = null;
+    const tile = evt.target.closest("LI");
+    if (tile && tile.className === "tile") {
+      var touchX = evt.touches[0].clientX;
+      var xDiff = touchX - touchStartX;
+      if (xDiff > 600) {
+        // remove the tile
+        tile.style.transform = "translateX(800px)";
+      } else {
+        tile.style.opacity = "1";
+        tile.style.transform = "translateX(0px)";
+      }
+    }
+    
+
+    touchStartX = null;
+    touchStartY = null;
   }
 
 window.onload = function() {
