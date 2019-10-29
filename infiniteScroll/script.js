@@ -1,33 +1,45 @@
 const baseUrl = "https://message-list.appspot.com";
 const messageUrl = `${baseUrl}/messages`;
-const database = []; // reserved word?
-let pageToken;
+const database = []; // database to cache messages
+let pageToken; // indicates if there are more messages to retrieve
+
+let topSentinelPreviousY = 0;
+let topSentinelPreviousRatio = 0;
+let bottomSentinelPreviousY = 0;
+let bottomSentinelPreviousRatio = 0;
+let listSize = 20;
+let currentIndex = 0;
 
 const timeunit = {
   sec: 1000,
   min: 60*1000,
   hr: 60*60*1000,
   day: 24*60*60*1000,
-  month: 30*24*60*60*1000,
+  month: 30*24*60*60*1000, // for simplicity, assume there are 30 days in a month
   year: 365*24*60*60*1000,
 }
 
-let callCnt = 0;
-const getMessages = (nextToken, limit) => {
+const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
+
+/* 
+* Fetch messages and cache them
+*/
+function getMessages(nextToken, limit) {
   let params;
   if (nextToken) {
     params = `pageToken=${nextToken}`;
   }
+
   if (limit) {
     params = params ? `${params}&limit=${limit}` : `limit=${limit}`;
   }
+
   const mUrl = params? `${messageUrl}?${params}` : messageUrl;
-  callCnt++;
-  console.log(callCnt + ': getMessage is called: murl is ' + mUrl);
+
   return $.get(mUrl, function(data) {
     pageToken = data.pageToken;
-    console.log('token is ' + pageToken);
     data.messages.forEach(item => {
+      // calculate updated time of message
       let updateTime = new Date(item.updated);
       let timediff = Date.now() - updateTime;
       let displayTime;
@@ -62,6 +74,7 @@ const getMessages = (nextToken, limit) => {
           break;
       }
 
+      // cache the message
       database.push({
         id: item.id,
         content: item.content,
@@ -70,33 +83,28 @@ const getMessages = (nextToken, limit) => {
         photoUrl: baseUrl + item.author.photoUrl
       });
     });
-    console.log(database);
   }); 
 }
 
-let topSentinelPreviousY = 0;
-let topSentinelPreviousRatio = 0;
-let bottomSentinelPreviousY = 0;
-let bottomSentinelPreviousRatio = 0;
-
-let listSize = 20;
-let currentIndex = 0;
-
-const initList = num => {
+/*
+* Initialize message list
+*/
+function initializeList(num) {
   const container = document.querySelector(".message-list");
-  let sum = 0;
-  for (let i = 0; i < num; i++) {
+  for (let i = 0; i < Math.min(num, database.length); i++) {
     const tile = document.createElement("LI");
       
-    /* Create list element */
+    // set attribute for LI elem
+    tile.setAttribute("data-msgId", database[i].id);
+    tile.setAttribute("data-tileId", i);
     tile.setAttribute("class", "tile");
     tile.setAttribute("id", "tile-" + i);
 
+    // create header elem
     const header = document.createElement("DIV");
     header.setAttribute("class", "header");
     const authorImg = document.createElement("IMG");
-    authorImg.setAttribute("src", database[i].photoUrl);
-    
+    authorImg.setAttribute("src", database[i].photoUrl);    
     const meta = document.createElement("DIV");
     meta.setAttribute("class", "meta");
     const authorName = document.createElement("P");
@@ -107,27 +115,23 @@ const initList = num => {
     updateTime.innerHTML = database[i].updateTime;
     meta.appendChild(authorName);
     meta.appendChild(updateTime);
-
     header.appendChild(authorImg);
     header.appendChild(meta);
 
+    // create message elem
     const msg = document.createElement("DIV");
     msg.setAttribute("class", "message");
     msg.innerHTML = database[i].id + ': ' + database[i].content;
     tile.appendChild(header);
     tile.appendChild(msg); 
     container.appendChild(tile);
+
+    // cache tile's height
     database[i].height = tile.offsetHeight;
-    if (i<=9) {
-      sum += database[i].height;
-      console.log('hi ', i, database[i].height);
-    }
-    
   }
-  console.log(sum);
 }
 
-const getSlidingWindow = isScrollDown => {
+function getSlidingWindowIdx(isScrollDown) {
 	const increment = listSize / 2;
 	let firstIndex;
   
@@ -144,114 +148,62 @@ const getSlidingWindow = isScrollDown => {
   return firstIndex;
 }
 
-let cnt = 0;
-
-const recycleDOM = (firstIndex, isScrollDown) => {
-  console.log('first index is ' + firstIndex);
-  const direction = isScrollDown ? "down" : "up";
+function recycleDOM(firstIndex, isScrollDown) {
   if (isScrollDown && (database.length < (firstIndex + listSize))) {
-    // todo: call this only when this runs out of cache
-	  getMessages(pageToken, 20).then(() => {
-      for (let i = 0; i < listSize; i++) {
-        const idx = i + firstIndex;
-        const tile = document.querySelector("#tile-" + i);
-        console.log(`recycle ${direction} => idx: ${idx}, db id: ${database[idx].id}`);
-
-        /* Update message tile */
-        const header = tile.getElementsByClassName("header")[0];
-        header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
-        const meta = header.getElementsByClassName("meta")[0];
-        meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
-        meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
-        tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
-
-        /*
-        <div class="tile">
-            <div class="header">
-                -- <img src="https://message-list.appspot.com/photos/william-shakespeare.jpg"></img>
-                <div class="meta">
-                    <p class="author-name">Hiyo</p>
-                    <p class="update-time">30 minutes ago</p>
-                </div>
-            </div>
-            <div class="message">
-                Her pretty looks have been mine enemies, And therefore have I invoked thee for her seal, and meant thereby Thou shouldst print more, not let that pine to aggravate thy store Buy terms divine in selling hours of dross Within be fed, without be rich no more So shalt thou feed on Death, that feeds on men, And Death once dead, there's no more to shame nor me nor you.  
-            </div>
-        </div>
-        */
-      }
+	  getMessages(pageToken, listSize).then(() => {
+      updateTile(firstIndex);
     });
   } else {
-  	for (let i = 0; i < listSize; i++) {
-        const idx = i + firstIndex;
-        const tile = document.querySelector("#tile-" + i);
-        console.log(`recycle ${direction} => idx: ${idx}, db id: ${database[idx].id}`);
+    updateTile(firstIndex);
+  }
+}
 
-        /* Update message tile */
-        const header = tile.getElementsByClassName("header")[0];
-        header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
-        const meta = header.getElementsByClassName("meta")[0];
-        meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
-        meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
-        tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
+function updateTile(firstIndex) {
+  for (let i = 0; i < listSize; i++) {
+    const idx = i + firstIndex;
+    const tile = document.querySelector("#tile-" + i);
+
+    /* Update message tile */
+    if (idx < database.length) {
+      tile.setAttribute("data-msgId", database[idx].id);
+      const header = tile.getElementsByClassName("header")[0];
+      header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
+      const meta = header.getElementsByClassName("meta")[0];
+      meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
+      meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
+      tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
+    } else {
+      tile.style.display = 'none';
     }
   }
 }
 
-const getNumFromStyle = numStr => Number(numStr.substring(0, numStr.length - 2));
-
-/*
-
-const adjustPaddings = isScrollDown => {
-	const container = document.querySelector(".cat-list");
-  const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
-  const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
-  const remPaddingsVal = 170 * (listSize / 2);
-	if (isScrollDown) {
-  	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
-    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
-  } else {
-  	container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
-    container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
-    
-  }
-}
-*/
 const adjustPaddings = (isScrollDown, firstIdx) => {
 	const container = document.querySelector(".message-list");
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
   
-  console.log('push down by ' + remPaddingsVal);
-  
   if (isScrollDown) {
     firstIdx -= listSize/2;
     for (let i = 0; i < listSize/2; i++) {
       const tile = document.querySelector("#tile-" + i);
-      //const aContent = tile.getElementsByClassName("message")[0].innerHTML;
-      const tileH = tile.offsetHeight;
-      //console.log(tileH, aContent, i+firstIdx);
-      database[i+firstIdx].height = tileH; //tile.offsetHeight;
-      //console.log(`${i}th tile's height is ${database[i+firstIdx].height} => db's ${i+firstIdx}'th elem - ${database[i+firstIdx].name}`);
-      
+      const tileH = $(tile).outerHeight(true); //.offsetHeight;
+      database[i+firstIdx].height = tileH;
       remPaddingsVal += tileH;
-    }  
-    remPaddingsVal += 20 * (listSize/2);
-    //remPaddingsVal = 520 * (listSize/2);
+    }
+    
+    // add margin
+    // remPaddingsVal += 20 * (listSize/2);
 
   	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
-    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
-    
+    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";    
   } else {
     for (let i = 0; i < listSize/2; i++) {
       const idx = i + firstIdx;
-      // const tile = document.querySelector("#tile-" + idx);
-      // database[i+firstIdx].height = tile.offsetHeight;
       remPaddingsVal += database[idx].height;
     }
-    remPaddingsVal += 20 * (listSize/2);
-    // remPaddingsVal = 520 * (listSize/2);
+    // remPaddingsVal += 20 * (listSize/2);
 
     container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
@@ -277,7 +229,7 @@ const topSentCallback = entry => {
     currentRatio >= topSentinelPreviousRatio &&
     currentIndex !== 0
   ) {
-    const firstIndex = getSlidingWindow(false);
+    const firstIndex = getSlidingWindowIdx(false);
     adjustPaddings(false, firstIndex);
     recycleDOM(firstIndex, false);
     currentIndex = firstIndex;
@@ -307,7 +259,7 @@ const botSentCallback = entry => {
     currentRatio > bottomSentinelPreviousRatio &&
     isIntersecting
   ) {
-    const firstIndex = getSlidingWindow(true);
+    const firstIndex = getSlidingWindowIdx(true);
     adjustPaddings(true, firstIndex);
     recycleDOM(firstIndex, true);    
     currentIndex = firstIndex;
@@ -375,10 +327,52 @@ const initIntersectionObserver = () => {
     }
   }
 
-  function removeTile(tile) {
+  function removeTile(tileToRemove) {
     // remove the elem from database
-
+    let msgId = parseInt(tileToRemove.dataset.msgid);
+    let dbIdx = database.findIndex((dbelem) => (dbelem.id === msgId));    
+    database.splice(dbIdx, 1);
+    //console.log('remove this ' + msgId);
+    console.log('remove tile id ' + tileToRemove.dataset.tileid);
+    let tileId = parseInt(tileToRemove.dataset.tileid);
+    console.log('db idx ', dbIdx);
+    console.log(database);
+    let fetchMore = false;
     // re-render the remaining part
+    for (let i=0; i<=listSize-tileId; i++) {
+        let tileIdToUpdate = tileId + i;
+        console.log('update tile ' + i + ', ' + tileIdToUpdate);
+        const tile = document.querySelector("#tile-" + tileIdToUpdate);
+        
+        let dbIndexToFetch = dbIdx + i;
+        /* Update message tile */
+        if (dbIndexToFetch < database.length) {
+          tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
+          const header = tile.getElementsByClassName("header")[0];
+          header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
+          const meta = header.getElementsByClassName("meta")[0];
+          meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
+          meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
+          tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+        } else {
+          break;          
+        }        
+    }
+
+    // fetch more values
+    /* if (pageToken) {
+      getMessages(pageToken, listSize).then(() => {
+        console.log('fetched more!!');
+        // same code
+        tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
+        const header = tile.getElementsByClassName("header")[0];
+        header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
+        const meta = header.getElementsByClassName("meta")[0];
+        meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
+        meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
+        tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+      });
+    }*/
 
     // additional call if needed
   }
@@ -391,9 +385,17 @@ const initIntersectionObserver = () => {
     if (tile && tile.className === "tile") {
       var xDiff = touchEndX - touchStartX;
       if (xDiff > 550) {
-        removeTile(tile);
         tile.style.transform = "translateX(150%)";
-        tile.style.transition = "transform 1s"
+        tile.style.transition = "transform 1s";
+
+        setTimeout(function () {
+          removeTile(tile);
+          tile.style.transition = "";
+          tile.style.transform = "translateX(0)";        
+          tile.style.opacity = "1";  
+        }, 500);
+        
+        
       } else {
         tile.style.opacity = "1";
         tile.style.transform = "translateX(0px)";
@@ -417,7 +419,7 @@ window.onload = function() {
     document.getElementById("header-time").innerHTML = hourMinFormat;
     
     getMessages(pageToken, 20).then(() => {
-      initList(listSize);
+      initializeList(listSize);
       initIntersectionObserver();
     });
 }
