@@ -8,7 +8,8 @@ const timeunit = {
   min: 60*1000,
   hr: 60*60*1000,
   day: 24*60*60*1000,
-  // month, year
+  month: 30*24*60*60*1000,
+  year: 365*24*60*60*1000,
 }
 
 let callCnt = 0;
@@ -29,30 +30,34 @@ const getMessages = (nextToken, limit) => {
     data.messages.forEach(item => {
       let updateTime = new Date(item.updated);
       let timediff = Date.now() - updateTime;
-      let computedTime;
       let displayTime;
-
-      console.log(item.updated +', '+timediff);
-      switch (timediff) {
+      switch (true) {
+        case (timediff > timeunit.year):
+          displayTime = Math.floor(timediff/timeunit.year);
+          displayTime += (displayTime === 1) ? " year ago" : " years ago";
+          break;
+        case (timediff > timeunit.month):
+          displayTime = Math.floor(timediff/timeunit.month);
+          displayTime += (displayTime === 1) ? " month ago" : " months ago";
+          break;
         case (timediff > timeunit.day):
-          computedTime = Math.floor(timediff/timeunit.day);
-          displayTime = (computedTime === 1) ? " day ago" : " days ago";
+          displayTime = Math.floor(timediff/timeunit.day);
+          displayTime += (displayTime === 1) ? " day ago" : " days ago";
           break;
         case (timediff > timeunit.hr):
-          computedTime = Math.floor(timediff/timeunit.hr);
-          displayTime = (computedTime === 1) ? " hour ago" : " hours ago";
+          displayTime = Math.floor(timediff/timeunit.hr);
+          displayTime += (displayTime === 1) ? " hour ago" : " hours ago";
           break;
         case (timediff > timeunit.min):
-          computedTime = Math.floor(timediff/timeunit.min);
-          displayTime = (computedTime === 1) ? " minute ago" : " minutes ago";
+          displayTime = Math.floor(timediff/timeunit.min);
+          displayTime += (displayTime === 1) ? " minute ago" : " minutes ago";
           break;
         default:
-          computedTime = Math.floor(timediff/timeunit.sec);
-          displayTime = computedTime;
-          if (computedTime === 0) {
+          displayTime = Math.floor(timediff/timeunit.sec);
+          if (displayTime === 0) {
             displayTime = "1 second ago";
           } else {
-            displayTime += (computedTime === 1) ? " second ago" : " seconds ago";
+            displayTime += (displayTime === 1) ? " second ago" : " seconds ago";
           }
           break;
       }
@@ -78,10 +83,9 @@ let listSize = 20;
 let currentIndex = 0;
 
 const initList = num => {
-    const container = document.querySelector(".message-list");
-  console.log('initList: ' + num);
+  const container = document.querySelector(".message-list");
+  
   for (let i = 0; i < num; i++) {
-    console.log(i);
     const tile = document.createElement("LI");
       
     /* Create list element */
@@ -113,6 +117,7 @@ const initList = num => {
     tile.appendChild(header);
     tile.appendChild(msg); 
     container.appendChild(tile);
+    database[i].height = tile.offsetHeight;
   }
   
 }
@@ -205,13 +210,17 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
       remPaddingsVal += tile.offsetHeight;
     }
   
-    const viewportHeight = window.innerHeight;
-    const lastTile = document.querySelector("#tile-" + (listSize-1));
-    const lastElemPosY = lastTile.getBoundingClientRect().top;
-    remPaddingsVal += viewportHeight - lastElemPosY
+    //const viewportHeight = window.innerHeight;
+    //const lastTile = document.querySelector("#tile-" + (listSize-1));
+    //const brect = lastTile.getBoundingClientRect();
+    //const lastElemPosY = lastTile.getBoundingClientRect().top;
+    remPaddingsVal += 20 * (listSize/2);
+    //let rem = brect.height - (viewportHeight - lastElemPosY);
+    //remPaddingsVal -= rem;
+    
 
   	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
-//    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
+    container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";
     
   } else {
     for (let i = 0; i < listSize/2; i++) {
@@ -220,11 +229,10 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
       // database[i+firstIdx].height = tile.offsetHeight;
       remPaddingsVal += database[idx].height;
     }
-    
+    remPaddingsVal += 20 * (listSize/2);
+
+    container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
-    
-    /*container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
-    container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";*/
   }
 }
 
@@ -257,8 +265,8 @@ const topSentCallback = entry => {
   topSentinelPreviousRatio = currentRatio;
 }
 
-const botSentCallback = entry => {
-  console.log('botSentCallBack is called');
+// add loading logo?
+const botSentCallback = entry => {  
 	if (!pageToken) { //DBSize - listSize) {
     console.log('botSentCallback just returned');
   	return;
@@ -266,7 +274,7 @@ const botSentCallback = entry => {
   const currentY = entry.boundingClientRect.top;
   const currentRatio = entry.intersectionRatio;
   const isIntersecting = entry.isIntersecting;
-  console.log('botSentCallback got called');
+  console.log('botSentCallBack is called');
   // conditional check for Scrolling down
   if (
     currentY < bottomSentinelPreviousY &&
@@ -276,6 +284,7 @@ const botSentCallback = entry => {
     const firstIndex = getSlidingWindow(true);
     adjustPaddings(true, firstIndex);
     recycleDOM(firstIndex, true);
+    
     currentIndex = firstIndex;
   }
 
@@ -285,7 +294,7 @@ const botSentCallback = entry => {
 
 const initIntersectionObserver = () => {
   const options = {
-  	/* root: document.querySelector(".message-list") */
+  	//root: document.querySelector(".message-list")
   }
 
   const callback = entries => {
@@ -328,9 +337,15 @@ const initIntersectionObserver = () => {
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) { /*most significant*/
         if ( xDiff > 0 ) {
             /* right swipe */
-            console.log(`touch move: ${touchStartX}, ${touchX}`);   
+            
+            // todo: find corresponding tile element
+            // todo: if not all swiped, then put it back
+            evt.target.style.opacity = "0.5";
             evt.target.style.transform = "translateX(" + xDiff + "px)";
-        }                       
+            
+        } else {
+          evt.target.style.opacity = "1";
+        }                     
     }
   };
 
