@@ -21,6 +21,7 @@ body {
   top: 0;
   position: fixed;
   overflow: hidden;
+  z-index: 1;
 }
   
 #topheader .phone-meta {
@@ -67,7 +68,7 @@ body {
 /* ------------------------------------- */
 /* Messages */
 /* ------------------------------------- */
-#container {
+  #container {
   margin-top: 200px;
   padding: 0 20px;
 }

@@ -122,7 +122,7 @@ function initializeList(num) {
     // create message elem
     const msg = document.createElement("DIV");
     msg.setAttribute("class", "message");
-    msg.innerHTML = database[i].id + ': ' + database[i].content;
+    msg.innerHTML =  database[i].id + ': ' + database[i].content;
     tile.appendChild(header);
     tile.appendChild(msg); 
     container.appendChild(tile);
@@ -152,27 +152,21 @@ function getSlidingWindowIdx(isScrollDown) {
 function recycleDOM(firstIndex, isScrollDown) {
   if (isScrollDown && (database.length < (firstIndex + listSize))) {
 	  getMessages(pageToken, listSize).then(() => {
-      updateTile(firstIndex);
+      recycleTile(firstIndex);
     });
   } else {
-    updateTile(firstIndex);
+    recycleTile(firstIndex);
   }
 }
 
-function updateTile(firstIndex) {
+function recycleTile(firstIndex) {
   for (let i = 0; i < listSize; i++) {
     const idx = i + firstIndex;
     const tile = document.querySelector("#tile-" + i);
 
     /* Update message tile */
     if (idx < database.length) {
-      tile.setAttribute("data-msgId", database[idx].id);
-      const header = tile.getElementsByClassName("header")[0];
-      header.getElementsByTagName("IMG")[0].setAttribute("src", database[idx].photoUrl);
-      const meta = header.getElementsByClassName("meta")[0];
-      meta.getElementsByClassName("author-name")[0].innerHTML = database[idx].name;
-      meta.getElementsByClassName("update-time")[0].innerHTML = database[idx].updateTime;
-      tile.getElementsByClassName("message")[0].innerHTML = database[idx].id + ': ' + database[idx].content;
+      updateTile(i, idx);
     } else {
       tile.style.display = 'none';
     }
@@ -332,6 +326,10 @@ function handleTouchEnd(evt) {
   touchStartX = null;
 }
 
+/*********************************/
+/* Tile updates */
+/*********************************/
+
 function removeTile(tileToRemove) {
   // remove the elem from database
   let msgId = parseInt(tileToRemove.dataset.msgid);
@@ -347,16 +345,7 @@ function removeTile(tileToRemove) {
 
       /* Update message tile */
       if (dbIndexToFetch < database.length) {
-        let tileIdToUpdate = tileId + i;
-        const tile = document.querySelector("#tile-" + tileIdToUpdate);
-        console.log('update tile ' + i + ', ' + tileIdToUpdate);
-        tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
-        const header = tile.getElementsByClassName("header")[0];
-        header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
-        const meta = header.getElementsByClassName("meta")[0];
-        meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
-        meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
-        tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+        updateTile(tileId + i, dbIndexToFetch);
       } else {
         if (pageToken) {
           fetchMore = true;
@@ -369,22 +358,23 @@ function removeTile(tileToRemove) {
   if (fetchMore) {
     getMessages(pageToken, listSize).then(() => {
       for (let j=startAfterFetchIdx; j<listSize-tileId; j++) {
-        let dbIndexToFetch = dbIdx + j;
-        let tileIdToUpdate = tileId + j;
-        const tile = document.querySelector("#tile-" + tileIdToUpdate);
-        console.log('update tile ' + j + ', ' + tileIdToUpdate);
-        tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
-        const header = tile.getElementsByClassName("header")[0];
-        header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
-        const meta = header.getElementsByClassName("meta")[0];
-        meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
-        meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
-        tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+        updateTile(tileId + j, dbIdx + j);
       }
     });
   }
 }
-  
+
+function updateTile(tileIdToUpdate, dbIndexToFetch) {
+  const tile = document.querySelector("#tile-" + tileIdToUpdate);
+  tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
+  const header = tile.getElementsByClassName("header")[0];
+  header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
+  const meta = header.getElementsByClassName("meta")[0];
+  meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
+  meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
+  tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+}
+
 /*********************************/
 /* Start point */
 /*********************************/
