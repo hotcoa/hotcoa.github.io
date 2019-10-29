@@ -84,7 +84,7 @@ let currentIndex = 0;
 
 const initList = num => {
   const container = document.querySelector(".message-list");
-  
+  let sum = 0;
   for (let i = 0; i < num; i++) {
     const tile = document.createElement("LI");
       
@@ -118,8 +118,13 @@ const initList = num => {
     tile.appendChild(msg); 
     container.appendChild(tile);
     database[i].height = tile.offsetHeight;
+    if (i<=9) {
+      sum += database[i].height;
+      console.log('hi ', i, database[i].height);
+    }
+    
   }
-  
+  console.log(sum);
 }
 
 const getSlidingWindow = isScrollDown => {
@@ -224,13 +229,13 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
     firstIdx -= listSize/2;
     for (let i = 0; i < listSize/2; i++) {
       const tile = document.querySelector("#tile-" + i);
-      const aContent = tile.getElementsByClassName("message")[0].innerHTML;
+      //const aContent = tile.getElementsByClassName("message")[0].innerHTML;
       const tileH = tile.offsetHeight;
-      console.log(tileH, aContent, i+firstIdx);
+      //console.log(tileH, aContent, i+firstIdx);
       database[i+firstIdx].height = tileH; //tile.offsetHeight;
       //console.log(`${i}th tile's height is ${database[i+firstIdx].height} => db's ${i+firstIdx}'th elem - ${database[i+firstIdx].name}`);
       
-      remPaddingsVal += tile.offsetHeight;
+      remPaddingsVal += tileH;
     }  
     remPaddingsVal += 20 * (listSize/2);
     //remPaddingsVal = 520 * (listSize/2);
