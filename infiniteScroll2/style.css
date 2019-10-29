@@ -16,7 +16,7 @@ body {
     fill: white;
   }
 
-  .top-header {
+  #topheader {
     box-shadow: 0 2px 2px #BABABA;
     margin: 0 0;
     width: 100%;
@@ -25,22 +25,22 @@ body {
     position: fixed;
   }
   
-  .top-header .phone-meta {
+  #topheader .phone-meta {
     background-color: #522E92;
     height: 30%;
   }
 
   /* ???  */
-  .top-header .img {
+  #topheader .img {
     line-height: 120%;
     vertical-align: middle;
   }
 /*
-  .top-header .phone-meta:after {
+  #topheader .phone-meta:after {
       clear: both;
   }*/
 
-  .top-header .message-menu {
+  #topheader .message-menu {
     height: 70%;
     background-color: #673AB7;
   }

@@ -1,41 +1,35 @@
-<!-- 
-1. fix positioning in scrolling down and up
-2. responsive layout in mobile
-3. swipe motion and update recycle dom
--->
 <!DOCTYPE html>
 <html>
 	<head>
-        <title>Hiyo</title>
+        <title>Hiyo's Scroller</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
         <script src="script.js"></script>
     </head>
     <body>
-        <div class="top-header">
+        <div id="topheader">
             <div class="phone-meta">
-                <div class="phone-meta-icon-wrap" style="margin-left: auto">
-                    <img class="phone-meta-icon" src="resources/wifi_bar.svg"></img>
+                <div class="phone-icon-wrap" style="margin-left: auto">
+                    <img class="phone-icon" src="resources/wifi_bar.svg">
                 </div>
-                <div class="phone-meta-icon-wrap">
-                    <img class="phone-meta-icon" src="resources/celullar_bar.svg"></img>
+                <div class="phone-icon-wrap">
+                    <img class="phone-icon" src="resources/celullar_bar.svg">
                 </div>
-                <div class="phone-meta-icon-wrap">
-                    <img class="phone-meta-icon" src="resources/battery.svg"></img>
+                <div class="phone-icon-wrap">
+                    <img class="phone-icon" src="resources/battery.svg">
                 </div>
                 <span id="header-time"></span>
             </div>
-            <div class="message-menu">
-                <div class="menu-icon-wrap">
-                    <img id="menu-icon" src="resources/menu.svg"></img>
+            <div id="top-menu">
+                <div id="menu-icon-wrap">
+                    <img class="phone-icon" src="resources/menu.svg">
                 </div>
-                <div class="message-menu-title">Messages</div>
+                <div id="top-menu-title">Messages</div>
             </div>
         </div>
         <div id="container">
-            <ul class="message-list" stle="top-padding: 0px; bottom-padding: 0px">
-            </ul>
+            <ul id="message-list" stle="top-padding: 0px; bottom-padding: 0px"></ul>
         </div>    
     </body>
 </html>

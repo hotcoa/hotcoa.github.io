@@ -91,7 +91,7 @@ function getMessages(nextToken, limit) {
 * Initialize message list
 */
 function initializeList(num) {
-  const container = document.querySelector(".message-list");
+  const container = document.querySelector("#message-list");
   for (let i = 0; i < Math.min(num, database.length); i++) {
     const tile = document.createElement("LI");
       
@@ -180,7 +180,7 @@ function updateTile(firstIndex) {
 }
 
 const adjustContainerPaddings = (isScrollDown, firstIdx) => {
-	const container = document.querySelector(".message-list");
+	const container = document.querySelector("#message-list");
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
@@ -211,7 +211,7 @@ const adjustContainerPaddings = (isScrollDown, firstIdx) => {
 
 function topSentinentalCallback(entry) {
 	if (currentIndex === 0) {
-		const container = document.querySelector(".message-list");
+		const container = document.querySelector("#message-list");
   	container.style.paddingTop = "0px";
   	container.style.paddingBottom = "0px";
   }
@@ -260,7 +260,7 @@ function botSentinentalCallback(entry) {
 
 function initIntersectionObserver() {
   const options = {
-  	//root: document.querySelector(".message-list")
+    rootMargin: '200px'
   }
 
   const callback = entries => {
