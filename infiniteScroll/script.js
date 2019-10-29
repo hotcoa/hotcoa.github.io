@@ -221,9 +221,15 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
   console.log('push down by ' + remPaddingsVal);
   
   if (isScrollDown) {
+    firstIdx -= listSize/2;
     for (let i = 0; i < listSize/2; i++) {
       const tile = document.querySelector("#tile-" + i);
-      database[i+firstIdx].height = tile.offsetHeight;
+      const aContent = tile.getElementsByClassName("message")[0].innerHTML;
+      const tileH = tile.offsetHeight;
+      console.log(tileH, aContent, i+firstIdx);
+      database[i+firstIdx].height = tileH; //tile.offsetHeight;
+      //console.log(`${i}th tile's height is ${database[i+firstIdx].height} => db's ${i+firstIdx}'th elem - ${database[i+firstIdx].name}`);
+      
       remPaddingsVal += tile.offsetHeight;
     }  
     remPaddingsVal += 20 * (listSize/2);
@@ -298,8 +304,7 @@ const botSentCallback = entry => {
   ) {
     const firstIndex = getSlidingWindow(true);
     adjustPaddings(true, firstIndex);
-    recycleDOM(firstIndex, true);
-    
+    recycleDOM(firstIndex, true);    
     currentIndex = firstIndex;
   }
 
