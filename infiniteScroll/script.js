@@ -328,26 +328,22 @@ const initIntersectionObserver = () => {
         return;
     }*/
 
-    var touchX = evt.touches[0].clientX;                                    
-    var touchY = evt.touches[0].clientY;
-
-    var xDiff = touchX - touchStartX; //xDown - xUp;
-    var yDiff = touchY - touchStartY; // yDown - yUp;
-
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) { /*most significant*/
-        if ( xDiff > 0 ) {
-            /* right swipe */
-            
-            // todo: find corresponding tile element
-            // todo: if not all swiped, then put it back
-            evt.target.style.opacity = "0.5";
-            evt.target.style.transform = "translateX(" + xDiff + "px)";
-            
-        } else {
-          evt.target.style.opacity = "1";
-        }                     
+    const tile = evt.target.closest("LI");
+    if (tile && tile.className === "tile") {
+      var touchX = evt.touches[0].clientX;                                    
+      var touchY = evt.touches[0].clientY;
+      var xDiff = touchX - touchStartX;
+      // var yDiff = touchY - touchStartY;
+  
+      if (xDiff > 0) {
+        tile.style.opacity = "0.5";
+        tile.style.transform = "translateX(" + xDiff + "px)";
+      } else if (xDiff <= 0) {
+        tile.style.opacity = "1";
+        tile.style.transform = "translateX(0px)";
+      }
     }
-  };
+  }
 
   function handleTouchEnd(evt) {
     // evt.preventDefault();?
