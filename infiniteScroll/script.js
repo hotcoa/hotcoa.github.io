@@ -9,6 +9,7 @@ let bottomSentinelPreviousY = 0;
 let bottomSentinelPreviousRatio = 0;
 let listSize = 20;
 let currentIndex = 0;
+let touchStartX, touchEndX;
 
 const timeunit = {
   sec: 1000,
@@ -178,7 +179,7 @@ function updateTile(firstIndex) {
   }
 }
 
-const adjustPaddings = (isScrollDown, firstIdx) => {
+const adjustContainerPaddings = (isScrollDown, firstIdx) => {
 	const container = document.querySelector(".message-list");
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
@@ -188,14 +189,9 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
     firstIdx -= listSize/2;
     for (let i = 0; i < listSize/2; i++) {
       const tile = document.querySelector("#tile-" + i);
-      const tileH = $(tile).outerHeight(true); //.offsetHeight;
-      database[i+firstIdx].height = tileH;
-      remPaddingsVal += tileH;
+      database[i+firstIdx].height = $(tile).outerHeight(true);
+      remPaddingsVal += database[i+firstIdx].height;
     }
-    
-    // add margin
-    // remPaddingsVal += 20 * (listSize/2);
-
   	container.style.paddingTop = currentPaddingTop + remPaddingsVal + "px";
     container.style.paddingBottom = currentPaddingBottom === 0 ? "0px" : currentPaddingBottom - remPaddingsVal + "px";    
   } else {
@@ -203,15 +199,17 @@ const adjustPaddings = (isScrollDown, firstIdx) => {
       const idx = i + firstIdx;
       remPaddingsVal += database[idx].height;
     }
-    // remPaddingsVal += 20 * (listSize/2);
-
     container.style.paddingBottom = currentPaddingBottom + remPaddingsVal + "px";
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
   }
 }
 
-const topSentCallback = entry => {
-  console.log('topSentCallBack is called');
+
+/***********************************/
+/* Intersection observer callbacks */
+/***********************************/
+
+function topSentinentalCallback(entry) {
 	if (currentIndex === 0) {
 		const container = document.querySelector(".message-list");
   	container.style.paddingTop = "0px";
@@ -222,15 +220,13 @@ const topSentCallback = entry => {
   const currentRatio = entry.intersectionRatio;
   const isIntersecting = entry.isIntersecting;
 
-  // conditional check for Scrolling up
-  if (
-    currentY > topSentinelPreviousY && // it means the top sentinel's y is growing
+  if (currentY > topSentinelPreviousY &&
     isIntersecting &&
     currentRatio >= topSentinelPreviousRatio &&
     currentIndex !== 0
   ) {
     const firstIndex = getSlidingWindowIdx(false);
-    adjustPaddings(false, firstIndex);
+    adjustContainerPaddings(false, firstIndex);
     recycleDOM(firstIndex, false);
     currentIndex = firstIndex;
   }
@@ -239,28 +235,21 @@ const topSentCallback = entry => {
   topSentinelPreviousRatio = currentRatio;
 }
 
-// add loading logo?
-const botSentCallback = entry => {  
-	if (!pageToken) { //DBSize - listSize) {
-    console.log('botSentCallback just returned');
+function botSentinentalCallback(entry) {  
+	if (!pageToken) {
   	return;
   }
-  /*if (currentIndex === DBSize - listSize) {
-  	return;
-  }*/
 
   const currentY = entry.boundingClientRect.top;
   const currentRatio = entry.intersectionRatio;
   const isIntersecting = entry.isIntersecting;
-  console.log('botSentCallBack is called');
-  // conditional check for Scrolling down
-  if (
-    currentY < bottomSentinelPreviousY &&
+
+  if (currentY < bottomSentinelPreviousY &&
     currentRatio > bottomSentinelPreviousRatio &&
     isIntersecting
   ) {
     const firstIndex = getSlidingWindowIdx(true);
-    adjustPaddings(true, firstIndex);
+    adjustContainerPaddings(true, firstIndex);
     recycleDOM(firstIndex, true);    
     currentIndex = firstIndex;
   }
@@ -269,7 +258,7 @@ const botSentCallback = entry => {
   bottomSentinelPreviousRatio = currentRatio;
 }
 
-const initIntersectionObserver = () => {
+function initIntersectionObserver() {
   const options = {
   	//root: document.querySelector(".message-list")
   }
@@ -277,9 +266,9 @@ const initIntersectionObserver = () => {
   const callback = entries => {
     entries.forEach(entry => {
       if (entry.target.id === 'tile-0') {
-        topSentCallback(entry);
+        topSentinentalCallback(entry);
       } else if (entry.target.id === `tile-${listSize - 1}`) {
-        botSentCallback(entry);
+        botSentinentalCallback(entry);
       }
     });
   }
@@ -289,75 +278,94 @@ const initIntersectionObserver = () => {
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }  
 
-  var touchStartX, touchStartY, touchEndX, touchEndY;
+/*********************************/
+/* Touch event handlers */
+/*********************************/
 
-  function handleTouchStart(evt) {
-    const firstTouch = (evt.touches || evt.originalEvent.touches[0])[0];
-    console.log(firstTouch);
-    console.log(firstTouch.clientX);
-    touchStartX = firstTouch.clientX;                                      
-    touchStartY = firstTouch.clientY;
-    console.log('touch start: ' + touchStartX);                                    
-  };                                                
+function handleTouchStart(evt) {
+  const firstTouch = (evt.touches || evt.originalEvent.touches[0])[0];
+  touchStartX = firstTouch.clientX;
+};                                                
 
-  function handleTouchMove(evt) {
-    /*if ( ! xDown || ! yDown ) {
-        return;
-    }*/
+function handleTouchMove(evt) {
+  const tile = evt.target.closest("LI");
+  if (tile && tile.className === "tile") {
+    touchEndX = evt.touches[0].clientX;
+    var xDiff = touchEndX - touchStartX;
 
-    const tile = evt.target.closest("LI");
-    if (tile && tile.className === "tile") {
-      var touchX = evt.touches[0].clientX;                                    
-      var touchY = evt.touches[0].clientY;
-      touchEndX = touchX;
-      var xDiff = touchX - touchStartX;
-      // var yDiff = touchY - touchStartY;
-  
-      if (xDiff > 0) {
-        if (xDiff > 100) {
-          tile.style.opacity = "0.7";
-        } else {
-          tile.style.opacity = "1";
-        }        
-        tile.style.transform = "translateX(" + xDiff + "px)";
-      } else if (xDiff <= 0) {
+    if (xDiff > 0) {
+      if (xDiff > 100) {
+        tile.style.opacity = "0.7";
+      } else {
         tile.style.opacity = "1";
-        tile.style.transform = "translateX(0px)";
-      }
+      }        
+      tile.style.transform = "translateX(" + xDiff + "px)";
+    } else if (xDiff <= 0) {
+      tile.style.opacity = "1";
+      tile.style.transform = "translateX(0px)";
     }
   }
+}
 
-  function removeTile(tileToRemove) {
-    // remove the elem from database
-    let msgId = parseInt(tileToRemove.dataset.msgid);
-    let dbIdx = database.findIndex((dbelem) => (dbelem.id === msgId));    
-    database.splice(dbIdx, 1);
-    //console.log('remove this ' + msgId);
-    console.log('remove tile id ' + tileToRemove.dataset.tileid);
-    let tileId = parseInt(tileToRemove.dataset.tileid);
-    console.log('db idx ', dbIdx);
-    console.log(database);
-    let fetchMore = false;
-    // re-render the remaining part
-    for (let i=0; i<=listSize-tileId; i++) {
-        let tileIdToUpdate = tileId + i;
-        console.log('update tile ' + i + ', ' + tileIdToUpdate);
-        const tile = document.querySelector("#tile-" + tileIdToUpdate);
-        
-        let dbIndexToFetch = dbIdx + i;
-        /* Update message tile */
-        if (dbIndexToFetch < database.length) {
-          tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
-          const header = tile.getElementsByClassName("header")[0];
-          header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
-          const meta = header.getElementsByClassName("meta")[0];
-          meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
-          meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
-          tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
-        } else {
-          break;          
-        }        
+function handleTouchEnd(evt) {
+  const tile = evt.target.closest("LI");
+  if (tile && tile.className === "tile") {
+    var xDiff = touchEndX - touchStartX;
+    if (xDiff > 550) {
+      tile.style.transform = "translateX(150%)";
+      tile.style.transition = "transform 1s";
+
+      setTimeout(function () {
+        removeTile(tile);
+        tile.style.transition = "";
+        tile.style.transform = "translateX(0)";        
+        tile.style.opacity = "1";  
+      }, 500);
+    } else {
+      tile.style.opacity = "1";
+      tile.style.transform = "translateX(0px)";
     }
+  }
+  
+  touchEndX = null;
+  touchStartX = null;
+}
+
+function removeTile(tileToRemove) {
+  // remove the elem from database
+  let msgId = parseInt(tileToRemove.dataset.msgid);
+  let dbIdx = database.findIndex((dbelem) => (dbelem.id === msgId));    
+  database.splice(dbIdx, 1);
+
+  let tileId = parseInt(tileToRemove.dataset.tileid);
+  let fetchMore = false;
+  // re-render the remaining part
+  for (let i=0; i<=listSize-tileId; i++) {
+      let tileIdToUpdate = tileId + i;
+      console.log('update tile ' + i + ', ' + tileIdToUpdate);
+      const tile = document.querySelector("#tile-" + tileIdToUpdate);
+      
+      let dbIndexToFetch = dbIdx + i;
+      /* Update message tile */
+      if (dbIndexToFetch < database.length) {
+        tile.setAttribute("data-msgId", database[dbIndexToFetch].id);
+        const header = tile.getElementsByClassName("header")[0];
+        header.getElementsByTagName("IMG")[0].setAttribute("src", database[dbIndexToFetch].photoUrl);
+        const meta = header.getElementsByClassName("meta")[0];
+        meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
+        meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
+        tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+      } else {
+        if (pageToken) {
+          fetchMore = true;
+        }
+        break;          
+      }        
+  }
+
+  if (fetchMore) {
+    
+  }
 
     // fetch more values
     /* if (pageToken) {
@@ -377,36 +385,10 @@ const initIntersectionObserver = () => {
     // additional call if needed
   }
 
-  function handleTouchEnd(evt) {
-    // evt.preventDefault();?
-    // touch cancel?
-    console.log(evt);
-    const tile = evt.target.closest("LI");
-    if (tile && tile.className === "tile") {
-      var xDiff = touchEndX - touchStartX;
-      if (xDiff > 550) {
-        tile.style.transform = "translateX(150%)";
-        tile.style.transition = "transform 1s";
-
-        setTimeout(function () {
-          removeTile(tile);
-          tile.style.transition = "";
-          tile.style.transform = "translateX(0)";        
-          tile.style.opacity = "1";  
-        }, 500);
-        
-        
-      } else {
-        tile.style.opacity = "1";
-        tile.style.transform = "translateX(0px)";
-      }
-    }
-    
-    touchEndX = null;
-    touchStartX = null;
-    touchStartY = null;
-  }
-
+  
+/*********************************/
+/* Start point */
+/*********************************/
 window.onload = function() {
     var touchsurface = document.getElementById('container');
     touchsurface.addEventListener('touchstart', handleTouchStart, false);
@@ -415,7 +397,6 @@ window.onload = function() {
 
     var currDate = new Date();
     var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    console.log(hourMinFormat);
     document.getElementById("header-time").innerHTML = hourMinFormat;
     
     getMessages(pageToken, 20).then(() => {
