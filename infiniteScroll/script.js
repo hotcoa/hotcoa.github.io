@@ -337,7 +337,7 @@ const initIntersectionObserver = () => {
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }  
 
-  var touchStartX, touchStartY;
+  var touchStartX, touchStartY, touchEndX, touchEndY;
 
   function handleTouchStart(evt) {
     const firstTouch = (evt.touches || evt.originalEvent.touches[0])[0];
@@ -357,6 +357,7 @@ const initIntersectionObserver = () => {
     if (tile && tile.className === "tile") {
       var touchX = evt.touches[0].clientX;                                    
       var touchY = evt.touches[0].clientY;
+      touchEndX = touchX;
       var xDiff = touchX - touchStartX;
       // var yDiff = touchY - touchStartY;
   
@@ -374,23 +375,32 @@ const initIntersectionObserver = () => {
     }
   }
 
+  function removeTile(tile) {
+    // remove the elem from database
+
+    // re-render the remaining part
+
+    // additional call if needed
+  }
+
   function handleTouchEnd(evt) {
     // evt.preventDefault();?
     // touch cancel?
+    console.log(evt);
     const tile = evt.target.closest("LI");
     if (tile && tile.className === "tile") {
-      var touchX = evt.touches[0].clientX;
-      var xDiff = touchX - touchStartX;
-      if (xDiff > 600) {
-        // remove the tile
-        tile.style.transform = "translateX(800px)";
+      var xDiff = touchEndX - touchStartX;
+      if (xDiff > 550) {
+        removeTile(tile);
+        tile.style.transform = "translateX(150%)";
+        tile.style.transition = "transform 1s"
       } else {
         tile.style.opacity = "1";
         tile.style.transform = "translateX(0px)";
       }
     }
     
-
+    touchEndX = null;
     touchStartX = null;
     touchStartY = null;
   }
