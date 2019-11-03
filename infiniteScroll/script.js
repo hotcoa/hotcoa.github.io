@@ -300,7 +300,9 @@ function handleTouchMove(evt) {
     if (xDiff > 0) {
       if (xDiff > 100) {
         tile.style.opacity = "0.5";
-        navigator.vibrate(1000);
+        if (supportsVibrate) {
+          navigator.vibrate(1000);
+        }
       } else {
         tile.style.opacity = "1";
       }        
