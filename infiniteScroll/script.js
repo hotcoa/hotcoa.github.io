@@ -10,6 +10,7 @@ let bottomSentinelPreviousRatio = 0;
 let listSize = 20;
 let currentIndex = 0;
 let touchStartX, touchEndX, touchStartY, touchEndY;
+let swipeThreshold;
 
 const timeunit = {
   sec: 1000,
@@ -298,12 +299,12 @@ function handleTouchMove(evt) {
 
 
   if (tile && tile.className === "tile") {
-    tile.style.transition = "transform 10ms linear";
     x = evt.touches[0].clientX;
     y = evt.touches[0].clientY;
     
     // check if proper horizontal swipe has started
     if (!touchEndX && !touchEndY) {
+      tile.style.transition = "transform 10ms, opacity 200ms";
       let xDiff = x - touchStartX;
       let yDiff = y - touchStartY;
 
@@ -318,10 +319,10 @@ function handleTouchMove(evt) {
       touchEndY = y;
 
       if (xDiff > 0) {
-        if (xDiff <= 550) {
-          tile.style.opacity = "0.65";
+        if (xDiff <= swipeThreshold) {
+          tile.style.opacity = "0.68";
         } else {
-          tile.style.opacity = "0.2";
+          tile.style.opacity = "0.28";
         }        
         tile.style.transform = "translateX(" + xDiff + "px)";      
       } else if (xDiff <= 0) {
@@ -338,11 +339,12 @@ function handleTouchEnd(evt) {
   if (tile && tile.className === "tile") {
     var xDiff = touchEndX - touchStartX;
     var yDiff = touchEndY - touchStartY;
-    //if (Math.abs(yDiff) < Math.abs(xDiff)) {
-    if (xDiff > 550) {
+    tile.style.transition = "transform 200ms";
+    
+    if (xDiff > swipeThreshold) {
       tile.style.transform = "translateX(150%)";
-      tile.style.transition = "transform 200ms";
 
+      // Wait until the above transition is finished
       setTimeout(function () {
         removeTile(tile);
         
@@ -350,11 +352,10 @@ function handleTouchEnd(evt) {
         tile.style.transition = "";
         tile.style.transform = "translateX(0)";        
         tile.style.opacity = "1";  
-      }, 500);
+      }, 200);
     } else {
       tile.style.opacity = "1";
       tile.style.transform = "translateX(0px)";
-      tile.style.transition = "transform 200ms";
     }
   }
   
@@ -428,7 +429,8 @@ window.onload = function() {
   var currDate = new Date();
   var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   document.getElementById("header-time").innerHTML = hourMinFormat;
-  
+  swipeThreshold = $('#message-list').width() * 0.6;
+
   getMessages(pageToken, 20).then(() => {
     initializeList(listSize);
     initIntersectionObserver();

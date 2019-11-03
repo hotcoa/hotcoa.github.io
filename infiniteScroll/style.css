@@ -13,10 +13,6 @@ body {
 /* Desktop version */
 /* ------------------------------------- */
 @media only screen and (min-width: 700px) {
-  #topheader {
-    width: 700px;
-  }
-
   #container {
     width: 700px;
   }
@@ -87,7 +83,6 @@ body {
 }
 
 #message-list {
-  
   list-style-type: none;
 }
 
