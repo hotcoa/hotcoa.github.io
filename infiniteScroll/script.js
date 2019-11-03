@@ -128,7 +128,7 @@ function initializeList(num) {
     container.appendChild(tile);
 
     // cache tile's height
-    database[i].height = tile.offsetHeight;
+    database[i].height = $(tile).outerHeight(true);
   }
 }
 
@@ -421,6 +421,9 @@ window.onload = function() {
   touchsurface.addEventListener('touchstart', handleTouchStart, false);
   touchsurface.addEventListener('touchmove', handleTouchMove, false);
   touchsurface.addEventListener('touchend', handleTouchEnd, false);
+
+  // ! add value
+  touchsurface.style.marginTop = $("#topheader").outerHeight(true) + 'px';
 
   var currDate = new Date();
   var hourMinFormat = currDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
