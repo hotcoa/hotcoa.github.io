@@ -9,7 +9,8 @@ let bottomSentinelPreviousY = 0;
 let bottomSentinelPreviousRatio = 0;
 let listSize = 20;
 let currentIndex = 0;
-let touchStartX, touchEndX;
+let touchStartX, touchEndX, touchStartY, touchEndY;
+let supportsVibrate = "vibrate" in navigator;
 
 const timeunit = {
   sec: 1000,
@@ -279,17 +280,27 @@ function initIntersectionObserver() {
 function handleTouchStart(evt) {
   const firstTouch = (evt.touches || evt.originalEvent.touches[0])[0];
   touchStartX = firstTouch.clientX;
+  touchStartY = firstTouch.clientY;
 };                                                
 
 function handleTouchMove(evt) {
-  const tile = evt.target.closest("LI");
+  //const tile = evt.target.closest("LI");
+  let tile;
+  tile = evt.target.closest("LI");
+  if (tile && tile.className === "tileWrapper") {
+    tile = $(evt.target).closest('.tile').get(0);
+  }
+  
   if (tile && tile.className === "tile") {
     touchEndX = evt.touches[0].clientX;
+    touchEndY = evt.touches[0].clientY;
     var xDiff = touchEndX - touchStartX;
+    var yDiff = touchEndY - touchStartY;
 
     if (xDiff > 0) {
       if (xDiff > 100) {
-        tile.style.opacity = "0.7";
+        tile.style.opacity = "0.5";
+        navigator.vibrate(1000);
       } else {
         tile.style.opacity = "1";
       }        
@@ -302,9 +313,16 @@ function handleTouchMove(evt) {
 }
 
 function handleTouchEnd(evt) {
-  const tile = evt.target.closest("LI");
+  let tile;
+  tile = evt.target.closest("LI");
+  if (tile && tile.className === "tileWrapper") {
+    tile = $(evt.target).closest('.tile').get(0);
+  }
+
   if (tile && tile.className === "tile") {
     var xDiff = touchEndX - touchStartX;
+    var yDiff = touchEndY - touchStartY;
+    //if (Math.abs(yDiff) < Math.abs(xDiff)) {
     if (xDiff > 550) {
       tile.style.transform = "translateX(150%)";
       tile.style.transition = "transform 1s";
@@ -324,6 +342,8 @@ function handleTouchEnd(evt) {
   
   touchEndX = null;
   touchStartX = null;
+  touchEndY = null;
+  touchStartY = null;  
 }
 
 /*********************************/
