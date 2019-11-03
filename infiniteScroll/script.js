@@ -10,7 +10,6 @@ let bottomSentinelPreviousRatio = 0;
 let listSize = 20;
 let currentIndex = 0;
 let touchStartX, touchEndX, touchStartY, touchEndY;
-let supportsVibrate = "vibrate" in navigator;
 
 const timeunit = {
   sec: 1000,
@@ -300,9 +299,6 @@ function handleTouchMove(evt) {
     if (xDiff > 0) {
       if (xDiff > 100) {
         tile.style.opacity = "0.5";
-        if (supportsVibrate) {
-          navigator.vibrate(1000);
-        }
       } else {
         tile.style.opacity = "1";
       }        
