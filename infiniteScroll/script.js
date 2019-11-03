@@ -153,9 +153,13 @@ function recycleDOM(firstIndex, isScrollDown) {
   if (isScrollDown && (database.length < (firstIndex + listSize))) {
 	  getMessages(pageToken, listSize).then(() => {
       recycleTile(firstIndex);
+      let containerElem = document.getElementById("container");
+      containerElem.style.visibility = "visible";
     });
   } else {
     recycleTile(firstIndex);
+    let containerElem = document.getElementById("container");
+    containerElem.style.visibility = "visible";
   }
 }
 
@@ -220,8 +224,11 @@ function topSentinentalCallback(entry) {
     currentIndex !== 0
   ) {
     const firstIndex = getSlidingWindowIdx(false);
+    let containerElem = document.getElementById("container");
+    containerElem.style.visibility = "hidden";
     adjustContainerPaddings(false, firstIndex);
     recycleDOM(firstIndex, false);
+    //containerElem.style.visibility = "visible";
     currentIndex = firstIndex;
   }
 
@@ -243,8 +250,11 @@ function botSentinentalCallback(entry) {
     isIntersecting
   ) {
     const firstIndex = getSlidingWindowIdx(true);
+    let containerElem = document.getElementById("container");
+    containerElem.style.visibility = "hidden";
     adjustContainerPaddings(true, firstIndex);
-    recycleDOM(firstIndex, true);    
+    recycleDOM(firstIndex, true); 
+    //containerElem.style.visibility = "visible";   
     currentIndex = firstIndex;
   }
 
@@ -283,40 +293,47 @@ function handleTouchStart(evt) {
 };                                                
 
 function handleTouchMove(evt) {
-  //const tile = evt.target.closest("LI");
-  let tile;
-  tile = evt.target.closest("LI");
-  if (tile && tile.className === "tileWrapper") {
-    tile = $(evt.target).closest('.tile').get(0);
-  }
-  
-  if (tile && tile.className === "tile") {
-    tile.style.transition = "transform 300ms ease";
-    touchEndX = evt.touches[0].clientX;
-    touchEndY = evt.touches[0].clientY;
-    var xDiff = touchEndX - touchStartX;
-    var yDiff = touchEndY - touchStartY;
+  const tile = evt.target.closest("LI");
+  let x, y;
 
-    if (xDiff > 0) {
-      if (xDiff > 100) {
-        tile.style.opacity = "0.5";
-      } else {
+
+  if (tile && tile.className === "tile") {
+    tile.style.transition = "transform 10ms linear";
+    x = evt.touches[0].clientX;
+    y = evt.touches[0].clientY;
+    
+    // check if proper horizontal swipe has started
+    if (!touchEndX && !touchEndY) {
+      let xDiff = x - touchStartX;
+      let yDiff = y - touchStartY;
+
+      if (xDiff > 0 && Math.abs(xDiff) > Math.abs(yDiff)) {
+        touchEndX = x;
+        touchEndY = y;
+      }
+    } else {
+      let xDiff = x - touchStartX;
+      let yDiff = y - touchStartY;
+      touchEndX = x;
+      touchEndY = y;
+
+      if (xDiff > 0) {
+        if (xDiff <= 550) {
+          tile.style.opacity = "0.65";
+        } else {
+          tile.style.opacity = "0.2";
+        }        
+        tile.style.transform = "translateX(" + xDiff + "px)";      
+      } else if (xDiff <= 0) {
         tile.style.opacity = "1";
-      }        
-      tile.style.transform = "translateX(" + xDiff + "px)";
-    } else if (xDiff <= 0) {
-      tile.style.opacity = "1";
-      tile.style.transform = "translateX(0px)";
+        tile.style.transform = "translateX(0px)";
+      }
     }
   }
 }
 
 function handleTouchEnd(evt) {
-  let tile;
-  tile = evt.target.closest("LI");
-  if (tile && tile.className === "tileWrapper") {
-    tile = $(evt.target).closest('.tile').get(0);
-  }
+  const tile = evt.target.closest("LI");
 
   if (tile && tile.className === "tile") {
     var xDiff = touchEndX - touchStartX;
@@ -324,10 +341,12 @@ function handleTouchEnd(evt) {
     //if (Math.abs(yDiff) < Math.abs(xDiff)) {
     if (xDiff > 550) {
       tile.style.transform = "translateX(150%)";
-      tile.style.transition = "transform 1s";
+      tile.style.transition = "transform 200ms";
 
       setTimeout(function () {
         removeTile(tile);
+        
+        // reset the tile's style
         tile.style.transition = "";
         tile.style.transform = "translateX(0)";        
         tile.style.opacity = "1";  
@@ -335,7 +354,7 @@ function handleTouchEnd(evt) {
     } else {
       tile.style.opacity = "1";
       tile.style.transform = "translateX(0px)";
-      tile.style.transition = "transform 0.2s";
+      tile.style.transition = "transform 200ms";
     }
   }
   

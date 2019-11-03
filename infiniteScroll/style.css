@@ -13,7 +13,7 @@ body {
 /* Header */
 /* ------------------------------------- */
 #topheader {
-  box-shadow: 0px 5px 5px #BABABA;
+  box-shadow: 0px 8px 8px #919191;
   margin: 0 0;
   width: 100%;
   height: 200px;
@@ -69,7 +69,7 @@ body {
 /* Messages */
 /* ------------------------------------- */
   #container {
-  margin-top: 200px;
+  margin-top: 205px;
   padding: 0 20px;
 }
 
@@ -82,40 +82,40 @@ body {
 .tile {
   background-color: white;
   padding: 15px;
-  box-shadow: 0px 5px 5px #BABABA;
-  margin: 20px 30px 0px 30px;
+  box-shadow: 0px 5px 8px #BABABA;
+  margin: 30px 30px 0px 30px;
 }
 
 .tile .header {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 20px;
+  padding: 20px 30px;
 }
 
 .tile .header .meta {
-  margin-left: 30px;
+  margin-left: 50px;
 }
 
 .tile .header img {
-  height: 100px;
-  width: 100px;
+  height: 140px;
+  width: 140px;
   border-radius: 50%;
 }
 
 .tile .message {
-  font-size: 2em;
-  padding: 20px 30px;
+  font-size: 3em;
+  padding: 20px 30px 30px 30px;
 }
 
 .tile .author-name {
   font-weight: bold;
-  line-height: 40px;
-  font-size: 2.2em;
+  line-height: 140%;
+  font-size: 3em;
 }
 
 .tile .update-time {
-  line-height: 40px;
+  /*line-height: 120%;*/
   color: gray;
-  font-size: 2em;
+  font-size: 2.7em;
 }
