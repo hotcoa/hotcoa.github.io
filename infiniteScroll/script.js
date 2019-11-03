@@ -291,6 +291,7 @@ function handleTouchMove(evt) {
   }
   
   if (tile && tile.className === "tile") {
+    tile.style.transition = "transform 300ms ease";
     touchEndX = evt.touches[0].clientX;
     touchEndY = evt.touches[0].clientY;
     var xDiff = touchEndX - touchStartX;
