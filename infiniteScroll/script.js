@@ -123,7 +123,7 @@ function initializeList(num) {
     // create message elem
     const msg = document.createElement("DIV");
     msg.setAttribute("class", "message");
-    msg.innerHTML =  database[i].id + ': ' + database[i].content;
+    msg.innerHTML = database[i].content;
     tile.appendChild(header);
     tile.appendChild(msg); 
     container.appendChild(tile);
@@ -205,7 +205,7 @@ const adjustContainerPaddings = (isScrollDown, firstIdx) => {
 /* Intersection observer callbacks */
 /***********************************/
 
-function topSentinentalCallback(entry) {
+function topSentinelCallback(entry) {
 	if (currentIndex === 0) {
 		const container = document.querySelector("#message-list");
   	container.style.paddingTop = "0px";
@@ -231,7 +231,7 @@ function topSentinentalCallback(entry) {
   topSentinelPreviousRatio = currentRatio;
 }
 
-function botSentinentalCallback(entry) {  
+function bottomSentinelCallback(entry) {  
 	if (!pageToken) {
   	return;
   }
@@ -270,15 +270,14 @@ function initIntersectionObserver() {
   const callback = entries => {
     entries.forEach(entry => {
       if (entry.target.id === 'tile-0') {
-        topSentinentalCallback(entry);
+        topSentinelCallback(entry);
       } else if (entry.target.id === `tile-${listSize - 1}`) {
-        botSentinentalCallback(entry);
+        bottomSentinelCallback(entry);
       }
     });
   }
 
   var observer = new IntersectionObserver(callback, options);
-  //observer.root.style.border = "2px solid #44aa44";
   observer.observe(document.querySelector("#tile-0"));
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }  
@@ -413,7 +412,7 @@ function updateTile(tileIdToUpdate, dbIndexToFetch) {
   const meta = header.getElementsByClassName("meta")[0];
   meta.getElementsByClassName("author-name")[0].innerHTML = database[dbIndexToFetch].name;
   meta.getElementsByClassName("update-time")[0].innerHTML = database[dbIndexToFetch].updateTime;
-  tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].id + ': ' + database[dbIndexToFetch].content;
+  tile.getElementsByClassName("message")[0].innerHTML = database[dbIndexToFetch].content;
 }
 
 /*********************************/
