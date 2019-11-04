@@ -152,15 +152,11 @@ function getSlidingWindowIdx(isScrollDown) {
 
 function recycleDOM(firstIndex, isScrollDown) {
   if (isScrollDown && (database.length < (firstIndex + listSize))) {
-	  getMessages(pageToken, listSize).then(() => {
+	  return getMessages(pageToken, listSize).then(() => {
       recycleTile(firstIndex);
-      let containerElem = document.getElementById("container");
-      containerElem.style.visibility = "visible";
     });
   } else {
     recycleTile(firstIndex);
-    let containerElem = document.getElementById("container");
-    containerElem.style.visibility = "visible";
   }
 }
 
@@ -183,6 +179,7 @@ const adjustContainerPaddings = (isScrollDown, firstIdx) => {
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
+  console.log('adjusted container padding');
   
   if (isScrollDown) {
     firstIdx -= listSize/2;
@@ -225,12 +222,9 @@ function topSentinentalCallback(entry) {
     currentIndex !== 0
   ) {
     const firstIndex = getSlidingWindowIdx(false);
-    let containerElem = document.getElementById("container");
-    containerElem.style.visibility = "hidden";
     adjustContainerPaddings(false, firstIndex);
-    recycleDOM(firstIndex, false);
-    //containerElem.style.visibility = "visible";
-    currentIndex = firstIndex;
+    recycleTile(firstIndex);
+    currentIndex = firstIndex; 
   }
 
   topSentinelPreviousY = currentY;
@@ -251,12 +245,17 @@ function botSentinentalCallback(entry) {
     isIntersecting
   ) {
     const firstIndex = getSlidingWindowIdx(true);
-    let containerElem = document.getElementById("container");
-    containerElem.style.visibility = "hidden";
-    adjustContainerPaddings(true, firstIndex);
-    recycleDOM(firstIndex, true); 
-    //containerElem.style.visibility = "visible";   
-    currentIndex = firstIndex;
+    
+    // Check if we need to fetch more messages
+    let operation = (database.length < (firstIndex + listSize))
+      ? getMessages(pageToken, listSize)
+      : Promise.resolve();
+    
+    operation.then(() => {
+      adjustContainerPaddings(true, firstIndex);
+      recycleTile(firstIndex);
+      currentIndex = firstIndex;
+    });
   }
 
   bottomSentinelPreviousY = currentY;
@@ -265,7 +264,7 @@ function botSentinentalCallback(entry) {
 
 function initIntersectionObserver() {
   const options = {
-    rootMargin: '200px'
+    rootMargin: $("#topheader").outerHeight(true) + 'px'
   }
 
   const callback = entries => {
@@ -279,6 +278,7 @@ function initIntersectionObserver() {
   }
 
   var observer = new IntersectionObserver(callback, options);
+  //observer.root.style.border = "2px solid #44aa44";
   observer.observe(document.querySelector("#tile-0"));
   observer.observe(document.querySelector(`#tile-${listSize - 1}`));
 }  
@@ -304,7 +304,7 @@ function handleTouchMove(evt) {
     
     // check if proper horizontal swipe has started
     if (!touchEndX && !touchEndY) {
-      tile.style.transition = "transform 10ms, opacity 200ms";
+      tile.style.transition = "transform 10ms linear, opacity 200ms";
       let xDiff = x - touchStartX;
       let yDiff = y - touchStartY;
 
@@ -338,10 +338,9 @@ function handleTouchEnd(evt) {
 
   if (tile && tile.className === "tile") {
     var xDiff = touchEndX - touchStartX;
-    var yDiff = touchEndY - touchStartY;
-    tile.style.transition = "transform 200ms";
     
     if (xDiff > swipeThreshold) {
+      tile.style.transition = "transform 200ms";
       tile.style.transform = "translateX(150%)";
 
       // Wait until the above transition is finished
@@ -355,6 +354,7 @@ function handleTouchEnd(evt) {
       }, 200);
     } else {
       tile.style.opacity = "1";
+      tile.style.transition = "transform 300ms";
       tile.style.transform = "translateX(0px)";
     }
   }
@@ -364,6 +364,8 @@ function handleTouchEnd(evt) {
   touchEndY = null;
   touchStartY = null;  
 }
+
+
 
 /*********************************/
 /* Tile updates */
@@ -422,8 +424,6 @@ window.onload = function() {
   touchsurface.addEventListener('touchstart', handleTouchStart, false);
   touchsurface.addEventListener('touchmove', handleTouchMove, false);
   touchsurface.addEventListener('touchend', handleTouchEnd, false);
-
-  // ! add value
   touchsurface.style.marginTop = $("#topheader").outerHeight(true) + 'px';
 
   var currDate = new Date();

@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 body {
@@ -80,7 +81,6 @@ body {
 #container {
   margin-top: 5px; /* calculate this */
   padding: 0 15px;
-  overflow: scroll;
 }
 
 #message-list {
