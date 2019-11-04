@@ -150,16 +150,6 @@ function getSlidingWindowIdx(isScrollDown) {
   return firstIndex;
 }
 
-function recycleDOM(firstIndex, isScrollDown) {
-  if (isScrollDown && (database.length < (firstIndex + listSize))) {
-	  return getMessages(pageToken, listSize).then(() => {
-      recycleTile(firstIndex);
-    });
-  } else {
-    recycleTile(firstIndex);
-  }
-}
-
 function recycleTile(firstIndex) {
   for (let i = 0; i < listSize; i++) {
     const idx = i + firstIndex;
@@ -179,7 +169,6 @@ const adjustContainerPaddings = (isScrollDown, firstIdx) => {
   const currentPaddingTop = getNumFromStyle(container.style.paddingTop);
   const currentPaddingBottom = getNumFromStyle(container.style.paddingBottom);
   let remPaddingsVal = 0;
-  console.log('adjusted container padding');
   
   if (isScrollDown) {
     firstIdx -= listSize/2;
@@ -199,7 +188,6 @@ const adjustContainerPaddings = (isScrollDown, firstIdx) => {
     container.style.paddingTop = currentPaddingTop === 0 ? "0px" : currentPaddingTop - remPaddingsVal + "px";
   }
 }
-
 
 /***********************************/
 /* Intersection observer callbacks */
@@ -296,24 +284,22 @@ function handleTouchMove(evt) {
   const tile = evt.target.closest("LI");
   let x, y;
 
-
   if (tile && tile.className === "tile") {
     x = evt.touches[0].clientX;
     y = evt.touches[0].clientY;
-    
-    // check if proper horizontal swipe has started
-    if (!touchEndX && !touchEndY) {
-      tile.style.transition = "transform 10ms linear, opacity 200ms";
-      let xDiff = x - touchStartX;
-      let yDiff = y - touchStartY;
+    let xDiff = x - touchStartX;
+    let yDiff = y - touchStartY;
 
+    // check if horizontal swipe has started
+    if (!touchEndX && !touchEndY) {
       if (xDiff > 0 && Math.abs(xDiff) > Math.abs(yDiff)) {
         touchEndX = x;
         touchEndY = y;
+
+        // set 'transform 10ms' to fix noisy touch movements on mobile devices when finger is on the same spot with very subtle movement
+        tile.style.transition = "transform 10ms linear, opacity 200ms";
       }
     } else {
-      let xDiff = x - touchStartX;
-      let yDiff = y - touchStartY;
       touchEndX = x;
       touchEndY = y;
 
@@ -379,11 +365,12 @@ function removeTile(tileToRemove) {
   let tileId = parseInt(tileToRemove.dataset.tileid);
   let fetchMore = false;
   let startAfterFetchIdx = 0;
+
   // re-render the remaining part
   for (let i=0; i<listSize-tileId; i++) {
       let dbIndexToFetch = dbIdx + i;
 
-      /* Update message tile */
+      /* update message tile */
       if (dbIndexToFetch < database.length) {
         updateTile(tileId + i, dbIndexToFetch);
       } else {
