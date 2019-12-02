@@ -1,3 +1,7 @@
+* {
+    /*font-family: 'Roboto', sans-serif;*/
+    font-family: 'Solway', serif;
+}
 canvas {
     border-radius: 50%;
 }
@@ -35,7 +39,7 @@ canvas {
 }
 
 .welcome_text {
-    color: #e8d3d3; 
+    color: #720590; 
     font-size: 23px;
 }
 
@@ -43,14 +47,15 @@ canvas {
     position:relative
 }
 .mymap_title {
-    position:absolute;
-    font-size: 19px;
+    position: absolute;
+    font-size: 16px;
     color: #F9EFFD;
 }
 
 .mymap_title_nolink {
-    position:absolute;
-    font-size: 19px;
+    position: absolute;
+    font-size: 16px;
+    color: #680891;
 }
 
 .mymap_title:hover {

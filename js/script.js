@@ -39,18 +39,18 @@ $(function() {
 		var link;
 		var $span;
         switch (txt) {
-            case 'Who am i':
+            case 'Who am I?':
                 link = 'html/aboutme.html';
 				break;
-			case 'Art + tech':
+			case 'Art + Tech':
 				link = 'html/arttech.html';
 				spaceIdx = 1;
 				break;
-			case 'User experience':
+			case 'Azure UX':
 				link = 'html/design.html';
 				spaceIdx = 2;
 				break;
-			case 'Humanity':
+			case 'Community':
 				spaceIdx = 3;
 				break;
 			case 'Party with mom':
@@ -76,14 +76,14 @@ $(function() {
 
 		var spacing = [
 			{ top: 30, left: 35 },
-			{ top: 20, left: 13 },
-			{ top: 40, left: -15 },
+			{ top: 20, left: 15 },
+			{ top: 40, left: 8 },
 
 			{ top: 20, left: 20 },
 			{ top: 10, left: 10 },
-			{ top: 20, left: 0 },
-			{ top: 15, left: 25 },
-			{ top: 36, left: 40 },
+			{ top: 20, left: -7 }, // adventure
+			{ top: 15, left: 25 }, // voice rest
+			{ top: 36, left: 40 }, // love
 		]
         $span.css({top: Number(top) + spacing[spaceIdx].top + 'px', left: Number(left) + spacing[spaceIdx].left + 'px', position:'absolute'});
         $span.appendTo('#mymap');

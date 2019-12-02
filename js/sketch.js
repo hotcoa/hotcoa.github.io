@@ -21,7 +21,7 @@ function setup() {
       colorRandom: 150,
       lineWidth: 8,
       ellipseDistanceX: 50,
-      ellipseDistanceY: 10,
+      ellipseDistanceY: 15,
   });
 }
 
