@@ -1,3 +1,7 @@
+canvas {
+    border-radius: 50%;
+}
+
 /***** TOP NAVIGATION *****/
 /* Add a black background color to the top navigation */
 .topnav {
@@ -27,7 +31,7 @@
 
 /***** PAGE LAYOUT *****/
 .page_body {
-    background-color: #2b2525;
+    /*background-color: #2b2525;*/
 }
 
 .welcome_text {

@@ -4,8 +4,10 @@ let waveParams;
 var canvas;
   
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
-  canvas.position(0, 0);
+  /*canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0, 0);*/
+  canvas = createCanvas(395, 450);
+  canvas.position(840, 170);
   canvas.style('z-index', '-1');
 
   //canvas.style('display', 'block');
@@ -16,36 +18,34 @@ function setup() {
       r: 150,
       g: 50,
       b: 100,
-      colorRandom: 70,
-      lineWidth: 10,
-      ellipseDistanceX: 120,
-      ellipseDistanceY: 60,
+      colorRandom: 150,
+      lineWidth: 8,
+      ellipseDistanceX: 50,
+      ellipseDistanceY: 10,
   });
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  //resizeCanvas(windowWidth, windowHeight);
+  //resizeCanvas(100, 100);
 }
 
 function draw() {
-  background(10, 10); // translucent background (creates trails)
+  background(255); // translucent background (creates trails)
 
   // make a x and y grid of ellipses
   for (let x = 0; x <= width; x = x + waveParams.ellipseDistanceX) {
     for (let y = 0; y <= height; y = y + waveParams.ellipseDistanceY) {
       // starting point of each circle depends on mouse position
-      /*const xAngle = map(mouseX, 0, width, -4 * PI, 4 * PI, true);
-      const yAngle = map(mouseY, 0, height, -4 * PI, 4 * PI, true);
+      const xAngle = map(200, 0, width, -4 * PI, 4 * PI, true);
+      const yAngle = map(100, 0, height, -4 * PI, 4 * PI, true);
       // and also varies based on the particle's location
       const angle = xAngle * (x / width) + yAngle * (y / height);
 
       // each particle moves in a circle
       const myX = x + 30 * cos(2 * PI * waveParams.t + angle);
       const myY = y + 30 * sin(2 * PI * waveParams.t + angle);
-      */
-
-      const myX = x + 30 * cos(2 * PI * waveParams.t);
-      const myY = y + 30 * sin(2 * PI * waveParams.t);
+      
 
       fill(random(waveParams.r, waveParams.r+waveParams.colorRandom), 
            random(waveParams.g, waveParams.g+waveParams.colorRandom), 
