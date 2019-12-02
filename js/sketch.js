@@ -19,9 +19,9 @@ function setup() {
       g: 50,
       b: 100,
       colorRandom: 150,
-      lineWidth: 8,
+      lineWidth: 10,
       ellipseDistanceX: 50,
-      ellipseDistanceY: 15,
+      ellipseDistanceY: 17,
   });
 }
 

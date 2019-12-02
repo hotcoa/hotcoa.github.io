@@ -75,9 +75,9 @@ $(function() {
 		}
 
 		var spacing = [
-			{ top: 30, left: 35 },
-			{ top: 20, left: 15 },
-			{ top: 40, left: 8 },
+			{ top: 30, left: 35 }, // who am i
+			{ top: 20, left: 8 }, // art tech
+			{ top: 40, left: 8 }, // azure ux
 
 			{ top: 20, left: 20 },
 			{ top: 10, left: 10 },
