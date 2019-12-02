@@ -34,7 +34,7 @@ function draw() {
   for (let x = 0; x <= width; x = x + waveParams.ellipseDistanceX) {
     for (let y = 0; y <= height; y = y + waveParams.ellipseDistanceY) {
       // starting point of each circle depends on mouse position
-      const xAngle = map(mouseX, 0, width, -4 * PI, 4 * PI, true);
+      /*const xAngle = map(mouseX, 0, width, -4 * PI, 4 * PI, true);
       const yAngle = map(mouseY, 0, height, -4 * PI, 4 * PI, true);
       // and also varies based on the particle's location
       const angle = xAngle * (x / width) + yAngle * (y / height);
@@ -42,6 +42,10 @@ function draw() {
       // each particle moves in a circle
       const myX = x + 30 * cos(2 * PI * waveParams.t + angle);
       const myY = y + 30 * sin(2 * PI * waveParams.t + angle);
+      */
+
+      const myX = x + 30 * cos(2 * PI * waveParams.t);
+      const myY = y + 30 * sin(2 * PI * waveParams.t);
 
       fill(random(waveParams.r, waveParams.r+waveParams.colorRandom), 
            random(waveParams.g, waveParams.g+waveParams.colorRandom), 
