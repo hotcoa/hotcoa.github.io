@@ -39,7 +39,7 @@ canvas {
 }
 
 .welcome_text {
-    color: #720590; 
+    color: #930CCD; /* #720590; */
     font-size: 23px;
 }
 
@@ -49,13 +49,13 @@ canvas {
 .mymap_title {
     position: absolute;
     font-size: 16px;
-    color: #F9EFFD;
+    color: #ffffff;
 }
 
 .mymap_title_nolink {
     position: absolute;
     font-size: 16px;
-    color: #680891;
+    color:#A8A8A8; /*  #680891;*/
 }
 
 .mymap_title:hover {
