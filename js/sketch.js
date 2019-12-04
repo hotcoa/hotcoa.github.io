@@ -6,8 +6,9 @@ var canvas;
 function setup() {
   /*canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0);*/
-  canvas = createCanvas(395, 450);
-  canvas.position(840, 170);
+  canvas = createCanvas(395, 500);
+  canvas.parent('main-container');
+  //canvas.position(840, 170);
   canvas.style('z-index', '-1');
 
   //canvas.style('display', 'block');
@@ -15,11 +16,11 @@ function setup() {
   waveParams = new WaveParams({
       t: 0,
       timeIncrement: 0.001,
-      r: 150,
+      r: 90,
       g: 50,
-      b: 100,
-      colorRandom: 150,
-      lineWidth: 10,
+      b: 90,
+      colorRandom: 200,
+      lineWidth: 9,
       ellipseDistanceX: 50,
       ellipseDistanceY: 17,
   });
@@ -37,7 +38,7 @@ function draw() {
   for (let x = 0; x <= width; x = x + waveParams.ellipseDistanceX) {
     for (let y = 0; y <= height; y = y + waveParams.ellipseDistanceY) {
       // starting point of each circle depends on mouse position
-      const xAngle = map(200, 0, width, -4 * PI, 4 * PI, true);
+      const xAngle = map(900, 0, width, -4 * PI, 4 * PI, true);
       const yAngle = map(100, 0, height, -4 * PI, 4 * PI, true);
       // and also varies based on the particle's location
       const angle = xAngle * (x / width) + yAngle * (y / height);

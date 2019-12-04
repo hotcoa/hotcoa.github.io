@@ -1,26 +1,48 @@
 * {
     /*font-family: 'Roboto', sans-serif;*/
-    font-family: 'Solway', serif;
-}
-canvas {
-    border-radius: 50%;
 }
 
-/***** TOP NAVIGATION *****/
+#main-container {
+    font-family: 'Solway', serif;
+    position: relative
+}
+
+canvas {
+    position: absolute;
+    left: 43%;
+    top: 50px;
+    border-radius: 50%;
+    /*display: inline-block;*/
+}
+
+#mymap {
+    position: absolute;
+    left: 35%;
+}
+
+/*********************************************************************************
+*    TOP NAVIGATION 
+*********************************************************************************/
+
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #333;
+    /*background-color: #333;*/
     overflow: hidden;
 }
 
 /* Style the links inside the navigation bar */
 .topnav a {
     float: right;
-    color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 4px 16px;
     text-decoration: none;
     font-size: 17px;
+    color: #000;
+    border-right: 1.5px solid #000;
+}
+
+.topnav:last-child > a {
+    border-right: 0;
 }
 
 /* Change the color of links on hover */
@@ -36,16 +58,17 @@ canvas {
 /***** PAGE LAYOUT *****/
 .page_body {
     /*background-color: #2b2525;*/
+    font-family: 'Roboto', sans-serif;
 }
 
 .welcome_text {
     color: #930CCD; /* #720590; */
     font-size: 23px;
 }
-
+/*
 #mymap {
     position:relative
-}
+}*/
 .mymap_title {
     position: absolute;
     font-size: 18px;
@@ -81,6 +104,10 @@ canvas {
     float: right;
 }
 
+/*********************************************************************************
+*    Azure UX Page
+*********************************************************************************/
+
 .page_container {
     margin: 70px;
     color: #e8d3d3;
@@ -93,4 +120,15 @@ canvas {
 
 .uxproject .desc {
     font-size: 19px;
+}
+
+#project_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 300px;
+    grid-gap: 3rem;
+}
+
+.grid-item {
+    border: 2px solid red;
 }
