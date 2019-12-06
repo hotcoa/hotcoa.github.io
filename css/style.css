@@ -1,7 +1,3 @@
-* {
-    /*font-family: 'Roboto', sans-serif;*/
-}
-
 #main-container {
     font-family: 'Solway', serif;
     position: relative
@@ -110,7 +106,6 @@ canvas {
 
 .page_container {
     margin: 70px;
-    color: #e8d3d3;
 }
 
 .uxproject .header {
@@ -129,6 +124,20 @@ canvas {
     grid-gap: 3rem;
 }
 
-.grid-item {
+#project_container .grid-item {
     border: 2px solid red;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*********************************************************************************
+*    Azure UX Page - Lifecycle
+*********************************************************************************/
+#lifecycle_create_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 300px;
+    grid-gap: 3rem;
 }

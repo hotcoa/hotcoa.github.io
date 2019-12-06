@@ -297,11 +297,11 @@ function handleTouchMove(evt) {
         touchEndY = y;
 
         // set 'transform 10ms' to fix noisy touch movements on mobile devices when finger is on the same spot with very subtle movement
-        tile.style.transition = "transform 10ms linear, opacity 200ms";
+        //tile.style.transition = "transform 10ms linear, opacity 200ms";
 
         // ** when testing this on web with mobile view through debugger, remove 'transform' from the animation. 
         // use the below transition setting instead. 
-        // tile.style.transition = "opacity 200ms";
+        tile.style.transition = "opacity 200ms";
       }
     } else {
       touchEndX = x;
