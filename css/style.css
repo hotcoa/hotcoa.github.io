@@ -3,7 +3,59 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+    background-size: cover;
 }
+
+.container {
+    text-align: center; 
+    font-family: Arial, Sans-Serif; 
+    color: white;
+}
+
+.textContainer {
+    margin: 0 auto;
+    background-color: #663295;
+    opacity: 0.7;
+    line-height: 1.5;
+    width: 45%;
+    border-radius: 11px;
+    -webkit-box-shadow: 3px 3px 7px 3px rgba(27,25,25,0.47); 
+    box-shadow: 3px 3px 7px 3px rgba(27,25,25,0.47);
+}
+
+.header {
+    padding-top: 40px;
+    font-size: 20px; 
+    font-weight: bold;
+}
+
+.desc {
+    padding-top: 40px;
+    font-size: 17px;
+    width: 50%; 
+    margin-left: calc(50% / 2);
+}
+
+.contact {
+    padding: 40px 0;
+    font-size: 17px; 
+    font-weight: bold;
+}
+
+.contact h2 {
+    display: none;
+}
+.contact a {
+    color: white;
+}
+
+.contact p {
+    margin: 4px 0;
+}
+
+/*********************************************************************************
+*    TOP NAVIGATION 
+*********************************************************************************/
 
 #main-container {
     font-family: 'Solway', serif;
@@ -22,10 +74,6 @@ canvas {
     position: absolute;
     left: 35%;
 }
-
-/*********************************************************************************
-*    TOP NAVIGATION 
-*********************************************************************************/
 
 /* Add a black background color to the top navigation */
 .topnav {
