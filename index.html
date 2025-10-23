@@ -1,24 +1,1845 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Hiyo</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-	</head>
-	<body class="container">
-		<article class="textContainer">
-			<h1 class="header">Hiyo Glow</h1>
-			<p class="desc">
-				Hiyo Glow is an experimental artist who creates 
-				colorful art through a variety of mediums like alcohol 
-				ink painting, long-exposure photography, and interactive 
-				coding. She gets inspiration from rain, her kitten and 
-				everything glowy. She resides in Seattle. 
-			</p>
-			<section class="contact">
-				<h2>Contact</h2>
-				<p>art@hiyoglow.com</p>
-				<p>IG: <a href="https://www.instagram.com/hiyoglow">hiyoglow</a></p>
-			</section>
-		</article>
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLI Guidelines</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #00d4ff;
+            --accent-secondary: #7b68ee;
+            --border-color: #333;
+            --code-bg: #1a1a1a;
+            --section-bg: #111;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+        }
+
+        .section {
+            background: var(--section-bg);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-color);
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e0e0e0;
+        }
+
+        /* Syntax highlighting for code blocks */
+        .command { color: #7dd3fc; }
+        .string { color: #a3e635; }
+        .property { color: #f472b6; }
+        .value { color: #fbbf24; }
+        .comment { color: #6b7280; font-style: italic; }
+        .operator { color: #c084fc; }
+
+        /* Grid layout for guidelines */
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .guideline-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .guideline-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .guideline-card h4 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .toc li {
+            margin: 0.5rem 0;
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">CLI Guidelines</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#guidelines">Guidelines</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Modern CLI Guidelines</h1>
+            <p>A comprehensive guide to building command-line interfaces that work seamlessly for both humans and automation.</p>
+            <a href="#guidelines" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <main class="container" id="guidelines">
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#automation">Automation Mode</a></li>
+                <li><a href="#selection">Selection</a></li>
+                <li><a href="#cross-platform">Cross-Platform Compatibility</a></li>
+                <li><a href="#keyboard-navigation">Keyboard Navigation</a></li>
+                <li><a href="#error-handling">Error Handling</a></li>
+                <li><a href="#output-formatting">Output Formatting</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+            </ul>
+        </div>
+
+        <section class="section" id="automation">
+            <h2>Automation Mode</h2>
+            <p>By default, you interact with CLI per each command. But when you are running a script, the script will run commands automatically. In this automation mode, it's important to not interfere with the flow.</p>
+            
+            <h3>The Design Mindset</h3>
+            <p><strong>When you design how a command works, know that this same command could be run in some script.</strong> Things will need to be automated. If by default, your command asks for confirmation, this will stop the whole flow in the script.</p>
+
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">⚠️ Key Question When Designing</p>
+                <p style="margin: 0;">If you are designing a command to prompt a user before executing, consider: <em>Is this necessary to prompt the user? Or should a user provide some flag so that they can bypass the prompt?</em></p>
+            </div>
+
+            <h3>The Problem</h3>
+            <p>A command that works perfectly for humans can completely break automation:</p>
+
+            <pre><code><span class="comment"># This works great for humans</span>
+<span class="command">$ deploy-app</span>
+Are you sure you want to deploy to production? (y/N)
+> y
+Deploying...
+
+<span class="comment"># But breaks scripts - the script hangs waiting for input</span>
+#!/bin/bash
+<span class="command">deploy-app</span>  <span class="comment"># ❌ Script stops here, waiting forever</span></code></pre>
+
+            <h3>The Solution: Choose Your Approach</h3>
+            <p>There are two main strategies. Consider which makes more sense for your command:</p>
+
+            <h4>Strategy 1: Prompt by Default, Flag to Skip</h4>
+            <p>Best for dangerous operations where human confirmation is valuable:</p>
+            <pre><code><span class="comment"># Interactive mode - safe defaults with confirmation</span>
+<span class="command">$ deploy-app</span>
+Are you sure you want to deploy to production? (y/N)
+
+<span class="comment"># Automation mode - explicit flags bypass prompts</span>
+<span class="command">$ deploy-app --force</span>
+<span class="command">$ deploy-app --yes</span></code></pre>
+
+            <h4>Strategy 2: No Prompts by Default, Flag to Enable</h4>
+            <p>Best for commands that will be frequently scripted:</p>
+            <pre><code><span class="comment"># Default mode - no prompts, works in scripts</span>
+<span class="command">$ deploy-app</span>
+Deploying to production...
+
+<span class="comment"># Interactive mode - opt into confirmations when wanted</span>
+<span class="command">$ deploy-app --interactive</span>
+<span class="command">$ deploy-app --confirm</span></code></pre>
+
+            <div style="background: rgba(123, 104, 238, 0.1); border-left: 4px solid #7b68ee; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">💡 Choosing the Right Strategy</p>
+                <p style="margin: 0;"><strong>Strategy 1</strong> when safety is paramount (destructive operations)<br>
+                <strong>Strategy 2</strong> when automation is the primary use case</p>
+            </div>
+
+            <h3>Design Principles</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Think Dual-Purpose</h4>
+                    <p>Every command you design will be used both interactively and in scripts. Plan for both from day one.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Don't Force a Choice</h4>
+                    <p>You don't have to choose between usability and automation. Provide both interactive defaults and automation flags.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Question Every Prompt</h4>
+                    <p>Before adding a confirmation prompt, ask: "Is this essential, or can it be bypassed with a flag?"</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Fail Fast in Scripts</h4>
+                    <p>When automation-friendly options aren't provided, fail quickly with clear instructions rather than hanging.</p>
+                </div>
+            </div>
+
+            <h3>Implementation Patterns</h3>
+            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
+                <h4 style="color: var(--accent-color); margin-top: 0;">Common Automation Flags</h4>
+                <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                    <li><code>--yes</code> or <code>-y</code> - Answer "yes" to all prompts</li>
+                    <li><code>--force</code> or <code>-f</code> - Skip safety confirmations</li>
+                    <li><code>--no-input</code> - Fail if any input would be required</li>
+                    <li><code>--assume-yes</code> - Assume "yes" for confirmations</li>
+                    <li><code>--quiet</code> or <code>-q</code> - Minimal output for scripts</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="selection">
+            <h2>Selection</h2>
+            <p>When providing items for users to choose from, design selection interfaces that work for all users, including those using screen readers and assistive technologies.</p>
+            
+            <h3>Selection Methods</h3>
+            <p>Users should be able to select items using multiple interaction methods:</p>
+            
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Arrow Key Navigation</h4>
+                    <p>Allow users to navigate through options using up/down arrow keys for interactive selection.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Number-Based Selection</h4>
+                    <p>Provide numbered options so users can directly enter a number to make their selection.</p>
+                </div>
+            </div>
+
+            <h3>Accessibility Considerations</h3>
+            <p>In some very initial research for accessibility, we learned that screen reader users would rather get all the items out at front so that they can parse through. It's important to add numbers so that screen reader will read it out loud and a user can provide the number to select.</p>
+
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">🔬 Initial Research - Needs Further Study</p>
+                <p style="margin: 0;">This guidance is based on very initial research and needs to be looked at more. We're not sure if numbered options are the best approach for screen reader users. The main idea here is to show various ways of providing selection and consider accessibility from the start.</p>
+            </div>
+
+            <h4>Screen Reader Friendly Design</h4>
+            <pre><code><span class="comment"># ✅ Good: All items visible with numbers</span>
+<span class="command">$ deploy select-environment</span>
+Select deployment environment:
+1. Development
+2. Staging  
+3. Production
+4. Testing
+
+Enter selection (1-4): <span class="value">3</span></code></pre>
+
+            <h4>Interactive Menu (Secondary Option)</h4>
+            <pre><code><span class="comment"># Also provide arrow key navigation for sighted users</span>
+<span class="command">$ deploy select-environment --interactive</span>
+Select deployment environment:
+  Development
+> Staging
+  Production  
+  Testing
+
+Use arrow keys to navigate, Enter to select</code></pre>
+
+            <h3>Why Consider Multiple Selection Methods</h3>
+            <div style="background: rgba(123, 104, 238, 0.1); border-left: 4px solid #7b68ee; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">💡 The Core Principle</p>
+                <p style="margin: 0;">Different users have different preferences and needs. By providing multiple ways to make selections, you increase the likelihood that all users can interact with your CLI effectively. This is an area that needs more research to understand optimal patterns.</p>
+            </div>
+
+            <h3>Design Guidelines</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Always Number Options</h4>
+                    <p>Include numbers for every selectable item, even if you also support arrow key navigation.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Display All Items</h4>
+                    <p>Show the complete list upfront rather than revealing options one at a time.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Clear Instructions</h4>
+                    <p>Tell users they can either use numbers or arrow keys for selection.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Consistent Format</h4>
+                    <p>Use the same numbering and layout pattern across all selection interfaces.</p>
+                </div>
+            </div>
+
+            <h3>Implementation Example</h3>
+            <pre><code><span class="comment"># Complete accessible selection interface</span>
+<span class="command">$ myapp configure database</span>
+Select database type:
+1. PostgreSQL
+2. MySQL  
+3. SQLite
+4. MongoDB
+
+Enter your choice (1-4) or use arrow keys: <span class="value">2</span>
+
+You selected: MySQL</code></pre>
+
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">🔬 Research Needed</p>
+                <p style="margin: 0;">Much more research needs to be done in this area to understand the optimal interaction patterns for screen reader users and other assistive technologies. The examples above represent different approaches to consider, not definitive best practices.</p>
+            </div>
+        </section>
+
+        <section class="section" id="cross-platform">
+            <h2>Cross-Platform Compatibility</h2>
+            <p>CLI tools run across different operating systems and terminal environments. Design features that work reliably everywhere, not just on modern terminals.</p>
+            
+            <h3>The Challenge: Terminal Capability Differences</h3>
+            <p>Modern terminals have rich features like clickable links, but older terminals and different operating systems have varying levels of support. You need to design for the lowest common denominator while still providing enhanced experiences where possible.</p>
+
+            <h3>Case Study: Intercept Survey Implementation</h3>
+            <p>Here's a real example from Azure PowerShell showing how cross-platform constraints affect design decisions:</p>
+
+            <h4>The Requirement</h4>
+            <p>We needed to show an intercept survey message occasionally to gather user feedback. The survey should be easy to access but not disruptive to the workflow.</p>
+
+            <h4>Initial Design vs. Reality</h4>
+            <pre><code><span class="comment"># What we wanted to do (doesn't work everywhere)</span>
+<span class="command">PS C:\Users\account></span> <span class="command">Get-AzVM</span>
+Name    ResourceGroup    Location    Status
+----    ---------------  ----------  --------  
+vm1     myRG            eastus      running
+
+<span style="color: #7dd3fc; text-decoration: underline;">📋 Click here to take our 5-minute survey</span> <span class="comment"># ❌ Not all terminals support clickable links</span></code></pre>
+
+            <h4>What We Actually Implemented</h4>
+            <pre><code><span class="comment"># Cross-platform compatible solution</span>
+<span class="command">PS C:\Users\account></span> <span class="command">Set-ExecutionPolicy</span> -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+<span style="background: #1e40af; color: white; padding: 2px 8px;">[Survey] Help us improve Azure PowerShell by sharing your experience. This survey should take about 5 minutes.</span>
+<span style="background: #1e40af; color: white; padding: 2px 8px;">Run 'Open-SurveyLink' to open in browser. Learn more at https://go.microsoft.com/tbd.</span>
+
+<span class="command">PS C:\Users\account></span></code></pre>
+
+            <h3>Design Decisions Made</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Bottom Placement</h4>
+                    <p>Show survey message at bottom of command output instead of top banner for cross-OS compatibility.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Command-Based Interaction</h4>
+                    <p>Use <code>Open-SurveyLink</code> command instead of clickable links for universal terminal support.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Fallback URL</h4>
+                    <p>Include plain text URL as backup for users who can't run the command.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Occasional Display</h4>
+                    <p>Show survey "once in a while" to avoid overwhelming users while still gathering feedback.</p>
+                </div>
+            </div>
+
+            <h3>Why These Constraints Matter</h3>
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">⚠️ Terminal Limitations</p>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                    <li><strong>Hyperlink Support</strong>: Not all terminals support clickable links, especially older ones</li>
+                    <li><strong>Banner Positioning</strong>: Top banners couldn't be implemented consistently across all OS platforms</li>
+                    <li><strong>Color Support</strong>: Some terminals have limited or no color support</li>
+                    <li><strong>Unicode Characters</strong>: Emoji and special characters may not render on all systems</li>
+                </ul>
+            </div>
+
+            <h3>Cross-Platform Design Principles</h3>
+            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
+                <h4 style="color: var(--accent-color); margin-top: 0;">Universal Compatibility Guidelines</h4>
+                <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                    <li><strong>Test on multiple terminals</strong> - Windows Command Prompt, PowerShell, Terminal.app, various Linux terminals</li>
+                    <li><strong>Provide fallback options</strong> - Commands instead of clickable links, plain text instead of rich formatting</li>
+                    <li><strong>Use standard ASCII</strong> - Avoid Unicode characters that might not render consistently</li>
+                    <li><strong>Check terminal capabilities</strong> - Detect support for colors, links, etc. before using them</li>
+                    <li><strong>Design for the lowest common denominator</strong> - Ensure core functionality works everywhere</li>
+                </ul>
+            </div>
+
+            <h3>Implementation Strategy</h3>
+            <pre><code><span class="comment"># Progressive enhancement approach</span>
+<span class="command">function ShowSurvey() {</span>
+    <span class="comment">// Always provide the basic, compatible version</span>
+    <span class="string">echo "Run 'Open-SurveyLink' to take our survey"</span>
+    
+    <span class="comment">// Enhance if terminal supports it</span>
+    <span class="command">if</span> (terminalSupportsLinks()) {
+        <span class="string">echo "Or click: \e]8;;https://survey.com\e\\Take Survey\e]8;;\e\\"</span>
+    }
+<span class="command">}</span></code></pre>
+        </section>
+            <h2>Error Handling</h2>
+            <p>Content coming soon...</p>
+        </section>
+
+        <section class="section" id="output-formatting">
+            <h2>Output Formatting</h2>
+            <p>Design output that works for both human users and script consumption. When your command returns structured data, consider where you place human-readable messages.</p>
+            
+            <h3>Message Placement with Structured Output</h3>
+            <p>When your command returns structured data (like JSON), the placement of human-readable messages affects both user experience and script parsing.</p>
+
+            <h4>The Problem: Auto-scrolling</h4>
+            <p>If your command returns lengthy structured output, messages placed before the output will auto-scroll away and can be missed by users.</p>
+
+            <pre><code><span class="comment"># ❌ Message gets lost due to scrolling</span>
+<span class="command">$ mycommand</span>
+Resource created successfully!
+{
+  <span class="property">"id"</span>: <span class="string">"resource-123"</span>,
+  <span class="property">"name"</span>: <span class="string">"my-resource"</span>,
+  <span class="property">"properties"</span>: {
+    <span class="comment">// ... many lines of JSON ...</span>
+  }
+}</code></pre>
+
+            <h4>The Solution: Messages After Output</h4>
+            <p>Place human-readable messages after the structured output so users see them at the end where their eyes naturally land.</p>
+
+            <pre><code><span class="comment"># ✅ Message visible at the end</span>
+<span class="command">$ mycommand</span>  
+{
+  <span class="property">"id"</span>: <span class="string">"resource-123"</span>,
+  <span class="property">"name"</span>: <span class="string">"my-resource"</span>, 
+  <span class="property">"properties"</span>: {
+    <span class="comment">// ... many lines of JSON ...</span>
+  }
+}
+
+Resource created successfully!</code></pre>
+
+            <h3>Script Consumption</h3>
+            <p>The output should be in a format that scripts can easily consume. JSON is a common choice because:</p>
+            <ul style="color: var(--text-secondary); padding-left: 1.5rem; margin: 1rem 0;">
+                <li>It's structured and parseable</li>
+                <li>Scripts can extract specific fields</li>
+                <li>It works well with tools like <code>jq</code></li>
+                <li>Messages after JSON don't interfere with parsing</li>
+            </ul>
+
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">💡 Key Principle</p>
+                <p style="margin: 0;">When outputting structured data, put human messages <strong>after</strong> the data to avoid auto-scroll issues and maintain clean script parsing.</p>
+            </div>
+
+            <h3>Case Study: Azure CLI and PowerShell</h3>
+            <p>Azure tools demonstrate different approaches to the same challenge:</p>
+
+            <h4>Azure CLI Approach</h4>
+            <p>In Azure CLI, when Azure resources are created successfully, the command returns the JSON object. This object can get quite lengthy. So when showing messages that need to be read by users, it's better to add it at the end of the JSON object. Otherwise, it will auto-scroll to the bottom and the message can be dismissed.</p>
+
+            <p><strong>Azure Login Example:</strong><br>
+            In <code>az login</code>, we had to put the custom message after the JSON object so that the first JSON object will be inserted into script:</p>
+
+            <pre><code><span class="command">$ az login</span>
+[
+  {
+    <span class="property">"cloudName"</span>: <span class="string">"AzureCloud"</span>,
+    <span class="property">"homeTenantId"</span>: <span class="string">"12345678-1234-1234-1234-123456789012"</span>, 
+    <span class="property">"id"</span>: <span class="string">"87654321-4321-4321-4321-210987654321"</span>,
+    <span class="property">"isDefault"</span>: <span class="value">true</span>,
+    <span class="property">"name"</span>: <span class="string">"My Subscription"</span>,
+    <span class="property">"state"</span>: <span class="string">"Enabled"</span>,
+    <span class="property">"tenantId"</span>: <span class="string">"12345678-1234-1234-1234-123456789012"</span>,
+    <span class="property">"user"</span>: {
+      <span class="property">"name"</span>: <span class="string">"user@example.com"</span>,
+      <span class="property">"type"</span>: <span class="string">"user"</span>
+    }
+  }
+]
+
+You have logged in. Now let us find all the subscriptions to which you have access.</code></pre>
+
+            <h4>Azure PowerShell Approach</h4>
+            <p>In contrast, Azure PowerShell returns a table format for the object, optimized for human readability:</p>
+
+            <pre><code>PS> Get-AzVM
+Name    ResourceGroup    Location    Status
+----    ---------------  ----------  --------  
+vm1     myRG            eastus      running
+vm2     myRG            westus      stopped</code></pre>
+
+            <h3>Design Guidelines</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Message Placement</h4>
+                    <p>Put human-readable messages after structured output to prevent auto-scroll issues.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Script-Friendly Format</h4>
+                    <p>Use structured formats (JSON, XML) that scripts can easily parse and consume.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Clean Separation</h4>
+                    <p>Keep structured data separate from human messages so scripts don't need to filter content.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Consider Your Audience</h4>
+                    <p>Choose default output format based on whether scripts or humans are the primary users.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="keyboard-navigation">
+    <h2>Keyboard Navigation</h2>
+    <p>Make everything accessible through keyboard. CLI users historically like to rely on keyboard to do everything. There are also actual cases like remote connecting where you don't have access to a mouse.</p>
+    
+    <h3>The Keyboard-First Mindset</h3>
+    <p>CLI users expect to accomplish all tasks using only the keyboard. This isn't just preference—it's often necessity:</p>
+    
+    <div style="background: rgba(123, 104, 238, 0.1); border-left: 4px solid #7b68ee; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+        <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">🖥️ Real-World Scenarios</p>
+        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+            <li><strong>Remote Connections</strong>: SSH sessions where mouse input isn't available</li>
+            <li><strong>Server Environments</strong>: Headless systems without GUI support</li>
+            <li><strong>Accessibility</strong>: Users who rely on keyboard navigation</li>
+            <li><strong>Efficiency</strong>: Power users who prefer keyboard shortcuts</li>
+        </ul>
+    </div>
+
+    <h3>Always Provide Keyboard Shortcuts</h3>
+    <p>When adding a clickable button to do certain action, show the keyboard shortcut prominently:</p>
+
+    <h4>Real Example: Azure PowerShell Code Block Interface</h4>
+    <p>This Azure PowerShell interface demonstrates perfect implementation of keyboard shortcuts alongside clickable actions. Notice how each code block shows "Run (Ctrl+Enter)" and includes edit/copy icons with keyboard equivalents:</p>
+
+    <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin: 1rem 0; border: 1px solid #333;">
+        <div style="background: #2a2a2a; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; font-family: monospace; font-size: 0.9rem;">
+            <div style="color: #7dd3fc; margin-bottom: 0.5rem;">@azure How do I create a virtual machine?</div>
+            <div style="color: #e0e0e0; margin-bottom: 1rem;">Here are the commands to create a virtual machine in Azure.</div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div style="color: #e0e0e0; margin-bottom: 0.5rem;">1. Create a resource group to contain the virtual machine.</div>
+                <div style="background: #0f0f0f; padding: 0.5rem; border-radius: 4px; position: relative;">
+                    <span style="color: #fbbf24;">az</span> <span style="color: #e0e0e0;">group create</span> <span style="color: #a3e635;">--name contosoGroup --location westEurope</span>
+                    <div style="position: absolute; top: 0.25rem; right: 0.5rem; display: flex; gap: 0.5rem; align-items: center;">
+                        <span style="color: #888; font-size: 0.7rem;">✏️ 📋 ▶️</span>
+                        <span style="color: #888; font-size: 0.8rem;">Run (Ctrl+Enter)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div style="color: #e0e0e0; margin-bottom: 0.5rem;">2. Create the virtual machine.</div>
+                <div style="background: #0f0f0f; padding: 0.5rem; border-radius: 4px; position: relative;">
+                    <span style="color: #fbbf24;">az</span> <span style="color: #e0e0e0;">vm create</span> <span style="color: #a3e635;">--resource-group contosoGroup --name contosoAppVM --image Ubuntu2304-v2 --nics MyNIC</span>
+                    <div style="position: absolute; top: 0.25rem; right: 0.5rem; display: flex; gap: 0.5rem; align-items: center;">
+                        <span style="color: #888; font-size: 0.7rem;">✏️ 📋 ▶️</span>
+                        <span style="color: #888; font-size: 0.8rem;">Run (Ctrl+Enter)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>Call-to-Action (CTA) Button Integration</h4>
+    <p>Notice how even the bottom CTA button includes keyboard accessibility:</p>
+
+    <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin: 1rem 0; border: 1px solid #333;">
+        <div style="text-align: center; padding: 1rem;">
+            <div style="display: inline-block; background: #0078d4; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; border: 2px solid #0078d4; position: relative;">
+                How do I connect to my virtual machine?
+                <span style="position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: #888;">
+                    Press Enter or Click
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <p>Key design elements in this interface:</p>
+    <ul style="color: var(--text-secondary); padding-left: 1.5rem; margin: 1rem 0;">
+        <li><strong>Visible Keyboard Shortcuts</strong>: "Run (Ctrl+Enter)" is clearly displayed next to action icons</li>
+        <li><strong>Icon + Shortcut Pairing</strong>: Edit (✏️), Copy (📋), and Run (▶️) icons each have keyboard equivalents</li>
+        <li><strong>Consistent Placement</strong>: Shortcuts appear in the same location for every code block</li>
+        <li><strong>CTA Accessibility</strong>: Even main action buttons show keyboard alternatives</li>
+        <li><strong>Non-Intrusive Design</strong>: Shortcuts are visible but don't clutter the interface</li>
+    </ul>
+
+    <h3>Key Selection Strategy</h3>
+    <p>Think about how users would use keys to accomplish tasks. Choose keyboard shortcuts that make intuitive sense:</p>
+
+    <div class="guidelines-grid">
+        <div class="guideline-card">
+            <h4>Common Actions</h4>
+            <p><strong>E</strong> - Edit<br>
+            <strong>C</strong> - Copy<br>
+            <strong>R</strong> - Run<br>
+            <strong>Enter</strong> - Confirm/Execute</p>
+        </div>
+        <div class="guideline-card">
+            <h4>Navigation</h4>
+            <p><strong>Tab</strong> - Next item<br>
+            <strong>Shift+Tab</strong> - Previous item<br>
+            <strong>Arrow Keys</strong> - Move between options<br>
+            <strong>Home/End</strong> - First/Last item</p>
+        </div>
+        <div class="guideline-card">
+            <h4>Multiple Items</h4>
+            <p><strong>J/K</strong> - Next/Previous (vim-style)<br>
+            <strong>1-9</strong> - Jump to numbered items<br>
+            <strong>Ctrl+A</strong> - Select all<br>
+            <strong>Space</strong> - Toggle selection</p>
+        </div>
+        <div class="guideline-card">
+            <h4>Context Actions</h4>
+            <p><strong>D</strong> - Delete<br>
+            <strong>Q</strong> - Quit<br>
+            <strong>H/?</strong> - Help<br>
+            <strong>Esc</strong> - Cancel/Back</p>
+        </div>
+    </div>
+
+    <h3>Implementation Guidelines</h3>
+    <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
+        <h4 style="color: var(--accent-color); margin-top: 0;">Keyboard Accessibility Checklist</h4>
+        <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+            <li><strong>Every clickable element has a keyboard shortcut</strong> - Display shortcuts prominently</li>
+            <li><strong>Logical key mapping</strong> - Use intuitive letters (E for Edit, C for Copy)</li>
+            <li><strong>Standard navigation patterns</strong> - Tab, arrows, vim-style J/K when appropriate</li>
+            <li><strong>Visual focus indicators</strong> - Show clearly which element has keyboard focus</li>
+            <li><strong>Help documentation</strong> - Always show available keyboard shortcuts</li>
+            <li><strong>Escape hatches</strong> - Provide ways to cancel or go back (Esc, Q)</li>
+            <li><strong>CTA Button Accessibility</strong> - Include keyboard alternatives for all call-to-action buttons</li>
+        </ul>
+    </div>
+</section>
+        <section class="section" id="backward-compatibility">
+        <h2>Backward Compatibility</h2>
+        <p>When introducing a change in existing command, you may want to support backward compatibility. Sudden changes can break user scripts and workflows, so plan your migration strategy carefully.</p>
+        
+        <h3>Why Backward Compatibility Matters</h3>
+        <p>CLI tools often become deeply integrated into scripts, automation pipelines, and user workflows. Breaking changes can:</p>
+        
+        <ul>
+            <li>Break existing scripts and automation</li>
+            <li>Require immediate user action to fix their workflows</li>
+            <li>Create frustration and resistance to updates</li>
+            <li>Force users to pin to older versions</li>
+        </ul>
+
+        <h3>Compatibility Strategy Options</h3>
+        <p>Here are some options to consider when introducing changes:</p>
+
+        <div class="guidelines-grid">
+            <div class="guideline-card">
+                <h4>Version Flags</h4>
+                <p>User provides a flag to use newer or older version</p>
+                <pre><code><span class="comment"># Use new behavior</span>
+<span class="command">$ myapp deploy --api-version=v2</span>
+
+<span class="comment"># Keep old behavior</span>
+<span class="command">$ myapp deploy --api-version=v1</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Feature Settings</h4>
+                <p>Provide settings a user can turn on/off for new features</p>
+                <pre><code><span class="comment"># Enable new feature</span>
+<span class="command">$ myapp config set new-feature=true</span>
+
+<span class="comment"># Disable new feature</span>
+<span class="command">$ myapp config set new-feature=false</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Gradual Migration</h4>
+                <p>Introduce new behavior gradually with clear migration paths</p>
+                <pre><code><span class="comment"># New command alongside old</span>
+<span class="command">$ myapp deploy-v2</span>  <span class="comment"># new</span>
+<span class="command">$ myapp deploy</span>     <span class="comment"># legacy</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Environment Variables</h4>
+                <p>Allow environment-based feature toggling</p>
+                <pre><code><span class="comment"># Enable new behavior</span>
+<span class="command">$ export MYAPP_NEW_DEPLOY=1</span>
+<span class="command">$ myapp deploy</span></code></pre>
+            </div>
+        </div>
+
+        <h3>Real Example: Azure CLI Login Experience</h3>
+        <p>This is what we used when introducing new az login experience:</p>
+
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">🔧 Azure CLI Approach</p>
+            <p>When Azure CLI introduced a new login experience, they used configuration settings that users could toggle. The new experience was opt-in initially, then became default with clear instructions on how to revert.</p>
+        </div>
+
+        <h4>Implementation Example</h4>
+        <pre><code><span class="comment"># Enable new login experience</span>
+<span class="command">$ az config set core.enable_broker_on_windows=true</span>
+
+<span class="comment"># If it's turned on by default, show user how to turn it off</span>
+<span class="command">$ az login</span>
+Using new enhanced login experience.
+To use the previous experience, run: az config set core.enable_broker_on_windows=false
+
+<span class="comment"># User can easily revert</span>
+<span class="command">$ az config set core.enable_broker_on_windows=false</span></code></pre>
+
+        <h3>Communication Strategy</h3>
+        <p>If it's turned on by default, show to user how they can turn it off in the command output:</p>
+
+        <div class="warning-box">
+            <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">⚠️ Always Provide an Escape Hatch</p>
+            <p>When you enable new behavior by default, always tell users how to revert to the old behavior. This reduces anxiety and gives users control over their experience.</p>
+        </div>
+
+        <h4>Good Communication Examples</h4>
+        <pre><code><span class="comment"># Clear notification with revert instructions</span>
+<span class="command">$ myapp deploy</span>
+ℹ️  Using new deployment engine (faster, more reliable)
+   To use the previous engine: myapp config set engine=legacy
+   
+Deploying application...
+
+<span class="comment"># Deprecation warning with timeline</span>
+<span class="command">$ myapp old-command</span>
+⚠️  Warning: 'old-command' is deprecated and will be removed in v3.0
+   Use 'myapp new-command' instead
+   Migration guide: https://myapp.com/migration
+
+<span class="comment"># Feature announcement with opt-out</span>
+<span class="command">$ myapp status</span>
+🎉 New: Enhanced status display is now enabled
+   To disable: myapp config set enhanced-status=false
+   
+Project: healthy (3 services running)</code></pre>
+
+        <h3>Best Practices</h3>
+        <div class="info-box">
+            <h4 style="color: var(--accent-color); margin-top: 0;">Compatibility Guidelines</h4>
+            <ul>
+                <li><strong>Plan the migration path early</strong> - Don't introduce breaking changes without a strategy</li>
+                <li><strong>Provide multiple options</strong> - Flags, config settings, environment variables</li>
+                <li><strong>Communicate clearly</strong> - Tell users what changed and how to revert</li>
+                <li><strong>Give users control</strong> - Always provide a way to opt-out of new behavior</li>
+                <li><strong>Set timelines</strong> - Be clear about when old behavior will be removed</li>
+                <li><strong>Test both paths</strong> - Ensure both old and new behavior work correctly</li>
+                <li><strong>Document everything</strong> - Provide migration guides and examples</li>
+            </ul>
+        </div>
+
+        <h3>Migration Timeline Example</h3>
+        <pre><code><span class="comment"># Phase 1: Opt-in (v2.0)</span>
+<span class="command">$ myapp deploy --new-engine</span>  <span class="comment"># New behavior</span>
+<span class="command">$ myapp deploy</span>              <span class="comment"># Old behavior (default)</span>
+
+<span class="comment"># Phase 2: Opt-out (v2.5)</span>
+<span class="command">$ myapp deploy</span>              <span class="comment"># New behavior (default)</span>
+<span class="command">$ myapp deploy --legacy</span>     <span class="comment"># Old behavior</span>
+
+<span class="comment"># Phase 3: Removal (v3.0)</span>
+<span class="command">$ myapp deploy</span>              <span class="comment"># New behavior only</span></code></pre>
+    </section>
+
+         <section class="section" id="terminal-display-differences">
+        <h2>Terminal Display Differences</h2>
+        <p>Consider this! Different terminals handle styling and formatting in various ways. Don't rely on specific visual styles to convey important information - what looks perfect in your terminal might be broken or confusing in others.</p>
+        
+        <h3>The Challenge: Style Interpretation Varies</h3>
+        <p>The same CLI output can appear completely different across terminals:</p>
+
+        <div class="warning-box">
+            <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">⚠️ Common Style Misinterpretations</p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                <li><strong>Italic font</strong> can appear as blinking text in some terminals</li>
+                <li><strong>Bold font</strong> might render as brighter color instead of thicker text</li>
+                <li><strong>Hyperlinks</strong> display differently - some show dashed underlines, others show no line but reveal on hover</li>
+                <li><strong>Colors</strong> may not be supported or render with different palettes</li>
+                <li><strong>Unicode characters</strong> might not render or show as boxes/question marks</li>
+            </ul>
+        </div>
+
+        <h3>Hyperlink Display Variations</h3>
+        <p>Hyperlinks are particularly problematic because terminals handle them inconsistently. Here's the real-world compatibility landscape:</p>
+
+        <div style="background: #1a1a1a; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; border: 1px solid #333;">
+            <table style="width: 100%; border-collapse: collapse; color: var(--text-color);">
+                <thead>
+                    <tr style="border-bottom: 1px solid #444;">
+                        <th style="text-align: left; padding: 0.75rem; color: var(--accent-color);">Terminal</th>
+                        <th style="text-align: left; padding: 0.75rem; color: var(--accent-color);">Hyperlink Display Style</th>
+                        <th style="text-align: left; padding: 0.75rem; color: var(--accent-color);">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 0.75rem; font-weight: 600;">iTerm2 (macOS)</td>
+                        <td style="padding: 0.75rem;">Underlined + hover preview</td>
+                        <td style="padding: 0.75rem; color: var(--text-secondary);">One of the best for hyperlinks. Also allows Cmd+Click to open.</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 0.75rem; font-weight: 600;">Windows Terminal</td>
+                        <td style="padding: 0.75rem;">Underlined (or blue if styled)</td>
+                        <td style="padding: 0.75rem; color: var(--text-secondary);">Supports OSC 8 since v1.9. Can click links.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; font-weight: 600;">Alacritty</td>
+                        <td style="padding: 0.75rem;">No native support (as of mid-2025)</td>
+                        <td style="padding: 0.75rem; color: var(--text-secondary);">Hyperlinks not displayed or clickable.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4>Real Examples Across Terminals</h4>
+        <div class="terminal-demo">
+            <div class="terminal-title">iTerm2 - Best hyperlink support</div>
+            <div>Documentation: <span style="color: #7dd3fc; text-decoration: underline;">View CLI Guide</span> <span style="color: #666;">(hover shows preview, Cmd+Click opens)</span></div>
+        </div>
+
+        <div class="terminal-demo">
+            <div class="terminal-title">Windows Terminal - Good support with OSC 8</div>
+            <div>Help: <span style="color: #0078d4; text-decoration: underline;">Open Support Page</span> <span style="color: #666;">(clickable since v1.9)</span></div>
+        </div>
+
+        <div class="terminal-demo">
+            <div class="terminal-title">Alacritty - No hyperlink support</div>
+            <div>Visit: https://example.com <span style="color: #666;">(plain text, must copy/paste)</span></div>
+        </div>
+
+        <div class="terminal-demo">
+            <div class="terminal-title">SSH/Remote session - Typically no support</div>
+            <div>Visit: https://example.com <span style="color: #666;">(copy and paste to browser)</span></div>
+        </div>
+
+        <h3>Font Style Inconsistencies</h3>
+        <p>Font styling can have unexpected interpretations:</p>
+
+        <h4>Italic Text Issues</h4>
+        <pre><code><span class="comment"># What you intended (emphasis)</span>
+<em>Important: Check your configuration</em>
+
+<span class="comment"># What some terminals show (blinking text)</span>
+<span style="animation: blink 1s infinite;">Important: Check your configuration</span>
+
+<span class="comment"># What users might see in plain terminals</span>
+Important: Check your configuration</code></pre>
+
+        <h4>Bold Text Variations</h4>
+        <pre><code><span class="comment"># What you intended (thicker font)</span>
+<strong>Error:</strong> Connection failed
+
+<span class="comment"># What some terminals show (brighter color)</span>
+<span style="color: #ffffff; font-weight: normal;">Error:</span> Connection failed
+
+<span class="comment"># What old terminals might show</span>
+Error: Connection failed</code></pre>
+
+        <h3>Safe Design Patterns</h3>
+        <p>Design your CLI output to work across all terminal types:</p>
+
+        <div class="guidelines-grid">
+            <div class="guideline-card">
+                <h4>Don't Rely on Style Alone</h4>
+                <p>Use text indicators alongside visual styling</p>
+                <pre><code><span class="comment"># ✅ Good - meaning clear without styling</span>
+[LINK] https://example.com
+→ Press Ctrl+Click or copy URL
+
+<span class="comment"># ❌ Bad - relies only on styling</span>
+<span style="text-decoration: underline;">https://example.com</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Use Symbols and Brackets</h4>
+                <p>Make important information visible without formatting</p>
+                <pre><code><span class="comment"># Clear visual hierarchy</span>
+✓ SUCCESS: Deploy completed
+✗ ERROR: Build failed  
+→ NEXT: Run 'logs' command
+ℹ INFO: Check status page
+
+<span class="comment"># Alternative with brackets</span>
+[OK] Deploy completed
+[FAIL] Build failed
+[NEXT] Run 'logs' command</code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Provide Multiple Access Methods</h4>
+                <p>Don't assume users can click or interact with styled elements</p>
+                <pre><code><span class="comment"># Multiple ways to access information</span>
+Documentation: https://docs.example.com
+• Click the link above
+• Run: myapp open-docs  
+• Copy URL to browser
+
+<span class="comment"># Clear fallback instructions</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Test in Minimal Environments</h4>
+                <p>Verify your CLI works in the most basic terminals</p>
+                <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                    <li>Windows Command Prompt</li>
+                    <li>Basic Linux terminal</li>
+                    <li>SSH sessions</li>
+                    <li>Screen readers</li>
+                    <li>Text-only environments</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Progressive Enhancement Strategy</h3>
+        <p>Start with a plain text base that works everywhere, then enhance where possible:</p>
+
+        <pre><code><span class="comment"># Base layer - works in all terminals</span>
+<span class="command">function displayMessage(text, type) {</span>
+    <span class="comment">// Always provide clear text indicators</span>
+    <span class="value">const prefix = type === 'error' ? '[ERROR]' : 
+                  type === 'success' ? '[OK]' : '[INFO]';</span>
+    
+    <span class="comment">// Basic output that works everywhere</span>
+    <span class="command">console.log(`${prefix} ${text}`);</span>
+    
+    <span class="comment">// Enhance with color if supported</span>
+    <span class="command">if (supportsColor()) {</span>
+        <span class="comment">// Add colors as enhancement</span>
+        <span class="command">addColorFormatting(prefix, type);</span>
+    <span class="command">}</span>
+<span class="command">}</span></code></pre>
+
+        <h3>Terminal Testing Checklist</h3>
+        <div class="info-box">
+            <h4 style="color: var(--accent-color); margin-top: 0;">Essential Testing Environments</h4>
+            <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                <li><strong>Windows Command Prompt</strong> - Most basic Windows terminal</li>
+                <li><strong>PowerShell</strong> - Modern Windows terminal with better features</li>
+                <li><strong>Terminal.app</strong> - Default macOS terminal</li>
+                <li><strong>iTerm2</strong> - Popular macOS terminal with advanced features</li>
+                <li><strong>GNOME Terminal</strong> - Common Linux terminal</li>
+                <li><strong>SSH sessions</strong> - Remote connections often strip formatting</li>
+                <li><strong>Screen/tmux sessions</strong> - Terminal multiplexers may affect display</li>
+                <li><strong>Minimal terminals</strong> - Test in the most basic environments</li>
+            </ul>
+        </div>
+
+        <h3>Implementation Example</h3>
+        <pre><code><span class="comment"># Robust cross-terminal output design</span>
+<span class="command">$ myapp status</span>
+
+<span class="comment"># Works in all terminals - clear without any styling</span>
+[STATUS] Application Health Check
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Database: Connected (response: 12ms)
+✗ Cache: Disconnected 
+→ Action: Run 'myapp restart cache'
+ℹ Docs: https://myapp.com/troubleshoot
+
+[SUMMARY] 1 issue found - see action above
+[HELP] Run 'myapp help status' for more options
+
+<span class="comment"># Enhanced with colors where supported, but still readable without them</span></code></pre>
+
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">💡 Key Principle</p>
+            <p style="margin: 0;">Design for the <strong>most basic terminal first</strong>, then enhance progressively. Your CLI should be fully functional and readable even in a plain text environment with no colors, no special fonts, and no clickable elements.</p>
+        </div>
+    </section>
+
+    <section class="section" id="accessibility">
+        <h2>Accessibility</h2>
+        <p>Design CLI interfaces that work for all users, including those using screen readers and assistive technologies. Remember: what you see is what the screen reader reads - there's no aria-label support in terminals.</p>
+        
+        <h3>Core Accessibility Principles</h3>
+        <p>CLI accessibility is fundamentally different from web accessibility. You can't rely on hidden labels or semantic markup - everything must be expressed through the actual text content.</p>
+
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">🔊 Screen Reader Reality</p>
+            <p style="margin: 0;">What you see is what the screen reader reads. There's no aria-label support, no semantic markup, no hidden descriptions. The actual text output is the only information available to assistive technologies.</p>
+        </div>
+
+        <h3>Selection Interfaces</h3>
+        <p>Numbered choice is better for screen reader users, but this may need further research to understand optimal patterns:</p>
+
+        <div class="research-box">
+            <p style="color: #ffa500; font-weight: 600; margin-bottom: 0.5rem;">🔬 Research Needed</p>
+            <p style="margin: 0;">While numbered choices appear to be better for screen reader users, this area needs further research to understand the optimal interaction patterns and validate current assumptions.</p>
+        </div>
+
+        <h4>Numbered vs Arrow-Based Selection</h4>
+        <pre><code><span class="comment"># ✅ Likely better - numbered choices</span>
+Select deployment environment:
+1. Development
+2. Staging
+3. Production
+4. Testing
+
+Enter choice (1-4): <span class="value">3</span>
+
+<span class="comment"># ❓ May be less accessible - arrow navigation only</span>
+Select deployment environment:
+  Development
+> Staging  <span class="comment"># Current selection not obvious to screen readers</span>
+  Production
+  Testing
+
+Use arrow keys and Enter to select</code></pre>
+
+        <h3>Do Not Rely Only on Colors</h3>
+        <p>Some terminals don't even support color, font style, etc. Design for multiple scenarios where visual cues may not be available:</p>
+
+        <h4>Color-Independent Design</h4>
+        <div class="guidelines-grid">
+            <div class="guideline-card">
+                <h4>Use Text Indicators</h4>
+                <p>Combine colors with text symbols that work without color support</p>
+                <pre><code><span class="comment"># ✅ Works with or without color</span>
+✓ SUCCESS: Deploy completed
+✗ ERROR: Connection failed
+⚠ WARNING: Low disk space
+ℹ INFO: Update available
+
+<span class="comment"># ❌ Color-dependent</span>
+<span style="color: green;">Deploy completed</span>
+<span style="color: red;">Connection failed</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Redundant Information</h4>
+                <p>Provide the same information through multiple channels</p>
+                <pre><code><span class="comment"># Status with multiple indicators</span>
+[FAILED] ✗ Build process failed
+[OK] ✓ Tests passed (45/45)
+[WARN] ⚠ 3 deprecation warnings
+
+<span class="comment"># Progress with text + symbols</span>
+Progress: [████████  ] 80% (8/10 files)</code></pre>
+            </div>
+        </div>
+
+        <h3>No ASCII Art</h3>
+        <p>ASCII art does not have aria-label support and can be confusing for screen readers:</p>
+
+        <h4>ASCII Art Problems</h4>
+        <pre><code><span class="comment"># ❌ Bad - screen reader reads this as gibberish</span>
+    ╭─────────────────────────────╮
+    │                             │
+    │     🚀 DEPLOYMENT SUCCESS   │
+    │                             │
+    │   ┌─────────────────────┐   │
+    │   │ Status: ✅ Complete │   │
+    │   │ Time:   2m 15s      │   │
+    │   │ Files:  247 updated │   │
+    │   └─────────────────────┘   │
+    │                             │
+    ╰─────────────────────────────╯
+
+<span class="comment"># ✅ Good - clear text that reads well</span>
+DEPLOYMENT SUCCESS
+==================
+
+Status: Complete
+Time: 2 minutes 15 seconds  
+Files: 247 updated
+
+All services are running normally.</code></pre>
+
+        <h3>Adaptive Interface Design</h3>
+        <p>Another option is to provide different design/interaction based on screen reader usage. We could ask user if the reader is on or automatically detect it, and show different design based on that:</p>
+
+        <h4>Detection and Adaptation Strategies</h4>
+        <div class="guidelines-grid">
+            <div class="guideline-card">
+                <h4>Ask the User</h4>
+                <p>Prompt during setup or first run to configure accessibility preferences</p>
+                <pre><code><span class="command">$ myapp setup</span>
+
+Do you use a screen reader? (y/n): <span class="value">y</span>
+
+Accessibility mode enabled.
+- Verbose descriptions
+- Numbered selections
+- No visual elements
+- Optimized for audio output
+
+Settings saved. Use 'myapp config' to change.</code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Environment Detection</h4>
+                <p>Check for screen reader environment variables or running processes</p>
+                <pre><code><span class="comment"># Check for common screen readers</span>
+<span class="command">if (process.env.NVDA || process.env.JAWS) {</span>
+    <span class="command">enableAccessibilityMode();</span>
+<span class="command">}</span>
+
+<span class="comment"># Or detect running screen reader processes</span>
+<span class="command">detectScreenReader() {</span>
+    <span class="comment">// Check for NVDA, JAWS, ORCA, etc.</span>
+<span class="command">}</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Configuration Setting</h4>
+                <p>Allow users to explicitly enable accessibility optimizations</p>
+                <pre><code><span class="comment"># Enable screen reader mode</span>
+<span class="command">$ myapp config set accessibility=true</span>
+
+<span class="comment"># Or use environment variable</span>
+<span class="command">$ export MYAPP_ACCESSIBILITY=true</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Command Line Flag</h4>
+                <p>Provide immediate accessibility mode for any command</p>
+                <pre><code><span class="comment"># Single command accessibility</span>
+<span class="command">$ myapp deploy --accessible</span>
+
+<span class="comment"># Or short flag</span>
+<span class="command">$ myapp status -a</span></code></pre>
+            </div>
+        </div>
+
+        <h4>Different Interfaces Based on Screen Reader Usage</h4>
+        <pre><code><span class="comment"># Standard visual interface</span>
+<span class="command">$ myapp status</span>
+
+┌─ Service Status ────────────────────┐
+│ ✓ Database    │ ✗ Cache            │
+│ ✓ Web Server  │ ⚠ Load Balancer    │
+└─────────────────────────────────────┘
+
+<span class="comment"># Screen reader optimized interface</span>
+<span class="command">$ myapp status --accessible</span>
+
+SERVICE STATUS REPORT
+======================
+
+Service 1: Database - Status: Running normally
+Service 2: Web Server - Status: Running normally  
+Service 3: Cache - Status: Failed - requires attention
+Service 4: Load Balancer - Status: Warning - high memory usage
+
+Summary: 1 service failed, 1 service has warnings
+Recommendation: Check cache service logs first
+
+Press Enter to continue or type 'help' for options</code></pre>
+
+        <h4>Adaptive Selection Interfaces</h4>
+        <pre><code><span class="comment"># Visual mode - compact display</span>
+<span class="command">$ myapp deploy</span>
+
+Environment: [Dev] [Staging] [Prod]
+Use arrow keys or type 1-3: 
+
+<span class="comment"># Screen reader mode - verbose, numbered</span>
+<span class="command">$ myapp deploy --accessible</span>
+
+Select deployment environment from the following options:
+
+Option 1: Development environment
+  Description: For testing new features
+  Current status: Available
+  
+Option 2: Staging environment  
+  Description: For pre-production testing
+  Current status: Available
+  
+Option 3: Production environment
+  Description: Live user-facing environment
+  Current status: Available
+
+Enter the number of your choice (1, 2, or 3):
+Type 'info' followed by a number for more details about an option
+Type 'help' for additional commands</code></pre>
+
+        <h4>Implementation Benefits</h4>
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">💡 Adaptive Design Advantages</p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                <li><strong>Optimized Experience</strong>: Each interface can be tailored for its intended audience</li>
+                <li><strong>Better Performance</strong>: Screen reader mode can be more verbose, visual mode more compact</li>
+                <li><strong>User Choice</strong>: Users can switch between modes based on context or preference</li>
+                <li><strong>Future Flexibility</strong>: Easy to improve each interface independently</li>
+            </ul>
+        </div>
+
+        <div class="research-box">
+            <p style="color: #ffa500; font-weight: 600; margin-bottom: 0.5rem;">🔬 Detection Research Needed</p>
+            <p style="margin: 0;">Reliable automatic detection of screen reader usage is still challenging. More research is needed to understand which detection methods work consistently across different screen readers and operating systems without being intrusive.</p>
+        </div>
+        <p>Your CLI should work across different accessibility needs and terminal capabilities:</p>
+
+        <div class="guidelines-grid">
+            <div class="guideline-card">
+                <h4>No Color Support</h4>
+                <p>Some terminals or user preferences disable colors entirely</p>
+                <pre><code><span class="comment"># Readable without colors</span>
+[ERROR] Connection timeout
+[OK] File saved successfully
+[NEXT] Run setup command</code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>No Font Styling</h4>
+                <p>Basic terminals may not support bold, italic, or other text styling</p>
+                <pre><code><span class="comment"># Clear without bold/italic</span>
+IMPORTANT: Backup your data first
+WARNING: This action cannot be undone
+NOTE: Process may take several minutes</code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Screen Reader Friendly</h4>
+                <p>Text that reads naturally when spoken aloud</p>
+                <pre><code><span class="comment"># Reads well with screen readers</span>
+Step 1 of 3: Configure database
+Step 2 of 3: Set up authentication  
+Step 3 of 3: Deploy application
+
+<span class="comment"># Not: Step (1/3), Step (2/3), etc.</span></code></pre>
+            </div>
+            
+            <div class="guideline-card">
+                <h4>Cognitive Accessibility</h4>
+                <p>Clear, simple language and logical organization</p>
+                <pre><code><span class="comment"># Simple, clear instructions</span>
+Choose what to deploy:
+1. Web application only
+2. Database and web application  
+3. Full system with monitoring
+
+Enter 1, 2, or 3:</code></pre>
+            </div>
+        </div>
+
+        <h3>Testing for Accessibility</h3>
+        <div class="info-box">
+            <h4 style="color: var(--accent-color); margin-top: 0;">Accessibility Testing Checklist</h4>
+            <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                <li><strong>Test with screen readers</strong> - Use NVDA, JAWS, or VoiceOver to hear your output</li>
+                <li><strong>Disable colors</strong> - Test in terminals with no color support</li>
+                <li><strong>Remove visual styling</strong> - Ensure meaning is clear with plain text only</li>
+                <li><strong>Read output aloud</strong> - Does it make sense when spoken?</li>
+                <li><strong>Test numbered selections</strong> - Verify screen readers announce options clearly</li>
+                <li><strong>Check plain text terminals</strong> - Test in basic command prompts</li>
+                <li><strong>Validate with users</strong> - Get feedback from actual screen reader users</li>
+            </ul>
+        </div>
+
+        <h3>Implementation Examples</h3>
+        <pre><code><span class="comment"># Accessible status display</span>
+<span class="command">$ myapp status</span>
+
+APPLICATION STATUS REPORT
+=========================
+
+Database Connection: OK - responding in 45 milliseconds
+Web Server: OK - 3 instances running
+Cache: WARNING - memory usage at 85 percent
+Load Balancer: OK - distributing traffic normally
+
+Summary: 1 warning found - check cache memory usage
+Next steps: Run 'myapp cache info' for details
+
+<span class="comment"># Accessible selection interface</span>
+<span class="command">$ myapp deploy</span>
+
+Select deployment target:
+1. Development environment
+2. Staging environment
+3. Production environment
+
+Enter your choice (1, 2, or 3): <span class="value">2</span>
+
+You selected: Staging environment
+Proceeding with staging deployment...</code></pre>
+
+        <div class="warning-box">
+            <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">⚠️ Remember</p>
+            <p style="margin: 0;">CLI accessibility is still an evolving field. The patterns suggested here are based on current understanding, but more research is needed to establish definitive best practices. When in doubt, test with actual users who rely on assistive technologies.</p>
+        </div>
+    </section>
+
+         <section class="section" id="various-surfaces">
+        <h2>Various Surfaces</h2>
+        <p>In CLI, here are different types of surfaces and interaction models. Each approach offers different advantages for user interaction and information display.</p>
+        
+        <h3>Surface Types and Interaction Models</h3>
+        <p>Modern CLI applications can use different surface types to present information and handle user interaction:</p>
+
+        <div class="guidelines-grid">
+            <div class="surface-card">
+                <h4>Alternate Buffer</h4>
+                <div class="usage">Common - Full application takeover</div>
+                <p>You swap the whole surface. This completely replaces the terminal content with your application interface.</p>
+                
+                <div class="demo-container">
+                    <div class="demo-title">Example: Vim Editor Interface</div>
+                    <div style="color: #7dd3fc;">~</div>
+                    <div style="color: #7dd3fc;">~</div>
+                    <div style="color: #e0e0e0;">Hello World</div>
+                    <div style="color: #7dd3fc;">~</div>
+                    <div style="color: #7dd3fc;">~</div>
+                    <div style="border-top: 1px solid #333; margin-top: 1rem; padding-top: 0.5rem; color: #888;">
+                        "hello.txt" 1L, 11C
+                    </div>
+                </div>
+
+                <p><strong>When to use:</strong></p>
+                <ul>
+                    <li>Complex interactive applications</li>
+                    <li>Full-screen editors or viewers</li>
+                    <li>Applications with extensive UI elements</li>
+                    <li>When you need complete control over the display</li>
+                </ul>
+
+                <p><strong>Examples:</strong> vim, nano, htop, less</p>
+            </div>
+            
+            <div class="surface-card">
+                <h4>Side Panel</h4>
+                <div class="usage">Not common - Split screen approach</div>
+                <p>Splits the terminal into multiple areas. Currently AI Shell is using this approach for contextual information.</p>
+                
+                <div class="demo-container">
+                    <div class="demo-title">Example: AI Shell Side Panel</div>
+                    <div class="split-demo">
+                        <div class="main-area">
+                            <div style="color: #7dd3fc;">$ ls -la</div>
+                            <div style="color: #e0e0e0;">total 24</div>
+                            <div style="color: #e0e0e0;">drwxr-xr-x 3 user user 4096 Oct 15 10:30 .</div>
+                            <div style="color: #e0e0e0;">drwxr-xr-x 5 user user 4096 Oct 15 10:29 ..</div>
+                            <div style="color: #e0e0e0;">-rw-r--r-- 1 user user  156 Oct 15 10:30 app.js</div>
+                            <div style="color: #7dd3fc; margin-top: 1rem;">$ _</div>
+                        </div>
+                        <div class="side-area">
+                            <div style="color: #ffc107; font-size: 0.8rem; margin-bottom: 0.5rem;">AI Context</div>
+                            <div style="color: #a0a0a0; font-size: 0.8rem;">Files: 1 JS file detected</div>
+                            <div style="color: #a0a0a0; font-size: 0.8rem;">Suggestions:</div>
+                            <div style="color: #a0a0a0; font-size: 0.8rem;">• node app.js</div>
+                            <div style="color: #a0a0a0; font-size: 0.8rem;">• npm init</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p><strong>When to use:</strong></p>
+                <ul>
+                    <li>Contextual information display</li>
+                    <li>Real-time monitoring alongside commands</li>
+                    <li>AI assistance or suggestions</li>
+                    <li>Multi-pane information views</li>
+                </ul>
+
+                <p><strong>Examples:</strong> AI Shell, some file managers</p>
+            </div>
+            
+            <div class="surface-card">
+                <h4>Inline</h4>
+                <div class="usage">Common - Embedded in command flow</div>
+                <p>Integrates directly into the command line flow. This is how Github Copilot interaction works in CLI.</p>
+                
+                <div class="demo-container">
+                    <div class="demo-title">Example: GitHub Copilot CLI Inline Suggestions</div>
+                    <div class="inline-demo">
+                        <div style="color: #7dd3fc;">$ git commit -m "fix: </div>
+                        <div style="color: #888; margin: 0.5rem 0;">
+                            <span class="suggestion-highlight">resolve authentication bug in login service"</span>
+                        </div>
+                        <div style="color: #888; font-size: 0.8rem;">
+                            Tab to accept • Esc to dismiss • Ctrl+→ for alternatives
+                        </div>
+                    </div>
+                </div>
+
+                <p><strong>When to use:</strong></p>
+                <ul>
+                    <li>Command completion and suggestions</li>
+                    <li>Progressive disclosure of information</li>
+                    <li>Contextual help that doesn't interrupt flow</li>
+                    <li>Quick confirmations or choices</li>
+                </ul>
+
+                <p><strong>Examples:</strong> GitHub Copilot CLI, autocomplete systems, inline prompts</p>
+            </div>
+        </div>
+
+        <h3>Choosing the Right Surface</h3>
+        <p>The choice of surface depends on your application's needs and user interaction patterns:</p>
+
+        <div class="info-box">
+            <h4 style="color: var(--accent-color); margin-top: 0;">Decision Framework</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div>
+                    <strong style="color: var(--accent-color);">Alternate Buffer</strong>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Complex UI needed</li>
+                        <li>Full user attention</li>
+                        <li>Rich interaction</li>
+                        <li>Self-contained app</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong style="color: var(--accent-color);">Side Panel</strong>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Contextual information</li>
+                        <li>Parallel workflows</li>
+                        <li>Monitoring + commands</li>
+                        <li>AI assistance</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong style="color: var(--accent-color);">Inline</strong>
+                    <ul style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <li>Minimal interruption</li>
+                        <li>Quick interactions</li>
+                        <li>Command augmentation</li>
+                        <li>Progressive enhancement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h3>Implementation Considerations</h3>
+        <div class="guidelines-grid">
+            <div class="surface-card">
+                <h4>Technical Requirements</h4>
+                <ul>
+                    <li><strong>Alternate Buffer:</strong> Requires terminal escape sequences, signal handling</li>
+                    <li><strong>Side Panel:</strong> Complex terminal manipulation, layout management</li>
+                    <li><strong>Inline:</strong> Cursor positioning, partial line editing</li>
+                </ul>
+            </div>
+            
+            <div class="surface-card">
+                <h4>User Experience</h4>
+                <ul>
+                    <li><strong>Alternate Buffer:</strong> Immersive but can be disorienting</li>
+                    <li><strong>Side Panel:</strong> Efficient but requires wide terminals</li>
+                    <li><strong>Inline:</strong> Natural but limited information display</li>
+                </ul>
+            </div>
+            
+            <div class="surface-card">
+                <h4>Compatibility</h4>
+                <ul>
+                    <li><strong>Alternate Buffer:</strong> Widely supported</li>
+                    <li><strong>Side Panel:</strong> Requires advanced terminal features</li>
+                    <li><strong>Inline:</strong> Works in most terminals</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Hybrid Approaches</h3>
+        <p>Many modern CLI applications combine multiple surface types:</p>
+
+        <pre><code><span class="comment"># Example: CLI tool that adapts based on context</span>
+<span class="command">$ myapp status</span>                 <span class="comment"># Inline output</span>
+<span class="command">$ myapp status --watch</span>          <span class="comment"># Side panel monitoring</span>
+<span class="command">$ myapp configure</span>              <span class="comment"># Alternate buffer for complex setup</span>
+
+<span class="comment"># AI-enhanced commands</span>
+<span class="command">$ myapp deploy</span>                 <span class="comment"># Inline suggestions during typing</span>
+<span class="command">$ myapp deploy --interactive</span>   <span class="comment"># Alternate buffer for guided setup</span></code></pre>
+
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">💡 Design Principle</p>
+            <p style="margin: 0;">Choose the surface type that best matches your user's mental model and workflow. Inline for quick tasks, side panels for contextual assistance, and alternate buffers for focused work sessions.</p>
+        </div>
+    </section>
+    
+     <section class="section" id="shell-vs-terminal">
+        <h2>Shell vs Terminal</h2>
+        <p>It's important to understand the two concepts: Shell and Terminal. This foundational knowledge helps CLI developers understand the separation of concerns and design for compatibility.</p>
+        
+        <h3>The Web Browser Analogy</h3>
+        <div class="analogy-box">
+            <p style="color: var(--text-color); font-size: 1.1rem; margin-bottom: 1rem;">Think of the relationship between website and web browser:</p>
+            
+            <div class="analogy-grid">
+                <div class="analogy-item">
+                    <div class="analogy-title">Website</div>
+                    <div class="analogy-subtitle">Provides the actual content</div>
+                    <div style="font-size: 2rem; margin: 1rem 0;">🌐</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        HTML, CSS, JavaScript<br>
+                        Content and functionality
+                    </div>
+                </div>
+                
+                <div class="arrow">⟷</div>
+                
+                <div class="analogy-item">
+                    <div class="analogy-title">Web Browser</div>
+                    <div class="analogy-subtitle">Used to view the website</div>
+                    <div style="font-size: 2rem; margin: 1rem 0;">🖥️</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Chrome, Firefox, Safari<br>
+                        Rendering and display
+                    </div>
+                </div>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin-top: 1rem;">And there are multiple web browsers you can use to view the same website.</p>
+        </div>
+
+        <h3>Shell and Terminal Relationship</h3>
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h4>Shell</h4>
+                <div class="role">= Website</div>
+                
+                <p><strong>Provides the actual implementation:</strong></p>
+                <ul>
+                    <li>Command interpretation and execution</li>
+                    <li>Input/output processing</li>
+                    <li>Core functionality and features</li>
+                    <li>Command syntax and behavior</li>
+                    <li>Environment variables and scripting</li>
+                </ul>
+                
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <h5>Popular Shells</h5>
+                        <ul style="font-size: 0.9rem; margin: 0; padding-left: 1rem;">
+                            <li>Bash</li>
+                            <li>Zsh</li>
+                            <li>Fish</li>
+                            <li>PowerShell</li>
+                            <li>Cmd</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-card">
+                <h4>Terminal</h4>
+                <div class="role">= Web Browser</div>
+                
+                <p><strong>Responsible for rendering:</strong></p>
+                <ul>
+                    <li>Text display and formatting</li>
+                    <li>Color support and themes</li>
+                    <li>Font rendering</li>
+                    <li>Window management</li>
+                    <li>Input/output display</li>
+                </ul>
+                
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <h5>Popular Terminals</h5>
+                        <ul style="font-size: 0.9rem; margin: 0; padding-left: 1rem;">
+                            <li>Terminal.app</li>
+                            <li>iTerm2</li>
+                            <li>Windows Terminal</li>
+                            <li>Alacritty</li>
+                            <li>GNOME Terminal</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>The Separation of Concerns</h3>
+        <pre><code><span class="comment"># The same shell command...</span>
+<span class="command">$ echo -e "\033[31mHello \033[32mWorld\033[0m"</span>
+
+<span class="comment"># ...can look different across terminals:</span>
+
+<span class="comment"># Terminal A (full color support)</span>
+<span style="color: #ff0000;">Hello</span> <span style="color: #00ff00;">World</span>
+
+<span class="comment"># Terminal B (limited color)</span>
+Hello World
+
+<span class="comment"># Terminal C (no color support)</span>
+Hello World</code></pre>
+
+        <h3>It's Up to Terminal on How Things Will Be Displayed</h3>
+        <p>The terminal has the final say in how your shell output appears to the user:</p>
+
+        <div class="examples-grid">
+            <div class="example-card">
+                <h5>Font Rendering</h5>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Same text can appear with different fonts, sizes, and weights depending on terminal settings.
+                </p>
+            </div>
+            
+            <div class="example-card">
+                <h5>Color Support</h5>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    8-color, 256-color, or true-color support varies by terminal capabilities.
+                </p>
+            </div>
+            
+            <div class="example-card">
+                <h5>Special Features</h5>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Hyperlinks, images, or advanced formatting depend on terminal features.
+                </p>
+            </div>
+            
+            <div class="example-card">
+                <h5>Window Behavior</h5>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Scrolling, resizing, and split-pane support varies by terminal implementation.
+                </p>
+            </div>
+        </div>
+
+        <h3>Design Implications for CLI Developers</h3>
+        <div class="info-box">
+            <p style="color: #ffc107; font-weight: 600; margin-bottom: 0.5rem;">💡 Key Insight for Shell Development</p>
+            <p style="margin: 0;">When you're working on Shell, you need to ensure that what you design can be supported on multiple terminals and OS platforms. You control the content (shell), but you don't control the display (terminal).</p>
+        </div>
+
+        <h4>What This Means for Your CLI</h4>
+        <ul>
+            <li><strong>Design for the lowest common denominator</strong> - Ensure core functionality works on basic terminals</li>
+            <li><strong>Use progressive enhancement</strong> - Add advanced features where terminals support them</li>
+            <li><strong>Test across multiple terminals</strong> - Your shell output will look different everywhere</li>
+            <li><strong>Provide fallbacks</strong> - Have alternatives when advanced features aren't supported</li>
+            <li><strong>Focus on shell logic</strong> - Concentrate on command functionality rather than display specifics</li>
+        </ul>
+
+        <h3>Real-World Example</h3>
+        <pre><code><span class="comment"># Your shell (e.g., a CLI tool you're building)</span>
+<span class="command">$ myapp status --color=auto</span>
+
+<span class="comment"># Shell logic decides:</span>
+<span class="comment"># - What information to show</span>
+<span class="comment"># - Command syntax and behavior</span>
+<span class="comment"># - Whether to use color codes</span>
+
+<span class="comment"># Terminal decides:</span>
+<span class="comment"># - How colors actually appear</span>
+<span class="comment"># - Font and text rendering</span>
+<span class="comment"># - Whether colors are shown at all</span>
+
+<span class="comment"># Result: Same command, different visual output</span></code></pre>
+
+        <div class="highlight-box">
+            <p style="color: #7b68ee; font-weight: 600; margin-bottom: 0.5rem;">🎯 Remember</p>
+            <p style="margin: 0;">You're building for the shell layer - focus on robust command logic and widely-compatible output. Let terminals handle the presentation details, but design defensively for varying terminal capabilities.</p>
+        </div>
+    </section>
+
+    </main>
+
+    <footer id="about">
+        <div class="container">
+            <p>&copy; 2025 CLI Guidelines. Built with ❤️ for better command-line experiences.</p>
+        </div>
+    </footer>
+</body>
 </html>
