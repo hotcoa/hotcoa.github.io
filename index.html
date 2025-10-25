@@ -30,7 +30,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -98,7 +98,7 @@
         .hero p {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto 2rem;
         }
 
@@ -297,7 +297,7 @@
     <section class="hero" id="home">
         <div class="container">
             <h1>Modern CLI Guidelines</h1>
-            <p>Essential design patterns for creating accessible, cross-platform CLI tools that delight users.</p>
+            <p>Essential design patterns for creating accessible, cross-platform CLI tools</p>
             <!--<a href="#guidelines" class="cta-button">Get Started</a>-->
         </div>
     </section>
@@ -895,7 +895,62 @@ Documentation: https://docs.example.com
             </div>
         </div>
     </section>
-    
+     <section class="section" id="cross-platform">
+            <h2>Cross-Platform Compatibility</h2>
+            
+            <h3>The Challenge: Terminal Capability Differences</h3>
+            <p>Modern terminals have rich features like clickable links, but older terminals and different operating systems have varying levels of support. You need to design for the lowest common denominator while still providing enhanced experiences where possible.</p>
+
+            <h3>Case Study: Intercept Survey Implementation</h3>
+            <p>Here's a real example from Azure PowerShell showing how cross-platform constraints affect design decisions:</p>
+
+            <h4>The Requirement</h4>
+            <p>We needed to show an intercept survey message occasionally to gather user feedback. The survey should be easy to access but not disruptive to the workflow.</p>
+
+            <h4>Initial Design vs. Reality</h4>
+            <pre><code><span class="comment"># What we wanted to do (doesn't work everywhere)</span>
+<span class="command">PS C:\Users\account></span> <span class="command">Get-AzVM</span>
+Name    ResourceGroup    Location    Status
+----    ---------------  ----------  --------  
+vm1     myRG            eastus      running
+
+<span style="color: #7dd3fc; text-decoration: underline;">📋 Click here to take our 5-minute survey</span> <span class="comment"># ❌ Not all terminals support clickable links</span></code></pre>
+
+            <h4>What We Actually Implemented</h4>
+            <pre><code><span class="comment"># Cross-platform compatible solution</span>
+<span class="command">PS C:\Users\account></span> <span class="command">Set-ExecutionPolicy</span> -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+<span style="background: #1e40af; color: white; padding: 2px 8px;">[Survey] Help us improve Azure PowerShell by sharing your experience. This survey should take about 5 minutes.</span>
+<span style="background: #1e40af; color: white; padding: 2px 8px;">Run 'Open-SurveyLink' to open in browser. Learn more at https://go.microsoft.com/?id=2349.</span>
+
+<span class="command">PS C:\Users\account></span></code></pre>
+
+            <h3>Design Decisions Made</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Bottom Placement</h4>
+                    <p>Show survey message at bottom of command output instead of top banner for cross-OS compatibility.</p>
+                </div>
+                <div class="guideline-card">
+                    <h4>Command-Based Interaction</h4>
+                    <p>Use <code>Open-SurveyLink</code> command instead of clickable links for universal terminal support.</p>
+                </div>                
+            </div>
+
+            <h3>Cross-Platform Design Principles</h3>
+            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
+                <h4 style="color: var(--accent-color); margin-top: 0;">Universal Compatibility Guidelines</h4>
+                <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                    <li><strong>Test on multiple terminals</strong> - Windows Command Prompt, PowerShell, Terminal.app, various Linux terminals</li>
+                    <li><strong>Provide fallback options</strong> - Commands instead of clickable links, plain text instead of rich formatting</li>
+                    <li><strong>Use standard ASCII</strong> - Avoid Unicode characters that might not render consistently</li>
+                    <li><strong>Check terminal capabilities</strong> - Detect support for colors, links, etc. before using them</li>
+                    <li><strong>Design for the lowest common denominator</strong> - Ensure core functionality works everywhere</li>
+                </ul>
+            </div>
+        </section>
+                  
+
         <section class="section" id="automation">
             <h2>Automation Mode</h2>
            
@@ -956,61 +1011,7 @@ Deploying to production...
             </div>
         </section>        
 
-        <section class="section" id="cross-platform">
-            <h2>Cross-Platform Compatibility</h2>
-            
-            <h3>The Challenge: Terminal Capability Differences</h3>
-            <p>Modern terminals have rich features like clickable links, but older terminals and different operating systems have varying levels of support. You need to design for the lowest common denominator while still providing enhanced experiences where possible.</p>
-
-            <h3>Case Study: Intercept Survey Implementation</h3>
-            <p>Here's a real example from Azure PowerShell showing how cross-platform constraints affect design decisions:</p>
-
-            <h4>The Requirement</h4>
-            <p>We needed to show an intercept survey message occasionally to gather user feedback. The survey should be easy to access but not disruptive to the workflow.</p>
-
-            <h4>Initial Design vs. Reality</h4>
-            <pre><code><span class="comment"># What we wanted to do (doesn't work everywhere)</span>
-<span class="command">PS C:\Users\account></span> <span class="command">Get-AzVM</span>
-Name    ResourceGroup    Location    Status
-----    ---------------  ----------  --------  
-vm1     myRG            eastus      running
-
-<span style="color: #7dd3fc; text-decoration: underline;">📋 Click here to take our 5-minute survey</span> <span class="comment"># ❌ Not all terminals support clickable links</span></code></pre>
-
-            <h4>What We Actually Implemented</h4>
-            <pre><code><span class="comment"># Cross-platform compatible solution</span>
-<span class="command">PS C:\Users\account></span> <span class="command">Set-ExecutionPolicy</span> -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-<span style="background: #1e40af; color: white; padding: 2px 8px;">[Survey] Help us improve Azure PowerShell by sharing your experience. This survey should take about 5 minutes.</span>
-<span style="background: #1e40af; color: white; padding: 2px 8px;">Run 'Open-SurveyLink' to open in browser. Learn more at https://go.microsoft.com/?id=2349.</span>
-
-<span class="command">PS C:\Users\account></span></code></pre>
-
-            <h3>Design Decisions Made</h3>
-            <div class="guidelines-grid">
-                <div class="guideline-card">
-                    <h4>Bottom Placement</h4>
-                    <p>Show survey message at bottom of command output instead of top banner for cross-OS compatibility.</p>
-                </div>
-                <div class="guideline-card">
-                    <h4>Command-Based Interaction</h4>
-                    <p>Use <code>Open-SurveyLink</code> command instead of clickable links for universal terminal support.</p>
-                </div>                
-            </div>
-
-            <h3>Cross-Platform Design Principles</h3>
-            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
-                <h4 style="color: var(--accent-color); margin-top: 0;">Universal Compatibility Guidelines</h4>
-                <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
-                    <li><strong>Test on multiple terminals</strong> - Windows Command Prompt, PowerShell, Terminal.app, various Linux terminals</li>
-                    <li><strong>Provide fallback options</strong> - Commands instead of clickable links, plain text instead of rich formatting</li>
-                    <li><strong>Use standard ASCII</strong> - Avoid Unicode characters that might not render consistently</li>
-                    <li><strong>Check terminal capabilities</strong> - Detect support for colors, links, etc. before using them</li>
-                    <li><strong>Design for the lowest common denominator</strong> - Ensure core functionality works everywhere</li>
-                </ul>
-            </div>
-        </section>
-                        
+             
         <section class="section" id="backward-compatibility">
         <h2>Backward Compatibility</h2>
         
