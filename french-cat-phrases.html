@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Apprends le français avec des chats! | Learn French with Cats</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff7675' fill-opacity='0.05' fill-rule='nonzero'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            animation: float 20s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            color: #2d3436;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #636e72;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .cat-container {
+            position: relative;
+            z-index: 1;
+            margin: 2rem 0;
+        }
+
+        .cat-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .cat-image:hover {
+            transform: scale(1.05);
+        }
+
+        .phrase-container {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 3px solid #fff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .french-phrase {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 1rem;
+        }
+
+        .english-translation {
+            font-size: 1.2rem;
+            color: #636e72;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #ff7675, #fd79a8);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);
+            font-family: 'Fredoka', sans-serif;
+            margin: 1.5rem 0;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 118, 117, 0.4);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .motivation-text {
+            color: #74b9ff;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .paw-prints {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 118, 117, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        .paw1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .paw2 { top: 20%; right: 15%; animation-delay: 0.5s; }
+        .paw3 { bottom: 30%; left: 8%; animation-delay: 1s; }
+        .paw4 { bottom: 15%; right: 12%; animation-delay: 1.5s; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .progress-bar {
+            background: rgba(116, 185, 255, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #74b9ff, #0984e3);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #636e72;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .cat-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .french-phrase {
+                font-size: 1.4rem;
+            }
+
+            .english-translation {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="paw-prints paw1">🐾</div>
+        <div class="paw-prints paw2">🐾</div>
+        <div class="paw-prints paw3">🐾</div>
+        <div class="paw-prints paw4">🐾</div>
+
+        <div class="header">
+            <h1 class="title">🐱 Français Chat 🐱</h1>
+            <p class="subtitle">Learn French with adorable cats!</p>
+        </div>
+
+        <div class="cat-container">
+            <img id="catImage" class="cat-image" src="https://cataas.com/cat/says/Bonjour?size=200&color=white&fontSize=30" alt="Cute cat" />
+        </div>
+
+        <div class="phrase-container">
+            <div id="frenchPhrase" class="french-phrase">Cliquez pour commencer!</div>
+            <div id="englishTranslation" class="english-translation">Click to start!</div>
+        </div>
+
+        <button id="refreshBtn" class="refresh-btn">🔄 Nouvelle phrase!</button>
+
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+
+        <div class="stats">
+            <span>Phrases apprises: <span id="phrasesLearned">0</span></span>
+            <span>Niveau: A2 🌟</span>
+        </div>
+
+        <p class="motivation-text">
+            Chaque phrase vous rapproche de la maîtrise du français! 💪
+        </p>
+    </div>
+
+    <script>
+        const phrases = [
+            {
+                french: "Mon chat aime dormir sur le canapé.",
+                english: "My cat likes to sleep on the couch.",
+                keywords: ["dormir", "canapé"]
+            },
+            {
+                french: "Le petit chaton joue avec une pelote de laine.",
+                english: "The little kitten plays with a ball of yarn.",
+                keywords: ["chaton", "joue", "pelote"]
+            },
+            {
+                french: "Ma chatte mange ses croquettes tous les matins.",
+                english: "My female cat eats her kibble every morning.",
+                keywords: ["chatte", "mange", "croquettes"]
+            },
+            {
+                french: "Ce chat noir court dans le jardin.",
+                english: "This black cat runs in the garden.",
+                keywords: ["chat", "noir", "jardin"]
+            },
+            {
+                french: "Mon chat ronronne quand je le caresse.",
+                english: "My cat purrs when I pet him.",
+                keywords: ["ronronne", "caresse"]
+            },
+            {
+                french: "Le chat grimpe sur l'arbre très rapidement.",
+                english: "The cat climbs the tree very quickly.",
+                keywords: ["grimpe", "arbre", "rapidement"]
+            },
+            {
+                french: "J'ai deux chats: un roux et un blanc.",
+                english: "I have two cats: one ginger and one white.",
+                keywords: ["deux", "roux", "blanc"]
+            },
+            {
+                french: "Le vétérinaire examine mon chat malade.",
+                english: "The veterinarian examines my sick cat.",
+                keywords: ["vétérinaire", "examine", "malade"]
+            },
+            {
+                french: "Mon chaton boit du lait dans son bol.",
+                english: "My kitten drinks milk from his bowl.",
+                keywords: ["boit", "lait", "bol"]
+            },
+            {
+                french: "Les chats chassent les souris la nuit.",
+                english: "Cats hunt mice at night.",
+                keywords: ["chassent", "souris", "nuit"]
+            },
+            {
+                french: "Ma chatte attend devant la porte de la cuisine.",
+                english: "My cat waits in front of the kitchen door.",
+                keywords: ["attend", "porte", "cuisine"]
+            },
+            {
+                french: "Le chat se cache sous le lit.",
+                english: "The cat hides under the bed.",
+                keywords: ["cache", "sous", "lit"]
+            },
+            {
+                french: "J'achète des jouets pour mon chat.",
+                english: "I buy toys for my cat.",
+                keywords: ["achète", "jouets"]
+            },
+            {
+                french: "Le chat miaule devant sa gamelle vide.",
+                english: "The cat meows in front of his empty bowl.",
+                keywords: ["miaule", "gamelle", "vide"]
+            },
+            {
+                french: "Mon chat adore se promener sur le balcon.",
+                english: "My cat loves to walk on the balcony.",
+                keywords: ["adore", "promener", "balcon"]
+            },
+            {
+                french: "Ce chaton orange est très câlin.",
+                english: "This orange kitten is very cuddly.",
+                keywords: ["orange", "câlin"]
+            },
+            {
+                french: "Ma chatte nettoie ses pattes après le repas.",
+                english: "My cat cleans her paws after the meal.",
+                keywords: ["nettoie", "pattes", "repas"]
+            },
+            {
+                french: "Le chat observe les oiseaux par la fenêtre.",
+                english: "The cat watches the birds through the window.",
+                keywords: ["observe", "oiseaux", "fenêtre"]
+            },
+            {
+                french: "Mon vieux chat préfère rester à la maison.",
+                english: "My old cat prefers to stay at home.",
+                keywords: ["vieux", "préfère", "maison"]
+            },
+            {
+                french: "La queue du chat bouge quand il est content.",
+                english: "The cat's tail moves when he is happy.",
+                keywords: ["queue", "bouge", "content"]
+            }
+        ];
+
+        let currentPhraseIndex = 0;
+        let phrasesLearnedCount = 0;
+
+        const frenchPhraseElement = document.getElementById('frenchPhrase');
+        const englishTranslationElement = document.getElementById('englishTranslation');
+        const catImageElement = document.getElementById('catImage');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const progressFillElement = document.getElementById('progressFill');
+        const phrasesLearnedElement = document.getElementById('phrasesLearned');
+
+        function getRandomPhrase() {
+            return phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        function generateCatImageUrl(phrase) {
+            // Use one of the keywords from the phrase for the cat image
+            const keyword = phrase.keywords[Math.floor(Math.random() * phrase.keywords.length)];
+            const colors = ['white', 'black', 'orange', 'gray', 'brown'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            return `https://cataas.com/cat/says/${encodeURIComponent(keyword)}?size=200&color=${color}&fontSize=25`;
+        }
+
+        function updatePhrase() {
+            const phrase = getRandomPhrase();
+
+            // Add fade out effect
+            frenchPhraseElement.style.opacity = '0';
+            englishTranslationElement.style.opacity = '0';
+            catImageElement.style.opacity = '0';
+
+            setTimeout(() => {
+                frenchPhraseElement.textContent = phrase.french;
+                englishTranslationElement.textContent = phrase.english;
+                catImageElement.src = generateCatImageUrl(phrase);
+
+                // Add fade in effect
+                frenchPhraseElement.style.opacity = '1';
+                englishTranslationElement.style.opacity = '1';
+                catImageElement.style.opacity = '1';
+            }, 200);
+
+            // Update progress
+            phrasesLearnedCount++;
+            phrasesLearnedElement.textContent = phrasesLearnedCount;
+
+            const progressPercentage = Math.min((phrasesLearnedCount / phrases.length) * 100, 100);
+            progressFillElement.style.width = `${progressPercentage}%`;
+
+            // Celebration when all phrases learned
+            if (phrasesLearnedCount === phrases.length) {
+                setTimeout(() => {
+                    confetti();
+                    alert('🎉 Félicitations! Vous avez vu toutes les phrases! 🎉\n\nCongratulations! You\'ve seen all the phrases!');
+                }, 500);
+            }
+        }
+
+        function confetti() {
+            // Simple confetti effect
+            for (let i = 0; i < 50; i++) {
+                createConfettiPiece();
+            }
+        }
+
+        function createConfettiPiece() {
+            const confetti = document.createElement('div');
+            confetti.textContent = ['🎉', '🐱', '💝', '⭐', '🌟'][Math.floor(Math.random() * 5)];
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-10px';
+            confetti.style.fontSize = '20px';
+            confetti.style.pointerEvents = 'none';
+            confetti.style.zIndex = '1000';
+
+            document.body.appendChild(confetti);
+
+            const animation = confetti.animate([
+                { transform: 'translateY(0px) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight + 100}px) rotate(360deg)`, opacity: 0 }
+            ], {
+                duration: 3000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            });
+
+            animation.addEventListener('finish', () => {
+                confetti.remove();
+            });
+        }
+
+        // Add CSS transition for smooth opacity changes
+        frenchPhraseElement.style.transition = 'opacity 0.3s ease';
+        englishTranslationElement.style.transition = 'opacity 0.3s ease';
+        catImageElement.style.transition = 'opacity 0.3s ease';
+
+        refreshBtn.addEventListener('click', updatePhrase);
+
+        // Initialize with first phrase
+        updatePhrase();
+        phrasesLearnedCount = 0; // Reset counter after initial load
+        phrasesLearnedElement.textContent = '0';
+        progressFillElement.style.width = '0%';
+    </script>
+</body>
+</html>
