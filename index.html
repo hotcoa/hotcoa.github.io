@@ -1157,32 +1157,39 @@ Enter 1, 2, or 3:</code></pre>
             </div>
         </div>
 
-        <h3>No ASCII Art</h3>
-        <p>ASCII art does not have aria-label support and can be confusing for screen readers:</p>
+        <h3>ASCII Art — Use with Caution</h3>
+        <p>ASCII art can be visually striking and fun — we get it, it looks cool. However, screen readers will read it as gibberish since there is no aria-label support in terminals. If you choose to use ASCII art, follow these guidelines:</p>
 
-        <h4>ASCII Art Problems</h4>
-        <pre><code><span class="comment"># ❌ Bad - screen reader reads this as gibberish</span>
-    ╭─────────────────────────────╮
-    │                             │
-    │     🚀 DEPLOYMENT SUCCESS   │
-    │                             │
-    │   ┌─────────────────────┐   │
-    │   │ Status: ✅ Complete │   │
-    │   │ Time:   2m 15s      │   │
-    │   │ Files:  247 updated │   │
-    │   └─────────────────────┘   │
-    │                             │
-    ╰─────────────────────────────╯
+        <ul style="color: var(--text-secondary); padding-left: 1.5rem; margin-bottom: 1.5rem;">
+            <li><strong>Limit when it appears</strong> — Show ASCII art only on special occasions such as the very first run after install, or after a major upgrade.</li>
+            <li><strong>Detect screen readers</strong> — If you can detect screen readers, don't show the ASCII art when the reader is on. </li>
+            <li><strong>Always include a plain-text alternative</strong> — The essential information in the art should also be conveyed in regular text.</li>
+        </ul>
 
-<span class="comment"># ✅ Good - clear text that reads well</span>
-DEPLOYMENT SUCCESS
-==================
+        <h4>ASCII Art Done Right</h4>
+        <pre><code><span class="comment"># ⚠️ Caution - a screen reader would read every character of this as gibberish</span>
+<span class="comment"># Only show on first run or upgrade, and skip for screen reader users</span>
 
-Status: Complete
-Time: 2 minutes 15 seconds  
-Files: 247 updated
+ ██╗  ██╗███████╗██╗     ██╗      ██████╗
+ ██║  ██║██╔════╝██║     ██║     ██╔═══██╗
+ ███████║█████╗  ██║     ██║     ██║   ██║
+ ██╔══██║██╔══╝  ██║     ██║     ██║   ██║
+ ██║  ██║███████╗███████╗███████╗╚██████╔╝
+ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝
+ ██╗    ██╗ ██████╗ ██████╗ ██╗     ██████╗ ██╗
+ ██║    ██║██╔═══██╗██╔══██╗██║     ██╔══██╗██║
+ ██║ █╗ ██║██║   ██║██████╔╝██║     ██║  ██║██║
+ ██║███╗██║██║   ██║██╔══██╗██║     ██║  ██║╚═╝
+ ╚███╔███╔╝╚██████╔╝██║  ██║███████╗██████╔╝██╗
+  ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝
 
-All services are running normally.</code></pre>
+ Welcome to MyCLI v2.0 — type 'help' to get started.
+
+<span class="comment"># ✅ Always include a plain-text fallback with the same info</span>
+<span class="comment"># This is what screen reader users (and --no-banner users) would see instead:</span>
+
+Hello World!
+Welcome to MyCLI v2.0 — type 'help' to get started.</code></pre>
 
       
     </section>
