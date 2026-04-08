@@ -42,9 +42,7 @@
         .lang-select{font-family:'Fredoka',sans-serif;padding:0.35rem 0.8rem;border:2px solid #dfe6e9;border-radius:10px;font-size:0.85rem;color:#2d3436;background:#fff;cursor:pointer;transition:all 0.2s}
         .lang-select:hover{border-color:#74b9ff}
         .lang-select:focus{outline:none;border-color:#74b9ff;box-shadow:0 0 0 3px rgba(116,185,255,0.15)}
-        .level-select{font-family:'Fredoka',sans-serif;padding:0.35rem 0.8rem;border:2px solid #dfe6e9;border-radius:10px;font-size:0.85rem;color:#2d3436;background:#fff;cursor:pointer;transition:all 0.2s}
-        .level-select:hover{border-color:#00b894}
-        .level-select:focus{outline:none;border-color:#00b894;box-shadow:0 0 0 3px rgba(0,184,148,0.15)}
+
         .top-divider{width:1px;height:20px;background:#dfe6e9;margin:0 0.2rem}
         .logout-btn{font-family:'Fredoka',sans-serif;background:none;border:1px solid #dfe6e9;border-radius:50px;padding:0.3rem 0.8rem;font-size:0.85rem;color:#636e72;cursor:pointer;transition:all 0.2s}
         .logout-btn:hover{border-color:#d63031;color:#d63031}
@@ -63,17 +61,7 @@
         .lang-card-name{font-size:1rem;color:#2d3436;font-weight:600}
         .lang-card-native{font-size:0.85rem;color:#636e72;font-weight:300}
 
-        /* Level Picker */
-        .level-picker-wrap{text-align:center;padding:2rem}
-        .level-picker-wrap h2{color:#2d3436;font-size:1.8rem;margin-bottom:0.5rem}
-        .level-picker-wrap>p{color:#636e72;margin-bottom:2rem;font-weight:300}
-        .level-grid{display:flex;flex-direction:column;gap:1rem;max-width:500px;margin:0 auto}
-        .level-card{background:rgba(255,255,255,0.95);border-radius:16px;padding:1.2rem 1.5rem;text-align:left;cursor:pointer;transition:all 0.3s;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.08);display:flex;align-items:center;gap:1rem}
-        .level-card:hover{transform:translateY(-3px);border-color:#74b9ff;box-shadow:0 8px 25px rgba(0,0,0,0.12)}
-        .level-card-emoji{font-size:2rem;flex-shrink:0}
-        .level-card-info{flex:1}
-        .level-card-name{font-size:1.1rem;color:#2d3436;font-weight:600}
-        .level-card-desc{font-size:0.85rem;color:#636e72;font-weight:300;margin-top:0.2rem}
+
 
         /* Cat page */
         .container{width:90%;max-width:600px;background:rgba(255,255,255,0.95);border-radius:30px;padding:2rem;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);backdrop-filter:blur(10px);position:relative;overflow:hidden}
@@ -88,7 +76,6 @@
         .phrase-container{position:relative;z-index:1;background:linear-gradient(135deg,#a8e6cf,#dcedc1);border-radius:20px;padding:2rem;margin:2rem 0;border:3px solid #fff;box-shadow:0 8px 25px rgba(0,0,0,0.1)}
         #demoPhrase{font-size:1.8rem;font-weight:600;color:#2d3436;margin-bottom:1rem;transition:opacity 0.3s}
         #demoMeaning{font-size:1.2rem;color:#636e72;font-weight:400;font-style:italic;transition:opacity 0.3s}
-        #demoSource{font-size:0.8rem;color:#0984e3;font-weight:400;margin-top:0.8rem;padding:0.3rem 0.8rem;background:rgba(9,132,227,0.08);border-radius:50px;display:inline-block;transition:opacity 0.3s}
         .speak-btn{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff;border:none;border-radius:50%;width:48px;height:48px;font-size:1.4rem;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 15px rgba(108,92,231,0.3);position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;margin-top:1rem}
         .speak-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(108,92,231,0.4)}
         .speak-btn:active{transform:scale(0.95)}
@@ -105,88 +92,13 @@
         .progress-fill{background:linear-gradient(90deg,#74b9ff,#0984e3);height:100%;border-radius:10px;transition:width 0.5s ease}
         .stats{display:flex;justify-content:space-between;margin-top:1rem;font-size:0.9rem;color:#636e72;position:relative;z-index:1}
 
-        /* Notes toggle */
-        .notes-toggle{font-family:'Fredoka',sans-serif;background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;border:none;border-radius:50px;padding:0.7rem 1.5rem;font-size:1rem;font-weight:400;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(9,132,227,0.3);position:relative;z-index:1;margin-top:1rem}
-        .notes-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(9,132,227,0.4)}
-
-        /* Notes overlay */
-        .notes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;overflow-y:auto;padding:2rem 1rem}
-        .notes-overlay.open{display:block}
-        .notes-app{max-width:800px;margin:0 auto;animation:slideUp 0.3s ease}
-        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .notes-close-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-        .notes-close-bar h2{color:#fff;font-size:1.5rem}
-        .close-btn{font-family:'Fredoka',sans-serif;background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:50px;padding:0.5rem 1.2rem;font-size:1rem;cursor:pointer;transition:background 0.2s}
-        .close-btn:hover{background:rgba(255,255,255,0.35)}
-
-        .tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;justify-content:center}
-        .tab-btn{font-family:'Fredoka',sans-serif;padding:0.7rem 1.5rem;border:none;border-radius:50px;font-size:1rem;font-weight:400;cursor:pointer;transition:all 0.3s;background:rgba(255,255,255,0.6);color:#636e72}
-        .tab-btn.active{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;box-shadow:0 4px 15px rgba(9,132,227,0.3)}
-        .tab-btn:hover:not(.active){background:rgba(255,255,255,0.9)}
-        .panel{display:none}.panel.active{display:block}
-        .card{background:rgba(255,255,255,0.95);border-radius:20px;padding:1.5rem;box-shadow:0 8px 25px rgba(0,0,0,0.08);margin-bottom:1.5rem}
-        .card h3{font-size:1.3rem;color:#2d3436;margin-bottom:1rem}
-        .notes-textarea{width:100%;min-height:250px;border:2px solid #dfe6e9;border-radius:12px;padding:1rem;font-family:'Fredoka',sans-serif;font-size:0.95rem;resize:vertical;transition:border-color 0.3s;line-height:1.6;color:#2d3436}
-        .notes-textarea:focus{outline:none;border-color:#74b9ff}
-        .notes-textarea::placeholder{color:#b2bec3}
-        .btn-row{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap}
-        .btn{font-family:'Fredoka',sans-serif;padding:0.6rem 1.3rem;border:none;border-radius:50px;font-size:0.95rem;font-weight:400;cursor:pointer;transition:all 0.3s}
-        .btn-primary{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;box-shadow:0 4px 12px rgba(0,184,148,0.3)}
-        .btn-primary:hover{transform:translateY(-2px)}
-        .btn-danger{background:linear-gradient(135deg,#ff7675,#d63031);color:#fff}
-        .btn-danger:hover{transform:translateY(-2px)}
-        .btn-secondary{background:rgba(99,110,114,0.15);color:#2d3436}
-        .btn-secondary:hover{background:rgba(99,110,114,0.25)}
-        .save-status{font-size:0.85rem;color:#00b894;margin-top:0.5rem;min-height:1.2rem}
-        .lesson-bar{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
-        .lesson-bar select,.lesson-bar input{font-family:'Fredoka',sans-serif;padding:0.5rem 1rem;border:2px solid #dfe6e9;border-radius:12px;font-size:0.95rem;color:#2d3436;background:#fff;flex:1;min-width:150px}
-        .lesson-bar select:focus,.lesson-bar input:focus{outline:none;border-color:#74b9ff}
-        .phrase-form{display:flex;flex-direction:column;gap:0.8rem}
-        .phrase-form input,.phrase-form textarea{font-family:'Fredoka',sans-serif;padding:0.7rem 1rem;border:2px solid #dfe6e9;border-radius:12px;font-size:0.95rem;color:#2d3436;transition:border-color 0.3s}
-        .phrase-form input:focus,.phrase-form textarea:focus{outline:none;border-color:#74b9ff}
-        .phrase-form input::placeholder,.phrase-form textarea::placeholder{color:#b2bec3}
-        .phrase-form textarea{min-height:60px;resize:vertical;line-height:1.5}
-        .phrase-list{display:flex;flex-direction:column;gap:0.8rem;margin-top:1rem}
-        .phrase-item{background:linear-gradient(135deg,#dfe6e9,#b2bec350);border-radius:14px;padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;transition:transform 0.2s}
-        .phrase-item:hover{transform:translateX(4px)}
-        .phrase-item-content{flex:1}
-        .phrase-item-phrase{font-size:1.1rem;font-weight:600;color:#2d3436;margin-bottom:0.3rem}
-        .phrase-item-meaning{font-size:0.9rem;color:#636e72;font-style:italic}
-        .phrase-item-context{font-size:0.8rem;color:#0984e3;margin-top:0.3rem}
-        .phrase-item-lesson{font-size:0.75rem;color:#00b894;margin-top:0.2rem}
-        .del-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;color:#b2bec3;transition:color 0.2s;padding:0.2rem;flex-shrink:0}
-        .del-btn:hover{color:#d63031}
-        .empty-state{text-align:center;padding:2rem;color:#b2bec3;font-size:1.1rem}
-        .phrase-count{font-size:0.85rem;color:#636e72;text-align:right;margin-bottom:0.5rem}
-
-        .flashcard{background:linear-gradient(135deg,#a8e6cf,#dcedc1);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:transform 0.3s;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 8px 25px rgba(0,0,0,0.1);user-select:none}
-        .flashcard:hover{transform:scale(1.02)}
-        .fc-phrase{font-size:1.8rem;font-weight:600;color:#2d3436;margin-bottom:0.5rem}
-        .fc-hint{font-size:0.9rem;color:#636e72;margin-top:1rem}
-        .fc-meaning{font-size:1.3rem;color:#636e72;font-style:italic;margin-top:0.5rem}
-        .fc-context{font-size:0.9rem;color:#0984e3;margin-top:0.8rem}
-        .fc-lesson{font-size:0.8rem;color:#00b894;margin-top:0.5rem;background:rgba(0,184,148,0.1);padding:0.2rem 0.8rem;border-radius:50px}
-        .study-controls{display:flex;justify-content:center;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
-        .study-btn{font-family:'Fredoka',sans-serif;padding:0.8rem 2rem;border:none;border-radius:50px;font-size:1.1rem;font-weight:400;cursor:pointer;transition:all 0.3s;background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;box-shadow:0 4px 15px rgba(9,132,227,0.3)}
-        .study-btn:hover{transform:translateY(-2px)}
-        .study-progress{text-align:center;margin-top:1rem;color:#636e72;font-size:0.9rem}
-        .np-bar{background:rgba(116,185,255,0.2);height:6px;border-radius:10px;overflow:hidden;margin-top:0.8rem}
-        .np-fill{background:linear-gradient(90deg,#74b9ff,#0984e3);height:100%;border-radius:10px;transition:width 0.4s ease}
-        .study-filter{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}
-        .study-filter select{font-family:'Fredoka',sans-serif;padding:0.4rem 0.8rem;border:2px solid #dfe6e9;border-radius:12px;font-size:0.85rem;color:#2d3436;background:#fff}
-        .notes-display{white-space:pre-wrap;font-size:0.95rem;line-height:1.7;color:#2d3436;padding:1rem;background:#f8f9fa;border-radius:12px;max-height:400px;overflow-y:auto}
-        .notes-lesson-title{font-size:1.1rem;font-weight:600;color:#0984e3;margin-bottom:0.5rem}
-        .notes-section{margin-bottom:1.5rem}
-
         @media(max-width:600px){
             .container{width:95%;padding:1.5rem}.title{font-size:2rem}.cat-image{width:150px;height:150px}
             #demoPhrase{font-size:1.4rem}#demoMeaning{font-size:1rem}
-            .fc-phrase{font-size:1.4rem}.flashcard{padding:1.5rem;min-height:160px}
-            .tabs{gap:0.3rem}.tab-btn{padding:0.5rem 1rem;font-size:0.9rem}
             .top-bar{padding:0.5rem 0.8rem}.user-name{display:none}
             .top-select-label{display:none}
             .top-divider{display:none}
-            .lang-select,.level-select{font-size:0.78rem;padding:0.3rem 0.5rem}
+            .lang-select{font-size:0.78rem;padding:0.3rem 0.5rem}
             .lang-grid{grid-template-columns:repeat(2,1fr)}
             .login-card{padding:2rem 1.5rem}
         }
@@ -198,7 +110,7 @@
 <div id="loginScreen" class="screen active">
     <div class="login-card">
         <h1>🐱 Cat Language</h1>
-        <p>Learn languages with fun flashcards &amp; personal notes</p>
+        <p>Learn languages with fun flashcards</p>
         <button class="google-btn" id="googleLoginBtn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"/>
             Sign in with Google
@@ -224,10 +136,7 @@
                 <span class="top-select-label">🌍</span>
                 <select class="lang-select" id="topLangSelect"></select>
             </div>
-            <div class="top-select-group" id="topLevelGroup" style="display:none">
-                <span class="top-select-label">📊</span>
-                <select class="level-select" id="topLevelSelect"></select>
-            </div>
+
             <div class="top-divider"></div>
             <button class="logout-btn" id="logoutBtn">Sign out</button>
         </div>
@@ -240,12 +149,7 @@
         <div class="lang-grid" id="langGrid"></div>
     </div>
 
-    <!-- Level Picker -->
-    <div id="levelPicker" class="level-picker-wrap" style="display:none">
-        <h2>🐱 What's your level?</h2>
-        <p>We'll show you cat phrases that match your skills</p>
-        <div class="level-grid" id="levelGrid"></div>
-    </div>
+
 
     <!-- Main Content -->
     <div id="mainContent" style="display:none">
@@ -264,7 +168,6 @@
             <div class="phrase-container">
                 <div id="demoPhrase">Cliquez pour commencer!</div>
                 <div id="demoMeaning">Click to start!</div>
-                <div id="demoSource" style="display:none"></div>
                 <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
             </div>
             <button id="refreshBtn" class="refresh-btn">🔄 Nouvelle phrase!</button>
@@ -274,81 +177,6 @@
                 <span id="levelBadge">A2 🌟</span>
             </div>
             <p class="motivation-text" id="motivationText">Chaque phrase vous rapproche de la maîtrise! 💪</p>
-            <button class="notes-toggle" id="openNotesBtn">📝 My Notes</button>
-        </div>
-    </div>
-
-    <!-- Notes Overlay -->
-    <div class="notes-overlay" id="notesOverlay">
-        <div class="notes-app">
-            <div class="notes-close-bar">
-                <h2 id="notesTitle">🇫🇷 My Notes</h2>
-                <button class="close-btn" id="closeNotesBtn">✕ Close</button>
-            </div>
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="notes">📝 Notes</button>
-                <button class="tab-btn" data-tab="phrases">📖 Phrases</button>
-                <button class="tab-btn" data-tab="study">🎯 Study</button>
-            </div>
-            <div id="panel-notes" class="panel active">
-                <div class="card">
-                    <h3>📝 Paste Your Lesson Notes</h3>
-                    <div class="lesson-bar">
-                        <select id="lessonSelect"><option value="">— Select a lesson —</option></select>
-                        <input id="newLessonName" type="text" placeholder="New lesson name"/>
-                        <button class="btn btn-secondary" id="addLessonBtn">+ Add</button>
-                    </div>
-                    <textarea id="notesTextarea" class="notes-textarea" placeholder="Paste your lesson notes here..."></textarea>
-                    <div class="btn-row">
-                        <button class="btn btn-primary" id="saveNotesBtn">💾 Save Notes</button>
-                        <button class="btn btn-danger" id="deleteLessonBtn">🗑 Delete Lesson</button>
-                    </div>
-                    <div class="save-status" id="saveStatus"></div>
-                </div>
-                <div class="card">
-                    <h3>📚 Saved Lesson Notes</h3>
-                    <div id="savedNotesDisplay"><div class="empty-state">No lesson notes saved yet.</div></div>
-                </div>
-            </div>
-            <div id="panel-phrases" class="panel">
-                <div class="card">
-                    <h3>➕ Add a Phrase</h3>
-                    <div class="phrase-form">
-                        <input id="phraseLesson" type="text" placeholder="Lesson tag (e.g. Lesson 5)"/>
-                        <input id="phrasePhrase" type="text" placeholder="Phrase in target language"/>
-                        <input id="phraseMeaning" type="text" placeholder="English meaning"/>
-                        <textarea id="phraseContext" placeholder="Context or note (optional)"></textarea>
-                        <div class="btn-row"><button class="btn btn-primary" id="addPhraseBtn">➕ Add Phrase</button></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="phrase-count" id="phraseCount">0 phrases</div>
-                    <h3>📖 My Phrases</h3>
-                    <div class="phrase-list" id="phraseList"><div class="empty-state">No phrases yet.</div></div>
-                </div>
-            </div>
-            <div id="panel-study" class="panel">
-                <div class="card">
-                    <div class="study-filter">
-                        <select id="studyLessonFilter"><option value="all">All lessons</option></select>
-                        <button class="btn btn-secondary" id="shuffleBtn">�� Shuffle</button>
-                    </div>
-                    <div class="flashcard" id="flashcard">
-                        <div class="fc-phrase" id="fcPhrase">Add phrases to start!</div>
-                        <div class="fc-hint" id="fcHint"></div>
-                        <div class="fc-meaning" id="fcMeaning" style="display:none"></div>
-                        <div class="fc-context" id="fcContext" style="display:none"></div>
-                        <div class="fc-lesson" id="fcLesson" style="display:none"></div>
-                    </div>
-                    <div class="study-controls">
-                        <button class="study-btn" id="prevBtn">⬅ Prev</button>
-                        <button class="study-btn" id="flipBtn">🔄 Flip</button>
-                        <button class="study-btn" id="nextBtn">Next ➡</button>
-                    </div>
-                    <div class="study-progress" id="studyProgress"></div>
-                    <div class="np-bar"><div class="np-fill" id="studyProgressFill" style="width:0%"></div></div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -371,13 +199,7 @@ const db = firebase.firestore();
 // ═══════════ Languages ═══════════
 const LANGS = {
     french:     { name:'French',     flag:'🇫🇷', native:'Français',  hi:'Bonjour!' },
-    spanish:    { name:'Spanish',    flag:'🇪🇸', native:'Español',   hi:'¡Hola!' },
     korean:     { name:'Korean',     flag:'🇰🇷', native:'한국어',      hi:'안녕하세요!' },
-    japanese:   { name:'Japanese',   flag:'🇯🇵', native:'日本語',      hi:'こんにちは!' },
-    german:     { name:'German',     flag:'🇩🇪', native:'Deutsch',   hi:'Hallo!' },
-    italian:    { name:'Italian',    flag:'��🇹', native:'Italiano',  hi:'Ciao!' },
-    portuguese: { name:'Portuguese', flag:'🇧🇷', native:'Português', hi:'Olá!' },
-    chinese:    { name:'Chinese',    flag:'🇨🇳', native:'中文',        hi:'你好!' }
 };
 
 const DEMO = {
@@ -419,66 +241,184 @@ const LEVELS = {
 const LEVEL_DEMO = {
     french: {
         beginner: [
-            { p:"Mon chat cuisine.", m:"My cat is cooking.", kw:["cook","kitchen"] },
-            { p:"Le chat travaille.", m:"The cat works.", kw:["work","job"] },
-            { p:"Mon chat mange.", m:"My cat is eating.", kw:["eat","food"] },
-            { p:"Le chat étudie.", m:"The cat studies.", kw:["study","learn"] }
+            // A1 — Present tense, basic vocabulary, simple structures
+            { p:"Mon chat est calme.", m:"My cat is calm.", kw:["calme","adjective"] },
+            { p:"Le chat mange du fromage.", m:"The cat eats cheese.", kw:["fromage","food"] },
+            { p:"Mon chat est paresseux.", m:"My cat is lazy.", kw:["paresseux","adjective"] },
+            { p:"Le chat joue avec un ballon.", m:"The cat plays with a ball.", kw:["jouer","ballon"] },
+            { p:"Mon chat est jeune et beau.", m:"My cat is young and handsome.", kw:["jeune","beau"] },
+            { p:"Le chat aime la glace.", m:"The cat likes ice cream.", kw:["glace","food"] },
+            { p:"Mon chat est très sociable.", m:"My cat is very sociable.", kw:["sociable","adjective"] },
+            { p:"Le chat court dans la rue.", m:"The cat runs in the street.", kw:["courir","rue"] },
+            { p:"Mon chat nage dans l'eau.", m:"My cat swims in the water.", kw:["nager","eau"] },
+            { p:"Le chat dort dans la chambre.", m:"The cat sleeps in the bedroom.", kw:["chambre","dormir"] },
+            { p:"Mon chat travaille à la maison.", m:"My cat works at home.", kw:["travailler","maison"] },
+            { p:"Le chat ouvre la porte.", m:"The cat opens the door.", kw:["ouvrir","porte"] },
+            { p:"Mon chat écoute de la musique.", m:"My cat listens to music.", kw:["écouter","musique"] },
+            { p:"Le chat cherche ses amis.", m:"The cat looks for his friends.", kw:["chercher","amis"] },
+            { p:"Mon chat est affectueux.", m:"My cat is affectionate.", kw:["affectueux","adjective"] },
+            { p:"Le chat grimpe sur les meubles.", m:"The cat climbs on the furniture.", kw:["grimper","meubles"] },
+            { p:"Mon chat est un peu têtu.", m:"My cat is a bit stubborn.", kw:["têtu","adjective"] },
+            { p:"Le chat aide ses voisins.", m:"The cat helps his neighbors.", kw:["aider","voisins"] },
+            { p:"Mon chat achète un cadeau.", m:"My cat buys a gift.", kw:["acheter","cadeau"] },
+            { p:"Le chat ferme la porte.", m:"The cat closes the door.", kw:["fermer","porte"] },
+            { p:"Mon chat lit un livre.", m:"My cat reads a book.", kw:["lire","livre"] },
+            { p:"Le chat écrit dans son carnet.", m:"The cat writes in his notebook.", kw:["écrire","carnet"] },
+            { p:"Mon chat est aventureux.", m:"My cat is adventurous.", kw:["aventureux","adjective"] },
+            { p:"Le chat prépare le dîner.", m:"The cat prepares dinner.", kw:["préparer","dîner"] },
+            { p:"Mon chat est poli avec les gens.", m:"My cat is polite with people.", kw:["poli","gens"] },
+            { p:"Le chat peint un beau tableau.", m:"The cat paints a beautiful painting.", kw:["peindre","beau"] },
+            { p:"Mon chat mange un plat délicieux.", m:"My cat eats a delicious dish.", kw:["plat","délicieux"] },
+            { p:"Le chat salue ses collègues.", m:"The cat greets his colleagues.", kw:["saluer","collègues"] },
+            { p:"Mon chat est libre le week-end.", m:"My cat is free on the weekend.", kw:["libre","week-end"] },
+            { p:"Il fait chaud et le chat boit de l'eau.", m:"It's hot and the cat drinks water.", kw:["chaud","eau"] },
+            // A1 — Conversational phrases
+            { p:"De rien.", m:"You're welcome.", kw:["polite","welcome"] },
+            { p:"Je vous en prie.", m:"You're welcome. (formal)", kw:["formal","polite"] },
+            { p:"J'aime ça.", m:"I like that.", kw:["aimer","like"] },
+            { p:"Ça dépend.", m:"It depends.", kw:["depends","maybe"] },
+            { p:"Pas encore.", m:"Not yet.", kw:["pas","encore"] },
+            { p:"Pas vraiment.", m:"Not really.", kw:["pas","vraiment"] },
+            { p:"Bof, ça va.", m:"Meh, it's okay.", kw:["bof","okay"] },
+            { p:"Il fait chaud.", m:"It's hot.", kw:["chaud","weather"] },
+            { p:"Il fait froid.", m:"It's cold.", kw:["froid","weather"] },
+            { p:"Il pleut.", m:"It's raining.", kw:["pluie","weather"] },
+            { p:"Quelle heure il est ?", m:"What time is it?", kw:["heure","time"] },
+            { p:"Je dîne.", m:"I'm having dinner.", kw:["dîner","food"] },
+            { p:"Je fais de la musculation.", m:"I do weight training.", kw:["muscu","sport"] },
+            { p:"Je me lave le visage.", m:"I wash my face.", kw:["visage","routine"] }
         ],
         elementary: [
-            { p:"Mon chat va à l'école.", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"Le chat prend le bus.", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"Mon chat fait les courses.", m:"My cat goes grocery shopping.", kw:["shop","grocery"] },
-            { p:"Le chat prépare le dîner.", m:"The cat prepares dinner.", kw:["dinner","cook"] }
+            // A2 — Passé composé, reflexive verbs, negation, questions
+            { p:"Mon chat se lève tôt le matin.", m:"My cat gets up early in the morning.", kw:["se lever","tôt"] },
+            { p:"Le chat se brosse les dents après le petit-déjeuner.", m:"The cat brushes his teeth after breakfast.", kw:["se brosser","dents"] },
+            { p:"Mon chat se douche le soir.", m:"My cat showers in the evening.", kw:["se doucher","soir"] },
+            { p:"Le chat s'occupe de ses amis.", m:"The cat takes care of his friends.", kw:["s'occuper de","amis"] },
+            { p:"Mon chat se couche tard.", m:"My cat goes to bed late.", kw:["se coucher","tard"] },
+            { p:"Le chat a trouvé un nouveau restaurant.", m:"The cat found a new restaurant.", kw:["trouver","restaurant"] },
+            { p:"Mon chat a acheté des meubles pour sa chambre.", m:"My cat bought furniture for his bedroom.", kw:["acheter","meubles"] },
+            { p:"Le chat a rencontré ses collègues au cinéma.", m:"The cat met his colleagues at the cinema.", kw:["rencontrer","cinéma"] },
+            { p:"Mon chat a cuisiné un plat délicieux.", m:"My cat cooked a delicious dish.", kw:["cuisiner","délicieux"] },
+            { p:"Le chat a découvert un beau magasin.", m:"The cat discovered a beautiful shop.", kw:["découvrir","magasin"] },
+            { p:"Mon chat ne sort jamais sans sa laisse.", m:"My cat never goes out without his leash.", kw:["ne...jamais","laisse"] },
+            { p:"Le chat n'a rien mangé ce matin.", m:"The cat ate nothing this morning.", kw:["ne...rien","manger"] },
+            { p:"Mon chat ne veut plus dormir seul.", m:"My cat doesn't want to sleep alone anymore.", kw:["ne...plus","seul"] },
+            { p:"Personne ne comprend mon chat.", m:"Nobody understands my cat.", kw:["ne...personne","comprendre"] },
+            { p:"Le chat n'a connu personne à la fête.", m:"The cat didn't know anyone at the party.", kw:["personne","passé composé"] },
+            { p:"Mon chat fait de la musculation le matin.", m:"My cat does weight training in the morning.", kw:["musculation","faire de"] },
+            { p:"Le chat joue du piano tous les soirs.", m:"The cat plays piano every evening.", kw:["jouer de","piano"] },
+            { p:"Mon chat fait les courses à l'épicerie.", m:"My cat goes grocery shopping at the grocery store.", kw:["courses","épicerie"] },
+            { p:"Le chat a reçu un cadeau de ses voisins.", m:"The cat received a gift from his neighbors.", kw:["recevoir","cadeau"] },
+            { p:"Mon chat sort avec ses amis deux fois par semaine.", m:"My cat goes out with his friends twice a week.", kw:["deux fois","amis"] },
+            { p:"Le chat a l'air très jeune.", m:"The cat looks very young.", kw:["avoir l'air","jeune"] },
+            { p:"Mon chat vient de manger.", m:"My cat just ate.", kw:["venir de","manger"] },
+            { p:"Tout s'est bien passé pour mon chat.", m:"Everything went well for my cat.", kw:["tout","bien passé"] },
+            { p:"Le chat a hâte de commencer sa formation.", m:"The cat is looking forward to starting his training.", kw:["avoir hâte","formation"] },
+            { p:"Mon chat s'est présenté à ses nouveaux voisins.", m:"My cat introduced himself to his new neighbors.", kw:["se présenter","voisins"] },
+            { p:"Le chat a déménagé à la campagne.", m:"The cat moved to the countryside.", kw:["déménager","campagne"] },
+            { p:"Mon chat a salué les invités.", m:"My cat greeted the guests.", kw:["saluer","invités"] },
+            { p:"Le chat s'entraîne pour une compétition de danse.", m:"The cat trains for a dance competition.", kw:["s'entraîner","danse"] },
+            { p:"Mon chat a vendu sa vieille maison.", m:"My cat sold his old house.", kw:["vendre","vieux"] },
+            { p:"Le chat a commencé le bénévolat.", m:"The cat started volunteering.", kw:["commencer","bénévolat"] },
+            { p:"Mon chat a arrêté de pleurer.", m:"My cat stopped crying.", kw:["arrêter","pleurer"] },
+            { p:"Le chat continue de s'entraîner petit à petit.", m:"The cat continues to train little by little.", kw:["continuer","petit à petit"] },
+            { p:"Mon chat s'est fait beaucoup d'amis grâce à son voisin.", m:"My cat made a lot of friends thanks to his neighbor.", kw:["se faire des amis","grâce à"] },
+            { p:"Le chat ne se souvient pas du mot.", m:"The cat doesn't remember the word.", kw:["se souvenir","mot"] },
+            { p:"Mon chat a montré sa chambre à ses amis.", m:"My cat showed his bedroom to his friends.", kw:["montrer","chambre"] },
+            // A2 — Conversational phrases
+            { p:"Tu as fait quoi hier ?", m:"What did you do yesterday?", kw:["hier","question"] },
+            { p:"Tout s'est bien passé.", m:"Everything went well.", kw:["bien","passé"] },
+            { p:"J'ai hâte !", m:"I'm looking forward to it!", kw:["hâte","excited"] },
+            { p:"Je viens de manger.", m:"I just ate.", kw:["venir de","just"] },
+            { p:"Il a l'air très jeune.", m:"He looks very young.", kw:["avoir l'air","look"] },
+            { p:"Je ne me souviens pas.", m:"I don't remember.", kw:["souvenir","remember"] },
+            { p:"Je me lève 5 minutes avant le travail.", m:"I wake up 5 minutes before work.", kw:["se lever","work"] },
+            { p:"Je ne me lève pas tôt.", m:"I don't get up early.", kw:["negation","routine"] },
+            { p:"Je me douche le soir.", m:"I shower at night.", kw:["se doucher","routine"] },
+            { p:"J'écris dans un journal.", m:"I write in a diary.", kw:["écrire","journal"] },
+            { p:"Je sors mon chat avec une laisse tous les jours.", m:"I walk my cat with a leash every day.", kw:["laisse","chat"] },
+            { p:"Je me fais beaucoup d'amis grâce à mon chat.", m:"I make a lot of friends thanks to my cat.", kw:["amis","grâce à"] },
+            { p:"Je donne à manger aux chats.", m:"I feed the cats.", kw:["manger","chat"] },
+            { p:"Je brosse les poils de mon chat.", m:"I brush my cat's fur.", kw:["poils","chat"] },
+            { p:"Tu es allée au cinéma ?", m:"Did you go to the cinema?", kw:["cinéma","question"] },
+            { p:"Vous êtes prête ?", m:"Are you ready? (formal)", kw:["prête","ready"] },
+            { p:"Ça vous a plu ?", m:"Did you enjoy it?", kw:["plaire","enjoy"] },
+            { p:"Que recommandez-vous ?", m:"What do you recommend?", kw:["recommend","question"] },
+            { p:"Combien coûte le prix du bus ?", m:"How much does the bus cost?", kw:["prix","bus"] },
+            { p:"À quelle heure est le prochain bus ?", m:"What time is the next bus?", kw:["heure","bus"] },
+            { p:"Je travaille dans une entreprise technologique.", m:"I work in a tech company.", kw:["entreprise","work"] },
+            { p:"Je ne passe pas de temps avec mes collègues.", m:"I don't spend time with my colleagues.", kw:["collègues","negation"] },
+            { p:"Alors je me sens seule.", m:"So I feel lonely.", kw:["seule","feeling"] },
+            { p:"Je dois partir 5 minutes plus tôt.", m:"I have to leave 5 minutes earlier.", kw:["devoir","tôt"] }
         ],
         intermediate: [
-            { p:"Mon chat est diplômé du lycée cette année.", m:"My cat is graduating from high school this year.", kw:["graduate","school"] },
-            { p:"Le chat prépare son entretien d'embauche pour demain.", m:"The cat is preparing for his job interview tomorrow.", kw:["interview","job"] },
-            { p:"Mon chat a cuisiné un repas délicieux pour ses amis.", m:"My cat cooked a delicious meal for his friends.", kw:["cook","friends"] },
-            { p:"Le chat prend le métro pour aller au travail chaque matin.", m:"The cat takes the subway to work every morning.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"Mon chat a étudié pendant cinq ans avant de décrocher son diplôme.", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"Bien que mon chat ait raté son premier entretien, il n'a pas abandonné.", m:"Although my cat failed his first interview, he didn't give up.", kw:["interview","persist"] },
-            { p:"Mon chat envisage de déménager à l'étranger pour poursuivre sa carrière.", m:"My cat is considering moving abroad to pursue his career.", kw:["abroad","career"] },
-            { p:"Le chat a dû annuler ses vacances parce qu'il avait trop de travail.", m:"The cat had to cancel his vacation because he had too much work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"À force de persévérer, mon chat a fini par décrocher le poste de ses rêves.", m:"Through perseverance, my cat ended up landing his dream job. (Idiom: à force de)", kw:["dream","career"] },
-            { p:"Mon chat brûle la chandelle par les deux bouts entre son travail et ses études.", m:"My cat is burning the candle at both ends between work and studies. (Idiom)", kw:["busy","burnout"] },
-            { p:"Après avoir longuement hésité, mon chat a décidé de se lancer dans l'entrepreneuriat.", m:"After much hesitation, my cat decided to take the plunge into entrepreneurship.", kw:["business","startup"] },
-            { p:"Mon chat ne jure que par le café du matin pour bien commencer sa journée.", m:"My cat swears by morning coffee to start his day right. (Expression: ne jurer que par)", kw:["coffee","morning"] }
-        ]
-    },
-    spanish: {
-        beginner: [
-            { p:"Mi gato cocina.", m:"My cat cooks.", kw:["cook","kitchen"] },
-            { p:"El gato estudia.", m:"The cat studies.", kw:["study","learn"] },
-            { p:"Mi gato trabaja.", m:"My cat works.", kw:["work","job"] },
-            { p:"El gato come.", m:"The cat eats.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"Mi gato va a la escuela.", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"El gato toma el autobús.", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"Mi gato va de compras.", m:"My cat goes shopping.", kw:["shop","grocery"] },
-            { p:"El gato prepara la cena.", m:"The cat prepares dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"Mi gato se gradúa de la secundaria este año.", m:"My cat is graduating from high school this year.", kw:["graduate","school"] },
-            { p:"El gato tiene una entrevista de trabajo mañana.", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"Mi gato cocinó una cena especial para su familia.", m:"My cat cooked a special dinner for his family.", kw:["cook","family"] },
-            { p:"El gato toma el metro para ir al trabajo cada día.", m:"The cat takes the subway to work every day.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"Mi gato estudió durante cinco años antes de obtener su título.", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"Aunque mi gato no pasó su primera entrevista, no se rindió.", m:"Although my cat didn't pass his first interview, he didn't give up.", kw:["interview","persist"] },
-            { p:"Mi gato está pensando en mudarse al extranjero para avanzar en su carrera.", m:"My cat is thinking about moving abroad to advance his career.", kw:["abroad","career"] },
-            { p:"El gato tuvo que cancelar sus vacaciones porque tenía demasiado trabajo.", m:"The cat had to cancel his vacation because he had too much work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"A fuerza de insistir, mi gato consiguió el trabajo de sus sueños.", m:"By insisting, my cat got his dream job. (Expression: a fuerza de)", kw:["dream","career"] },
-            { p:"Mi gato está quemándose las pestañas entre el trabajo y los estudios.", m:"My cat is burning the midnight oil between work and studies. (Idiom)", kw:["busy","burnout"] },
-            { p:"Después de pensarlo mucho, mi gato decidió emprender su propio negocio.", m:"After much thought, my cat decided to start his own business.", kw:["business","startup"] },
-            { p:"Mi gato no puede vivir sin su café matutino para arrancar el día.", m:"My cat can't live without his morning coffee to start the day.", kw:["coffee","morning"] }
+            // B1 — Imparfait + passé composé, depuis/il y a, COD/COI/EN/Y, comparisons, relative pronouns
+            { p:"Quand mon chat était jeune, il grimpait partout sur les meubles.", m:"When my cat was young, he used to climb everywhere on the furniture.", kw:["imparfait","grimper"] },
+            { p:"Le chat marchait dans la rue quand il a rencontré un ami.", m:"The cat was walking on the street when he met a friend.", kw:["imparfait+PC","rencontrer"] },
+            { p:"Mon chat faisait de la musculation quand il a commencé à pleuvoir.", m:"My cat was doing weight training when it started raining.", kw:["imparfait+PC","pleuvoir"] },
+            { p:"Le chat était paresseux, mais il a décidé de changer.", m:"The cat was lazy, but he decided to change.", kw:["imparfait+PC","décider"] },
+            { p:"Mon chat se sentait seul, alors il s'est fait des amis.", m:"My cat felt lonely, so he made friends.", kw:["se sentir","se faire des amis"] },
+            { p:"Le chat habitait en Corée quand il était jeune.", m:"The cat used to live in Korea when he was young.", kw:["imparfait","habiter"] },
+            { p:"Mon chat jouait du piano quand quelqu'un a frappé à la porte.", m:"My cat was playing piano when someone knocked on the door.", kw:["imparfait+PC","piano"] },
+            { p:"Le chat réfléchissait à son avenir quand il a reçu une offre.", m:"The cat was thinking about his future when he received an offer.", kw:["réfléchir","imparfait+PC"] },
+            { p:"Il faisait froid, alors mon chat est resté à la maison.", m:"It was cold, so my cat stayed home.", kw:["imparfait+PC","froid"] },
+            { p:"Le chat se comportait bien devant les invités.", m:"The cat was behaving well in front of the guests.", kw:["se comporter","imparfait"] },
+            { p:"Mon chat habite dans cette maison depuis trois ans.", m:"My cat has been living in this house for three years.", kw:["depuis","habiter"] },
+            { p:"Le chat étudie le français depuis l'année dernière.", m:"The cat has been studying French since last year.", kw:["depuis","étudier"] },
+            { p:"Mon chat attend le bus depuis vingt minutes.", m:"My cat has been waiting for the bus for twenty minutes.", kw:["depuis","attendre"] },
+            { p:"Il y a cinq ans, le chat a déménagé à la campagne.", m:"Five years ago, the cat moved to the countryside.", kw:["il y a","déménager"] },
+            { p:"Le chat a travaillé pendant douze ans dans une entreprise.", m:"The cat worked for twelve years in a company.", kw:["pendant","travailler"] },
+            { p:"Ce film ? Mon chat l'a regardé deux fois.", m:"This movie? My cat watched it twice. (COD: l')", kw:["COD","deux fois"] },
+            { p:"Des livres, mon chat en a beaucoup.", m:"Books — my cat has a lot of them. (EN replaces des livres)", kw:["EN","livres"] },
+            { p:"Mon chat va au cinéma — il y va avec ses amis.", m:"My cat goes to the cinema — he goes there with his friends. (Y replaces au cinéma)", kw:["Y","cinéma"] },
+            { p:"Le chat a envoyé un cadeau à sa voisine — il lui a envoyé des fleurs.", m:"The cat sent a gift to his neighbor — he sent her flowers. (COI: lui)", kw:["COI","cadeau"] },
+            { p:"Mon chat pense à son travail — il y pense souvent.", m:"My cat thinks about his work — he thinks about it often. (Y replaces à + thing)", kw:["Y","penser à"] },
+            { p:"Le chat mange de la glace tous les jours — il en mange beaucoup.", m:"The cat eats ice cream every day — he eats a lot of it. (EN replaces de la glace)", kw:["EN","glace"] },
+            { p:"Mon chat est plus aventureux que ses voisins.", m:"My cat is more adventurous than his neighbors.", kw:["plus que","comparatif"] },
+            { p:"Le chat est le meilleur cuisinier de la famille.", m:"The cat is the best cook in the family.", kw:["meilleur","superlatif"] },
+            { p:"Mon chat a huit ans de plus que son frère.", m:"My cat is eight years older than his brother.", kw:["de plus que","comparatif"] },
+            { p:"Le restaurant où le chat travaillait est fermé.", m:"The restaurant where the cat used to work is closed. (où = where)", kw:["où","pronom relatif"] },
+            { p:"Le livre que mon chat lit est sur le développement personnel.", m:"The book that my cat reads is about personal development. (que = that)", kw:["que","pronom relatif"] },
+            { p:"Mon chat a un ami qui est cascadeur.", m:"My cat has a friend who is a stunt performer. (qui = who)", kw:["qui","pronom relatif"] },
+            { p:"Le quartier dont mon chat parle est dangereux.", m:"The neighborhood my cat talks about is dangerous. (dont = about which)", kw:["dont","pronom relatif"] },
+            { p:"Mon chat a réparé l'ordinateur de son voisin.", m:"The cat fixed his neighbor's computer.", kw:["réparer","ordinateur"] },
+            { p:"Mon chat tapait sur l'ordinateur quand l'écran est devenu bleu.", m:"My cat was typing on the computer when the screen turned blue.", kw:["imparfait+PC","ordinateur"] },
+            { p:"Le chat économise pour acheter de nouveaux meubles.", m:"The cat is saving to buy new furniture.", kw:["économiser","meubles"] },
+            { p:"Mon chat évite les endroits dangereux la nuit.", m:"My cat avoids dangerous places at night.", kw:["éviter","dangereux"] },
+            { p:"Le chat doit partir cinq minutes plus tôt pour son travail.", m:"The cat has to leave five minutes earlier for his work.", kw:["devoir","plus tôt"] },
+            { p:"Mon chat se soucie de la nature et de l'environnement.", m:"My cat cares about nature and the environment.", kw:["se soucier de","nature"] },
+            { p:"Le chat a discuté avec ses collègues pendant la pause.", m:"The cat chatted with his colleagues during the break.", kw:["discuter","collègues"] },
+            { p:"Mon chat a décrit son métier à ses amis.", m:"My cat described his job to his friends.", kw:["décrire","métier"] },
+            { p:"Le chat tolère son voisin désagréable.", m:"The cat tolerates his unpleasant neighbor.", kw:["tolérer","désagréable"] },
+            { p:"Mon chat a créé une application pour trouver des amis.", m:"My cat created an app to find friends.", kw:["créer","trouver"] },
+            { p:"Le chat vient de Corée — il en vient et il y retourne chaque été.", m:"The cat comes from Korea — he comes from there and returns there every summer. (EN + Y)", kw:["EN","Y"] },
+            { p:"Mon chat ne se lève pas tôt — si, il se lève tôt le lundi !", m:"My cat doesn't get up early — actually yes, he does on Monday! (si vs non)", kw:["si","negation"] },
+            // B1 — Conversational phrases
+            { p:"Quand j'étais enfant, je jouais du piano.", m:"When I was a child, I played the piano.", kw:["imparfait","piano"] },
+            { p:"J'habitais en Corée.", m:"I used to live in Korea.", kw:["imparfait","habiter"] },
+            { p:"Il faisait beau, alors j'ai fait du sport.", m:"The weather was nice, so I exercised.", kw:["imparfait+PC","sport"] },
+            { p:"J'habite ici depuis douze ans.", m:"I've been living here for twelve years.", kw:["depuis","habiter"] },
+            { p:"J'ai travaillé pendant 12 ans.", m:"I worked for 12 years.", kw:["pendant","travailler"] },
+            { p:"Comment tu as découvert ce livre ?", m:"How did you discover this book?", kw:["découvrir","question"] },
+            { p:"Tu penses que tu vas continuer de te réveiller tôt ?", m:"Do you think you'll keep waking up early?", kw:["penser","futur"] },
+            { p:"Quelle est la chose qui est la plus importante pour toi ?", m:"What is the most important thing for you?", kw:["important","question"] },
+            { p:"Si je dois choisir...", m:"If I have to choose...", kw:["si","choisir"] },
+            { p:"Mon ordinateur est tombé en panne.", m:"My computer broke down.", kw:["ordinateur","panne"] },
+            { p:"Je tapais quand soudain l'ordinateur a affiché un écran bleu.", m:"I was typing when suddenly the computer showed a blue screen.", kw:["imparfait+PC","ordinateur"] },
+            { p:"Il faut que je répare ça vite.", m:"I need to fix this quickly.", kw:["il faut","réparer"] },
+            { p:"Quand est-ce que je peux récupérer mon ordinateur ?", m:"When can I get my computer back?", kw:["récupérer","question"] },
+            { p:"Pouvez-vous m'aider ?", m:"Can you help me? (formal)", kw:["aider","formal"] },
+            { p:"J'ai beaucoup d'expérience professionnelle.", m:"I have a lot of work experience.", kw:["expérience","work"] },
+            { p:"Vous pouvez vous présenter ?", m:"Can you introduce yourself? (formal)", kw:["se présenter","formal"] },
+            { p:"Petit à petit.", m:"Little by little.", kw:["petit","progress"] },
+            { p:"Tu peux répéter ?", m:"Can you repeat?", kw:["répéter","question"] },
+            { p:"Je ne comprends pas ces mots, vous pouvez reformuler ?", m:"I don't understand these words, can you rephrase?", kw:["comprendre","reformuler"] },
+            { p:"Vous vous offrez des cadeaux ?", m:"Do you give each other gifts?", kw:["cadeau","question"] },
+            { p:"Tu préfères les mêmes ou différents restaurants ?", m:"Do you prefer the same or different restaurants?", kw:["préférer","restaurant"] },
+            { p:"Comment est la semaine ? Tu fais quoi ?", m:"How's the week? What are you doing?", kw:["semaine","question"] },
+            { p:"Tu utilises beaucoup l'IA ?", m:"Do you use AI a lot?", kw:["AI","question"] },
+            { p:"Je suis intéressée par votre entreprise.", m:"I'm interested in your company.", kw:["intéressé","entreprise"] },
+            { p:"J'aime les intentions de votre entreprise.", m:"I like your company's intentions.", kw:["intentions","entreprise"] }
         ]
     },
     korean: {
@@ -513,453 +453,10 @@ const LEVEL_DEMO = {
             { p:"내 고양이는 아침 커피 없이는 하루를 시작할 수 없대요.", m:"My cat says he can't start the day without morning coffee.", kw:["coffee","morning"] }
         ]
     },
-    japanese: {
-        beginner: [
-            { p:"猫が料理します。", m:"My cat cooks.", kw:["cook","kitchen"] },
-            { p:"猫が勉強します。", m:"The cat studies.", kw:["study","learn"] },
-            { p:"猫が働きます。", m:"The cat works.", kw:["work","job"] },
-            { p:"猫が食べます。", m:"The cat eats.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"私の猫は学校に行きます。", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"猫はバスに乗ります。", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"私の猫は買い物に行きます。", m:"My cat goes shopping.", kw:["shop","grocery"] },
-            { p:"猫は晩ご飯を作ります。", m:"The cat makes dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"私の猫は今年高校を卒業します。", m:"My cat is graduating from high school this year.", kw:["graduate","school"] },
-            { p:"猫は明日就職の面接があります。", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"私の猫は家族のために特別な夕食を作りました。", m:"My cat cooked a special dinner for the family.", kw:["cook","family"] },
-            { p:"猫は毎朝電車に乗って通勤しています。", m:"The cat commutes by train every morning.", kw:["train","commute"] }
-        ],
-        upper: [
-            { p:"私の猫は学位を取るまでに5年間勉強しました。", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"最初の面接に落ちましたが、猫は諦めませんでした。", m:"He failed his first interview, but the cat didn't give up.", kw:["interview","persist"] },
-            { p:"私の猫はキャリアのために海外移住を検討しています。", m:"My cat is considering moving abroad for his career.", kw:["abroad","career"] },
-            { p:"猫は仕事が忙しすぎて休暇をキャンセルせざるを得ませんでした。", m:"The cat had no choice but to cancel his vacation due to work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"粘り強く頑張った結果、猫はついに夢の仕事を手に入れました。", m:"Through perseverance, the cat finally landed his dream job.", kw:["dream","career"] },
-            { p:"猫は仕事と勉強の両立で猫の手も借りたいほど忙しいです。", m:"The cat is so busy balancing work and studies he'd borrow anyone's help. (Idiom: 猫の手も借りたい)", kw:["busy","burnout"] },
-            { p:"散々悩んだ末に、猫は起業する決心をしました。", m:"After agonizing over it, the cat decided to start his own business.", kw:["business","startup"] },
-            { p:"猫は朝のコーヒーなしでは一日を始められないそうです。", m:"Apparently the cat can't start the day without morning coffee.", kw:["coffee","morning"] }
-        ]
-    },
-    german: {
-        beginner: [
-            { p:"Meine Katze kocht.", m:"My cat cooks.", kw:["cook","kitchen"] },
-            { p:"Die Katze lernt.", m:"The cat studies.", kw:["study","learn"] },
-            { p:"Meine Katze arbeitet.", m:"My cat works.", kw:["work","job"] },
-            { p:"Die Katze isst.", m:"The cat eats.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"Meine Katze geht zur Schule.", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"Die Katze nimmt den Bus.", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"Meine Katze geht einkaufen.", m:"My cat goes shopping.", kw:["shop","grocery"] },
-            { p:"Die Katze macht das Abendessen.", m:"The cat makes dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"Meine Katze macht dieses Jahr ihren Schulabschluss.", m:"My cat is graduating from school this year.", kw:["graduate","school"] },
-            { p:"Die Katze hat morgen ein Vorstellungsgespräch.", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"Meine Katze hat ein besonderes Abendessen für die Familie gekocht.", m:"My cat cooked a special dinner for the family.", kw:["cook","family"] },
-            { p:"Die Katze fährt jeden Morgen mit der U-Bahn zur Arbeit.", m:"The cat takes the subway to work every morning.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"Meine Katze hat fünf Jahre lang studiert, bevor sie ihren Abschluss bekam.", m:"My cat studied for five years before getting her degree.", kw:["degree","study"] },
-            { p:"Obwohl meine Katze ihr erstes Vorstellungsgespräch nicht bestanden hat, gab sie nicht auf.", m:"Although my cat didn't pass her first interview, she didn't give up.", kw:["interview","persist"] },
-            { p:"Meine Katze überlegt, ins Ausland zu ziehen, um ihre Karriere voranzutreiben.", m:"My cat is considering moving abroad to advance her career.", kw:["abroad","career"] },
-            { p:"Die Katze musste ihren Urlaub absagen, weil sie zu viel Arbeit hatte.", m:"The cat had to cancel her vacation because she had too much work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"Durch Beharrlichkeit hat meine Katze schließlich ihren Traumjob bekommen.", m:"Through persistence, my cat finally got her dream job.", kw:["dream","career"] },
-            { p:"Meine Katze brennt die Kerze an beiden Enden zwischen Arbeit und Studium.", m:"My cat is burning the candle at both ends between work and studies. (Idiom)", kw:["busy","burnout"] },
-            { p:"Nach langem Überlegen hat meine Katze beschlossen, sich selbstständig zu machen.", m:"After much deliberation, my cat decided to become self-employed.", kw:["business","startup"] },
-            { p:"Ohne den Morgenkaffee kann meine Katze den Tag einfach nicht beginnen.", m:"Without morning coffee, my cat simply can't start the day.", kw:["coffee","morning"] }
-        ]
-    },
-    italian: {
-        beginner: [
-            { p:"Il mio gatto cucina.", m:"My cat cooks.", kw:["cook","kitchen"] },
-            { p:"Il gatto studia.", m:"The cat studies.", kw:["study","learn"] },
-            { p:"Il mio gatto lavora.", m:"My cat works.", kw:["work","job"] },
-            { p:"Il gatto mangia.", m:"The cat eats.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"Il mio gatto va a scuola.", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"Il gatto prende l'autobus.", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"Il mio gatto va a fare la spesa.", m:"My cat goes grocery shopping.", kw:["shop","grocery"] },
-            { p:"Il gatto prepara la cena.", m:"The cat prepares dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"Il mio gatto si diploma quest'anno.", m:"My cat is graduating this year.", kw:["graduate","school"] },
-            { p:"Il gatto ha un colloquio di lavoro domani.", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"Il mio gatto ha cucinato una cena speciale per la famiglia.", m:"My cat cooked a special dinner for the family.", kw:["cook","family"] },
-            { p:"Il gatto prende la metro per andare al lavoro ogni mattina.", m:"The cat takes the subway to work every morning.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"Il mio gatto ha studiato per cinque anni prima di ottenere la laurea.", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"Anche se il mio gatto non ha superato il primo colloquio, non si è arreso.", m:"Even though my cat didn't pass the first interview, he didn't give up.", kw:["interview","persist"] },
-            { p:"Il mio gatto sta pensando di trasferirsi all'estero per la sua carriera.", m:"My cat is thinking about moving abroad for his career.", kw:["abroad","career"] },
-            { p:"Il gatto ha dovuto cancellare le vacanze perché aveva troppo lavoro.", m:"The cat had to cancel his vacation because he had too much work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"A forza di insistere, il mio gatto è riuscito a ottenere il lavoro dei suoi sogni.", m:"By persisting, my cat managed to get his dream job.", kw:["dream","career"] },
-            { p:"Il mio gatto si sta facendo in quattro tra lavoro e università.", m:"My cat is bending over backwards between work and university. (Idiom: farsi in quattro)", kw:["busy","burnout"] },
-            { p:"Dopo averci pensato a lungo, il mio gatto ha deciso di mettersi in proprio.", m:"After thinking it over, my cat decided to go into business for himself.", kw:["business","startup"] },
-            { p:"Il mio gatto non può iniziare la giornata senza il caffè del mattino.", m:"My cat can't start the day without morning coffee.", kw:["coffee","morning"] }
-        ]
-    },
-    portuguese: {
-        beginner: [
-            { p:"Meu gato cozinha.", m:"My cat cooks.", kw:["cook","kitchen"] },
-            { p:"O gato estuda.", m:"The cat studies.", kw:["study","learn"] },
-            { p:"Meu gato trabalha.", m:"My cat works.", kw:["work","job"] },
-            { p:"O gato come.", m:"The cat eats.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"Meu gato vai à escola.", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"O gato pega o ônibus.", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"Meu gato vai fazer compras.", m:"My cat goes shopping.", kw:["shop","grocery"] },
-            { p:"O gato prepara o jantar.", m:"The cat prepares dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"Meu gato se forma no ensino médio este ano.", m:"My cat is graduating from high school this year.", kw:["graduate","school"] },
-            { p:"O gato tem uma entrevista de emprego amanhã.", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"Meu gato cozinhou um jantar especial para a família.", m:"My cat cooked a special dinner for the family.", kw:["cook","family"] },
-            { p:"O gato pega o metrô para ir ao trabalho toda manhã.", m:"The cat takes the subway to work every morning.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"Meu gato estudou durante cinco anos antes de conseguir o diploma.", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"Embora meu gato não tenha passado na primeira entrevista, ele não desistiu.", m:"Although my cat didn't pass the first interview, he didn't give up.", kw:["interview","persist"] },
-            { p:"Meu gato está pensando em se mudar para o exterior por causa da carreira.", m:"My cat is thinking about moving abroad for his career.", kw:["abroad","career"] },
-            { p:"O gato teve que cancelar as férias porque tinha muito trabalho.", m:"The cat had to cancel his vacation because he had too much work.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"De tanto insistir, meu gato conseguiu o emprego dos sonhos.", m:"Through persistence, my cat got his dream job. (Expression: de tanto)", kw:["dream","career"] },
-            { p:"Meu gato está se virando nos trinta entre trabalho e faculdade.", m:"My cat is juggling work and college like crazy. (Idiom: virar nos trinta)", kw:["busy","burnout"] },
-            { p:"Depois de pensar muito, meu gato decidiu abrir o próprio negócio.", m:"After much thought, my cat decided to open his own business.", kw:["business","startup"] },
-            { p:"Meu gato não consegue começar o dia sem o café da manhã.", m:"My cat can't start the day without morning coffee.", kw:["coffee","morning"] }
-        ]
-    },
-    chinese: {
-        beginner: [
-            { p:"我的猫在做饭。", m:"My cat is cooking.", kw:["cook","kitchen"] },
-            { p:"猫在学习。", m:"The cat is studying.", kw:["study","learn"] },
-            { p:"我的猫在工作。", m:"My cat is working.", kw:["work","job"] },
-            { p:"猫在吃饭。", m:"The cat is eating.", kw:["eat","food"] }
-        ],
-        elementary: [
-            { p:"我的猫去上学。", m:"My cat goes to school.", kw:["school","go"] },
-            { p:"猫坐公交车。", m:"The cat takes the bus.", kw:["bus","ride"] },
-            { p:"我的猫去超市买东西。", m:"My cat goes to the supermarket to shop.", kw:["shop","grocery"] },
-            { p:"猫在做晚饭。", m:"The cat is making dinner.", kw:["dinner","cook"] }
-        ],
-        intermediate: [
-            { p:"我的猫今年高中毕业。", m:"My cat is graduating from high school this year.", kw:["graduate","school"] },
-            { p:"猫明天有一个工作面试。", m:"The cat has a job interview tomorrow.", kw:["interview","job"] },
-            { p:"我的猫为家人做了一顿特别的晚餐。", m:"My cat cooked a special dinner for the family.", kw:["cook","family"] },
-            { p:"猫每天早上坐地铁去上班。", m:"The cat takes the subway to work every morning.", kw:["subway","work"] }
-        ],
-        upper: [
-            { p:"我的猫学了五年才拿到学位。", m:"My cat studied for five years before getting his degree.", kw:["degree","study"] },
-            { p:"虽然我的猫第一次面试没通过，但他没有放弃。", m:"Although my cat didn't pass the first interview, he didn't give up.", kw:["interview","persist"] },
-            { p:"我的猫正在考虑去国外发展事业。", m:"My cat is considering going abroad to develop his career.", kw:["abroad","career"] },
-            { p:"猫因为工作太忙不得不取消了假期。", m:"The cat had to cancel his vacation because work was too busy.", kw:["vacation","cancel"] }
-        ],
-        advanced: [
-            { p:"功夫不负有心人，我的猫终于找到了梦想的工作。", m:"Hard work pays off — my cat finally found his dream job. (Proverb: 功夫不负有心人)", kw:["dream","career"] },
-            { p:"我的猫工作学习两头忙，恨不得有分身术。", m:"My cat is so busy with work and studies, he wishes he could clone himself.", kw:["busy","burnout"] },
-            { p:"深思熟虑之后，我的猫决定自己创业。", m:"After careful consideration, my cat decided to start his own business.", kw:["business","startup"] },
-            { p:"我的猫说没有早上那杯咖啡，一天都没法开始。", m:"My cat says without that morning cup of coffee, the day can't begin.", kw:["coffee","morning"] }
-        ]
-    }
-};
-
-// ═══════════ Note-Based Topic Phrases ═══════════
-const TOPIC_PHRASES = {
-    french: [
-        { topics:["depuis","since","for","duration","pendant"], phrases:[
-            { p:"Mon chat travaille dans cette entreprise depuis trois ans.", m:"My cat has been working at this company for three years.", kw:["work","years"] },
-            { p:"Mon chat étudie le piano depuis l'année dernière.", m:"My cat has been studying piano since last year.", kw:["piano","study"] },
-            { p:"Depuis quand est-ce que ton chat habite à Paris?", m:"Since when has your cat been living in Paris?", kw:["Paris","since"] },
-            { p:"Mon chat attend le bus depuis vingt minutes.", m:"My cat has been waiting for the bus for twenty minutes.", kw:["bus","wait"] }
-        ]},
-        { topics:["passé composé","past tense","past","composé","passé"], phrases:[
-            { p:"Mon chat a réussi son examen de conduite.", m:"My cat passed his driving test.", kw:["driving","pass"] },
-            { p:"Le chat a déménagé dans un nouvel appartement.", m:"The cat moved into a new apartment.", kw:["move","apartment"] },
-            { p:"Mon chat a cuisiné le dîner pour toute la famille.", m:"My cat cooked dinner for the whole family.", kw:["cook","family"] },
-            { p:"Le chat a obtenu une promotion au travail.", m:"The cat got a promotion at work.", kw:["promotion","work"] }
-        ]},
-        { topics:["imparfait","imperfect","was","were","used to","habitual"], phrases:[
-            { p:"Quand il était jeune, mon chat allait à l'école à vélo.", m:"When he was young, my cat used to ride his bike to school.", kw:["bike","school"] },
-            { p:"Mon chat regardait toujours les informations le matin.", m:"My cat always used to watch the news in the morning.", kw:["news","morning"] },
-            { p:"Avant, mon chat travaillait dans un restaurant.", m:"Before, my cat used to work in a restaurant.", kw:["restaurant","work"] }
-        ]},
-        { topics:["futur","future","will","going to","demain","aller"], phrases:[
-            { p:"Demain, mon chat passera son entretien d'embauche.", m:"Tomorrow, my cat will have his job interview.", kw:["interview","tomorrow"] },
-            { p:"Mon chat va commencer un nouveau travail lundi.", m:"My cat is going to start a new job on Monday.", kw:["job","Monday"] },
-            { p:"Le chat déménagera dans une nouvelle ville l'été prochain.", m:"The cat will move to a new city next summer.", kw:["move","summer"] }
-        ]},
-        { topics:["conditionnel","conditional","would","could","should","voudrais"], phrases:[
-            { p:"Mon chat aimerait voyager autour du monde.", m:"My cat would like to travel around the world.", kw:["travel","world"] },
-            { p:"Si mon chat avait plus de temps, il apprendrait la guitare.", m:"If my cat had more time, he would learn guitar.", kw:["guitar","learn"] },
-            { p:"Mon chat devrait se coucher plus tôt pour son examen.", m:"My cat should go to bed earlier for his exam.", kw:["exam","bed"] }
-        ]},
-        { topics:["subjonctif","subjunctive","il faut","vouloir que","souhaiter"], phrases:[
-            { p:"Il faut que mon chat finisse ses devoirs avant de sortir.", m:"My cat must finish his homework before going out.", kw:["homework","finish"] },
-            { p:"Je veux que mon chat réussisse son examen.", m:"I want my cat to pass his exam.", kw:["exam","pass"] },
-            { p:"Bien que mon chat soit fatigué, il continue de travailler.", m:"Although my cat is tired, he keeps working.", kw:["tired","work"] }
-        ]},
-        { topics:["négation","negation","ne pas","ne jamais","ne rien","ne plus","negative"], phrases:[
-            { p:"Mon chat ne prend jamais de vacances.", m:"My cat never takes a vacation.", kw:["vacation","never"] },
-            { p:"Le chat n'a pas encore trouvé d'appartement.", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"Mon chat ne veut plus travailler le week-end.", m:"My cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["comparatif","comparison","plus que","moins que","comparative","superlative","meilleur"], phrases:[
-            { p:"Mon chat gagne plus que son collègue.", m:"My cat earns more than his colleague.", kw:["earn","compare"] },
-            { p:"Ce restaurant est aussi bon que celui où mon chat travaillait.", m:"This restaurant is as good as the one where my cat worked.", kw:["restaurant","good"] },
-            { p:"Mon chat est le meilleur cuisinier de la famille.", m:"My cat is the best cook in the family.", kw:["best","cook"] }
-        ]},
-        { topics:["pronom","pronoun","lui","leur","le la les","direct","indirect","en","y"], phrases:[
-            { p:"Mon chat lui a envoyé son CV par email.", m:"My cat sent him his resume by email.", kw:["resume","email"] },
-            { p:"Le diplôme? Mon chat l'a obtenu en juin.", m:"The degree? My cat got it in June.", kw:["degree","June"] },
-            { p:"Des entretiens, mon chat en a passé beaucoup.", m:"Interviews — my cat has had many of them.", kw:["interview","many"] }
-        ]},
-        { topics:["nourriture","food","manger","cuisine","repas","meal","eat","cook"], phrases:[
-            { p:"Mon chat prépare le petit-déjeuner pour toute la famille.", m:"My cat prepares breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"Le chat a appris une nouvelle recette de pâtes.", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"Mon chat fait ses courses au marché tous les samedis.", m:"My cat shops at the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    spanish: [
-        { topics:["ser","estar","being","to be"], phrases:[
-            { p:"Mi gato es profesor de matemáticas.", m:"My cat is a math teacher. (permanent profession)", kw:["teacher","math"] },
-            { p:"El gato está cansado después del trabajo.", m:"The cat is tired after work. (current state)", kw:["tired","work"] },
-            { p:"Mi gato es muy responsable con sus tareas.", m:"My cat is very responsible with his tasks.", kw:["responsible","tasks"] }
-        ]},
-        { topics:["pretérito","preterite","past","pasado","indefinido"], phrases:[
-            { p:"Mi gato aprobó el examen de conducir.", m:"My cat passed the driving test.", kw:["driving","pass"] },
-            { p:"El gato se mudó a un apartamento nuevo.", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"Mi gato consiguió un ascenso en el trabajo.", m:"My cat got a promotion at work.", kw:["promotion","work"] }
-        ]},
-        { topics:["futuro","future","will","ir a","mañana"], phrases:[
-            { p:"Mañana mi gato tendrá su entrevista de trabajo.", m:"Tomorrow my cat will have his job interview.", kw:["interview","tomorrow"] },
-            { p:"Mi gato va a empezar la universidad en septiembre.", m:"My cat is going to start university in September.", kw:["university","September"] },
-            { p:"El gato se mudará a otra ciudad el próximo mes.", m:"The cat will move to another city next month.", kw:["move","city"] }
-        ]},
-        { topics:["subjuntivo","subjunctive","que","espero","quiero que","ojalá"], phrases:[
-            { p:"Espero que mi gato consiga el trabajo.", m:"I hope my cat gets the job.", kw:["job","hope"] },
-            { p:"Quiero que mi gato termine sus estudios.", m:"I want my cat to finish his studies.", kw:["studies","finish"] },
-            { p:"Ojalá mi gato apruebe todos sus exámenes.", m:"I hope my cat passes all his exams.", kw:["exams","hope"] }
-        ]},
-        { topics:["negación","negation","no","nunca","nada","tampoco","negative"], phrases:[
-            { p:"Mi gato nunca llega tarde al trabajo.", m:"My cat never arrives late to work.", kw:["late","never"] },
-            { p:"El gato no ha encontrado apartamento todavía.", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"Mi gato ya no quiere trabajar los fines de semana.", m:"My cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["comida","food","comer","cocina","receta","meal","cook"], phrases:[
-            { p:"Mi gato prepara el desayuno para toda la familia.", m:"My cat prepares breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"El gato aprendió una nueva receta de paella.", m:"The cat learned a new paella recipe.", kw:["paella","recipe"] },
-            { p:"Mi gato va al mercado todos los sábados.", m:"My cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    korean: [
-        { topics:["조사","particles","은","는","이","가","을","를","에","에서"], phrases:[
-            { p:"고양이가 회사에서 일해요.", m:"The cat works at a company. (에서 = at/in location)", kw:["company","work"] },
-            { p:"고양이는 매일 아침 커피를 마셔요.", m:"The cat drinks coffee every morning. (는 topic, 를 object)", kw:["coffee","morning"] },
-            { p:"고양이에게 새 직장이 생겼어요.", m:"The cat got a new job. (에게 = to/for someone)", kw:["job","new"] }
-        ]},
-        { topics:["존댓말","honorific","polite","formal","informal","반말","습니다","요"], phrases:[
-            { p:"고양이가 면접에서 아주 잘했습니다.", m:"The cat did very well in the interview. (formal)", kw:["interview","formal"] },
-            { p:"우리 고양이 졸업했어!", m:"Our cat graduated! (casual)", kw:["graduate","casual"] },
-            { p:"고양이가 요리를 도와줄 수 있을까요?", m:"Could the cat help with cooking? (polite request)", kw:["cook","polite"] }
-        ]},
-        { topics:["과거","past","았","었","했","했다"], phrases:[
-            { p:"고양이가 운전면허 시험에 합격했어요.", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"고양이가 새 아파트로 이사했어요.", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"고양이가 회사에서 승진했어요.", m:"The cat got promoted at work.", kw:["promotion","work"] }
-        ]},
-        { topics:["미래","future","겠","ㄹ 거","ㄹ게","will","것"], phrases:[
-            { p:"내일 고양이가 면접을 볼 거예요.", m:"The cat will have an interview tomorrow.", kw:["interview","tomorrow"] },
-            { p:"고양이가 9월에 대학에 입학할 거예요.", m:"The cat will enter university in September.", kw:["university","September"] },
-            { p:"고양이가 다음 달에 다른 도시로 이사할 거예요.", m:"The cat will move to another city next month.", kw:["move","city"] }
-        ]},
-        { topics:["부정","negation","안","못","않","없","negative"], phrases:[
-            { p:"고양이는 절대 지각하지 않아요.", m:"The cat never arrives late.", kw:["late","never"] },
-            { p:"고양이가 아직 아파트를 못 찾았어요.", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"고양이는 더 이상 주말에 일하고 싶지 않아요.", m:"The cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["음식","food","먹다","밥","요리","cook","eat"], phrases:[
-            { p:"고양이가 가족을 위해 아침을 준비해요.", m:"The cat prepares breakfast for the family.", kw:["breakfast","family"] },
-            { p:"고양이가 새로운 파스타 레시피를 배웠어요.", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"고양이는 매주 토요일에 시장에 가요.", m:"The cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    japanese: [
-        { topics:["particle","particles","は","が","を","に","で","へ","助詞"], phrases:[
-            { p:"猫が会社で働いています。", m:"The cat works at a company. (で = at/in location)", kw:["company","work"] },
-            { p:"猫は毎朝コーヒーを飲みます。", m:"The cat drinks coffee every morning. (は topic, を object)", kw:["coffee","morning"] },
-            { p:"猫に新しい仕事が見つかりました。", m:"A new job was found for the cat. (に = indirect object)", kw:["job","new"] }
-        ]},
-        { topics:["て形","te form","te-form","ている","てください","ています"], phrases:[
-            { p:"猫は今レポートを書いています。", m:"The cat is writing a report right now. (ongoing)", kw:["report","write"] },
-            { p:"猫は大学を卒業してから就職しました。", m:"The cat got a job after graduating from university.", kw:["graduate","job"] },
-            { p:"猫に料理を手伝ってください。", m:"Please help the cat with cooking.", kw:["cook","help"] }
-        ]},
-        { topics:["past","過去","た形","ました","だった","past tense"], phrases:[
-            { p:"猫は運転免許の試験に合格しました。", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"猫は新しいアパートに引っ越しました。", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"猫は会社で昇進しました。", m:"The cat got promoted at work.", kw:["promotion","work"] }
-        ]},
-        { topics:["potential","可能","できる","られる","can","able"], phrases:[
-            { p:"猫は三か国語を話すことができます。", m:"The cat can speak three languages.", kw:["languages","speak"] },
-            { p:"この猫は自分で料理が作れます。", m:"This cat can cook by himself.", kw:["cook","self"] },
-            { p:"猫は来月から車が運転できるようになります。", m:"The cat will be able to drive a car starting next month.", kw:["drive","month"] }
-        ]},
-        { topics:["ない","negation","ません","じゃない","negative","not"], phrases:[
-            { p:"猫は絶対に遅刻しません。", m:"The cat never arrives late.", kw:["late","never"] },
-            { p:"猫はまだアパートが見つかっていません。", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"猫はもう週末に働きたくないそうです。", m:"The cat says he doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["食べ物","food","食べる","料理","ご飯","meal","eat","cook"], phrases:[
-            { p:"猫が家族のために朝食を作ります。", m:"The cat makes breakfast for the family.", kw:["breakfast","family"] },
-            { p:"猫は新しいパスタのレシピを覚えました。", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"猫は毎週土曜日に市場へ行きます。", m:"The cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    german: [
-        { topics:["Kasus","case","cases","Akkusativ","Dativ","Genitiv","accusative","dative"], phrases:[
-            { p:"Ich gebe dem Kater einen neuen Laptop.", m:"I give the cat a new laptop. (dative + accusative)", kw:["laptop","give"] },
-            { p:"Die Beförderung des Katers überraschte alle.", m:"The cat's promotion surprised everyone. (genitive)", kw:["promotion","surprise"] },
-            { p:"Die Katze bewirbt sich um die Stelle.", m:"The cat is applying for the position. (accusative)", kw:["apply","position"] }
-        ]},
-        { topics:["Perfekt","past","Vergangenheit","hat","ist","haben","sein","past tense"], phrases:[
-            { p:"Die Katze hat die Fahrprüfung bestanden.", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"Die Katze ist in eine neue Wohnung umgezogen.", m:"The cat moved into a new apartment.", kw:["move","apartment"] },
-            { p:"Meine Katze hat eine Beförderung bekommen.", m:"My cat got a promotion.", kw:["promotion","work"] }
-        ]},
-        { topics:["Modalverben","modal","können","müssen","sollen","wollen","dürfen","möchten"], phrases:[
-            { p:"Meine Katze will um die Welt reisen.", m:"My cat wants to travel around the world.", kw:["travel","world"] },
-            { p:"Die Katze muss morgen früh aufstehen.", m:"The cat has to get up early tomorrow.", kw:["early","tomorrow"] },
-            { p:"Meine Katze kann drei Sprachen sprechen.", m:"My cat can speak three languages.", kw:["languages","speak"] }
-        ]},
-        { topics:["Negation","nicht","kein","never","nie","negative"], phrases:[
-            { p:"Die Katze kommt nie zu spät zur Arbeit.", m:"The cat never arrives late to work.", kw:["late","never"] },
-            { p:"Die Katze hat noch keine Wohnung gefunden.", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"Meine Katze will nicht mehr am Wochenende arbeiten.", m:"My cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["Vergleich","comparison","als","wie","comparative","Komparativ","Superlativ"], phrases:[
-            { p:"Meine Katze verdient mehr als ihr Kollege.", m:"My cat earns more than her colleague.", kw:["earn","compare"] },
-            { p:"Meine Katze ist die beste Köchin in der Familie.", m:"My cat is the best cook in the family.", kw:["best","cook"] },
-            { p:"Diese Stelle ist genauso gut wie die letzte.", m:"This position is just as good as the last one.", kw:["position","good"] }
-        ]},
-        { topics:["Essen","food","essen","Küche","Mahlzeit","meal","eat","Kochen","cook"], phrases:[
-            { p:"Meine Katze bereitet das Frühstück für die ganze Familie vor.", m:"My cat prepares breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"Die Katze hat ein neues Pasta-Rezept gelernt.", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"Meine Katze geht jeden Samstag auf den Markt.", m:"My cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    italian: [
-        { topics:["passato prossimo","past","passato","avere","essere","past tense"], phrases:[
-            { p:"Il gatto ha superato l'esame di guida.", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"Il gatto si è trasferito in un nuovo appartamento.", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"Il mio gatto ha ottenuto una promozione.", m:"My cat got a promotion.", kw:["promotion","work"] }
-        ]},
-        { topics:["imperfetto","imperfect","was","were","used to"], phrases:[
-            { p:"Da giovane, il mio gatto andava a scuola in bicicletta.", m:"When he was young, my cat used to ride his bike to school.", kw:["bike","school"] },
-            { p:"Il mio gatto guardava sempre il telegiornale la mattina.", m:"My cat always used to watch the news in the morning.", kw:["news","morning"] },
-            { p:"Prima il mio gatto lavorava in un ristorante.", m:"Before, my cat used to work in a restaurant.", kw:["restaurant","work"] }
-        ]},
-        { topics:["futuro","future","will","domani","tomorrow"], phrases:[
-            { p:"Domani il gatto avrà il suo colloquio di lavoro.", m:"Tomorrow the cat will have his job interview.", kw:["interview","tomorrow"] },
-            { p:"Il gatto inizierà l'università a settembre.", m:"The cat will start university in September.", kw:["university","September"] },
-            { p:"Il gatto si trasferirà in una nuova città il mese prossimo.", m:"The cat will move to a new city next month.", kw:["move","city"] }
-        ]},
-        { topics:["congiuntivo","subjunctive","che","bisogna","voglio che"], phrases:[
-            { p:"Spero che il gatto ottenga il lavoro.", m:"I hope the cat gets the job.", kw:["job","hope"] },
-            { p:"Voglio che il gatto finisca i suoi studi.", m:"I want the cat to finish his studies.", kw:["studies","finish"] },
-            { p:"Bisogna che il gatto faccia i compiti prima di uscire.", m:"The cat must do his homework before going out.", kw:["homework","finish"] }
-        ]},
-        { topics:["negazione","negation","non","mai","niente","negative"], phrases:[
-            { p:"Il mio gatto non arriva mai in ritardo.", m:"My cat never arrives late.", kw:["late","never"] },
-            { p:"Il gatto non ha ancora trovato un appartamento.", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"Il mio gatto non vuole più lavorare il fine settimana.", m:"My cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["cibo","food","mangiare","cucina","pasto","meal","eat","cook","cucinare"], phrases:[
-            { p:"Il gatto prepara la colazione per tutta la famiglia.", m:"The cat prepares breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"Il gatto ha imparato una nuova ricetta di pasta.", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"Il mio gatto va al mercato ogni sabato.", m:"My cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    portuguese: [
-        { topics:["pretérito","past","passado","past tense"], phrases:[
-            { p:"O gato passou no exame de direção.", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"O gato se mudou para um apartamento novo.", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"Meu gato conseguiu uma promoção no trabalho.", m:"My cat got a promotion at work.", kw:["promotion","work"] }
-        ]},
-        { topics:["futuro","future","will","amanhã","vai","ir"], phrases:[
-            { p:"Amanhã meu gato terá a entrevista de emprego.", m:"Tomorrow my cat will have his job interview.", kw:["interview","tomorrow"] },
-            { p:"Meu gato vai começar a faculdade em setembro.", m:"My cat is going to start college in September.", kw:["college","September"] },
-            { p:"O gato vai se mudar para outra cidade mês que vem.", m:"The cat will move to another city next month.", kw:["move","city"] }
-        ]},
-        { topics:["subjuntivo","subjunctive","que","espero que","quero que"], phrases:[
-            { p:"Espero que meu gato consiga o emprego.", m:"I hope my cat gets the job.", kw:["job","hope"] },
-            { p:"Quero que meu gato termine os estudos.", m:"I want my cat to finish his studies.", kw:["studies","finish"] },
-            { p:"É preciso que o gato faça a lição antes de sair.", m:"The cat needs to do his homework before going out.", kw:["homework","finish"] }
-        ]},
-        { topics:["negação","negation","não","nunca","nada","negative"], phrases:[
-            { p:"Meu gato nunca chega atrasado no trabalho.", m:"My cat never arrives late to work.", kw:["late","never"] },
-            { p:"O gato ainda não encontrou um apartamento.", m:"The cat still hasn't found an apartment.", kw:["apartment","search"] },
-            { p:"Meu gato não quer mais trabalhar nos fins de semana.", m:"My cat doesn't want to work weekends anymore.", kw:["weekend","work"] }
-        ]},
-        { topics:["comparativo","comparison","mais que","menos que","tão como","comparative"], phrases:[
-            { p:"Meu gato ganha mais que o colega dele.", m:"My cat earns more than his colleague.", kw:["earn","compare"] },
-            { p:"Meu gato é o melhor cozinheiro da família.", m:"My cat is the best cook in the family.", kw:["best","cook"] },
-            { p:"Essa vaga é tão boa quanto a anterior.", m:"This position is as good as the previous one.", kw:["position","good"] }
-        ]},
-        { topics:["comida","food","comer","cozinha","refeição","meal","eat","cook","cozinhar"], phrases:[
-            { p:"Meu gato prepara o café da manhã para toda a família.", m:"My cat prepares breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"O gato aprendeu uma receita nova de macarrão.", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"Meu gato vai à feira todo sábado.", m:"My cat goes to the market every Saturday.", kw:["market","Saturday"] }
-        ]}
-    ],
-    chinese: [
-        { topics:["量词","measure word","classifier","只","个","条","counter"], phrases:[
-            { p:"我的猫面试了三家公司。", m:"My cat interviewed at three companies. (家 = classifier for companies)", kw:["interview","company"] },
-            { p:"猫写了一封求职信。", m:"The cat wrote a cover letter. (封 = classifier for letters)", kw:["letter","write"] },
-            { p:"猫买了两本教材。", m:"The cat bought two textbooks. (本 = classifier for books)", kw:["books","buy"] }
-        ]},
-        { topics:["了","past","le","completed","过","guo"], phrases:[
-            { p:"猫通过了驾照考试。", m:"The cat passed the driving test.", kw:["driving","pass"] },
-            { p:"猫搬到了新公寓。", m:"The cat moved to a new apartment.", kw:["move","apartment"] },
-            { p:"猫得到了升职。", m:"The cat got a promotion.", kw:["promotion","work"] }
-        ]},
-        { topics:["会","future","将","要","will","going"], phrases:[
-            { p:"明天猫要去面试。", m:"The cat will go to an interview tomorrow.", kw:["interview","tomorrow"] },
-            { p:"猫九月份要开始上大学。", m:"The cat will start college in September.", kw:["college","September"] },
-            { p:"猫下个月会搬到另一个城市。", m:"The cat will move to another city next month.", kw:["move","city"] }
-        ]},
-        { topics:["不","没","negation","negative","别"], phrases:[
-            { p:"猫从来不迟到。", m:"The cat never arrives late.", kw:["late","never"] },
-            { p:"猫还没找到公寓。", m:"The cat hasn't found an apartment yet.", kw:["apartment","search"] },
-            { p:"猫不想再周末加班了。", m:"The cat doesn't want to work overtime on weekends anymore.", kw:["weekend","overtime"] }
-        ]},
-        { topics:["比","comparison","更","最","跟","一样","comparative"], phrases:[
-            { p:"我的猫比同事赚得多。", m:"My cat earns more than his colleague.", kw:["earn","compare"] },
-            { p:"我的猫是家里最好的厨师。", m:"My cat is the best cook in the family.", kw:["best","cook"] },
-            { p:"这个职位跟上一个一样好。", m:"This position is as good as the last one.", kw:["position","good"] }
-        ]},
-        { topics:["食物","food","吃","厨房","做饭","meal","eat","cook"], phrases:[
-            { p:"猫为全家人做早餐。", m:"The cat makes breakfast for the whole family.", kw:["breakfast","family"] },
-            { p:"猫学了一个新的意大利面食谱。", m:"The cat learned a new pasta recipe.", kw:["pasta","recipe"] },
-            { p:"猫每个周六都去市场买菜。", m:"The cat goes to the market every Saturday to buy groceries.", kw:["market","Saturday"] }
-        ]}
-    ]
 };
 
 // ═══════════ State ═══════════
 let currentUser = null, userProfile = null, currentLang = null, currentLevel = null;
-let langData = { lessons:{}, phrases:[] };
 let demoCount = 0;
 let activeDemos = [];
 
@@ -969,28 +466,26 @@ function showScreen(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
-function showStatus(msg){ const el=document.getElementById('saveStatus'); el.textContent=msg; setTimeout(()=>el.textContent='',2500); }
 
-// ═══════════ Note Topic Extraction ═══════════
-function extractTopicsFromNotes(){
-    const allNotes=Object.values(langData.lessons||{}).join(' ').toLowerCase();
-    if(!allNotes.trim()) return [];
-    const topicBank=TOPIC_PHRASES[currentLang]||[];
-    const matched=[];
-    topicBank.forEach(topic=>{
-        if(topic.topics.some(t=>allNotes.includes(t.toLowerCase()))){
-            const label=topic.topics[0];
-            topic.phrases.forEach(p=>matched.push({...p, source:label}));
-        }
-    });
-    return matched;
+function getAutoLevel(lang){
+    if(lang==='korean') return 'elementary';
+    return 'elementary';
 }
 
 function buildActiveDemos(){
-    const notePhrases=extractTopicsFromNotes();
-    const levelPhrases=((currentLevel && LEVEL_DEMO[currentLang]?.[currentLevel]) || DEMO[currentLang] || []).map(p=>({...p, source:null}));
-    // Note phrases first, then level phrases as filler
-    activeDemos=notePhrases.length>0 ? [...notePhrases,...levelPhrases] : levelPhrases;
+    let levelPhrases=[];
+    if(currentLang==='korean'){
+        levelPhrases=(LEVEL_DEMO.korean?.elementary || DEMO.korean || []);
+    }else if(currentLang==='french'){
+        const a1=(LEVEL_DEMO.french?.beginner||[]);
+        const a2=(LEVEL_DEMO.french?.elementary||[]);
+        const b1=(LEVEL_DEMO.french?.intermediate||[]);
+        levelPhrases=[...a1,...a2,...b1];
+    }else{
+        levelPhrases=(DEMO[currentLang]||[]);
+    }
+    activeDemos=levelPhrases;
+    lastDemoIndex=-1;
 }
 
 // ═══════════ Auth ═══════════
@@ -1014,19 +509,14 @@ auth.onAuthStateChanged(async(user)=>{
             if(userProfile.selectedLanguage){
                 currentLang=userProfile.selectedLanguage;
                 document.getElementById('topLangSelect').value=currentLang;
-                await loadLangData();
-                if(userProfile.selectedLevel){
-                    currentLevel=userProfile.selectedLevel;
-                    showMainContent();
-                }else{
-                    showLevelPicker();
-                }
+                currentLevel=getAutoLevel(currentLang);
+                showMainContent();
             }else{
                 showLangPicker();
             }
         }catch(e){ console.error(e); showScreen('loginScreen'); }
     }else{
-        currentUser=null; userProfile=null; langData={lessons:{},phrases:[]};
+        currentUser=null; userProfile=null;
         showScreen('loginScreen');
     }
 });
@@ -1044,21 +534,6 @@ async function loadUserProfile(){
 
 async function saveUserProfile(){
     await db.collection('users').doc(currentUser.uid).update({ ...userProfile, updatedAt:firebase.firestore.FieldValue.serverTimestamp() });
-}
-
-async function loadLangData(){
-    const doc=await db.collection('users').doc(currentUser.uid).collection('languages').doc(currentLang).get();
-    if(doc.exists){
-        langData=doc.data();
-        if(!langData.lessons) langData.lessons={};
-        if(!langData.phrases) langData.phrases=[];
-    }else{ langData={lessons:{},phrases:[]}; }
-}
-
-async function saveLangData(){
-    showStatus('💾 Saving...');
-    await db.collection('users').doc(currentUser.uid).collection('languages').doc(currentLang).set({ ...langData, updatedAt:firebase.firestore.FieldValue.serverTimestamp() });
-    showStatus('✅ Saved!');
 }
 
 // ═══════════ Top bar lang select ═══════════
@@ -1095,81 +570,28 @@ function showLangPicker(){
 async function selectLanguage(lang){
     currentLang=lang;
     userProfile.selectedLanguage=lang;
+    currentLevel=getAutoLevel(lang);
     await saveUserProfile();
-    await loadLangData();
     document.getElementById('topLangSelect').value=lang;
-    if(currentLevel){
-        showMainContent();
-    }else{
-        showLevelPicker();
-    }
-}
-
-// ═══════════ Level Picker ═══════════
-function showLevelPicker(){
-    document.getElementById('langPicker').style.display='none';
-    document.getElementById('mainContent').style.display='none';
-    document.getElementById('levelPicker').style.display='block';
-    const grid=document.getElementById('levelGrid');
-    const L=LANGS[currentLang];
-    grid.innerHTML=Object.entries(LEVELS).map(([k,v])=>`
-        <div class="level-card" data-level="${k}">
-            <div class="level-card-emoji">${v.emoji}</div>
-            <div class="level-card-info">
-                <div class="level-card-name">${v.name}</div>
-                <div class="level-card-desc">${v.desc}</div>
-            </div>
-        </div>`).join('');
-    grid.querySelectorAll('.level-card').forEach(c=>{
-        c.addEventListener('click', ()=>selectLevel(c.dataset.level));
-    });
-}
-
-async function selectLevel(level){
-    currentLevel=level;
-    userProfile.selectedLevel=level;
-    await saveUserProfile();
-    populateTopLevelSelect();
     showMainContent();
 }
-
-function populateTopLevelSelect(){
-    const sel=document.getElementById('topLevelSelect');
-    const group=document.getElementById('topLevelGroup');
-    sel.innerHTML='';
-    Object.entries(LEVELS).forEach(([k,v])=>{
-        const o=document.createElement('option'); o.value=k; o.textContent=v.emoji+' '+v.name; sel.appendChild(o);
-    });
-    if(currentLevel) sel.value=currentLevel;
-    group.style.display=currentLevel?'flex':'none';
-}
-
-document.getElementById('topLevelSelect').addEventListener('change', async(e)=>{
-    if(!e.target.value) return;
-    currentLevel=e.target.value;
-    userProfile.selectedLevel=currentLevel;
-    await saveUserProfile();
-    initDemo();
-    document.getElementById('levelBadge').textContent=LEVELS[currentLevel].emoji+' '+LEVELS[currentLevel].name;
-});
 
 // ═══════════ Main Content ═══════════
 function showMainContent(){
     document.getElementById('langPicker').style.display='none';
-    document.getElementById('levelPicker').style.display='none';
     document.getElementById('mainContent').style.display='flex';
     const L=LANGS[currentLang];
     document.getElementById('mainTitle').textContent=`🐱 ${L.name} Cat 🐱`;
     document.getElementById('mainSubtitle').textContent=`Learn ${L.name} with adorable cats!`;
-    document.getElementById('notesTitle').textContent=`${L.flag} My ${L.name} Notes`;
     document.getElementById('motivationText').textContent=`${L.hi} Keep learning ${L.name}! 💪`;
-    if(currentLevel){
+    if(currentLang==='korean'){
+        document.getElementById('levelBadge').textContent='🌿 Elementary';
+    }else if(currentLang==='french'){
+        document.getElementById('levelBadge').textContent='📚 A1–B1';
+    }else if(currentLevel){
         document.getElementById('levelBadge').textContent=LEVELS[currentLevel].emoji+' '+LEVELS[currentLevel].name;
     }
-    populateTopLevelSelect();
     initDemo();
-    populateLessonSelect();
-    renderSavedNotes();
 }
 
 // ═══════════ Demo cat phrases ═══════════
@@ -1177,32 +599,30 @@ function initDemo(){
     demoCount=0;
     document.getElementById('phrasesLearned').textContent='0';
     document.getElementById('progressFill').style.width='0%';
-    document.getElementById('demoSource').style.display='none';
     buildActiveDemos();
     if(activeDemos.length){
         nextDemo();
     }else{
         document.getElementById('demoPhrase').textContent=LANGS[currentLang].hi;
-        document.getElementById('demoMeaning').textContent=`Open My Notes to add your ${LANGS[currentLang].name} phrases!`;
+        document.getElementById('demoMeaning').textContent=`Start learning ${LANGS[currentLang].name}!`;
         document.getElementById('catImage').src='https://cataas.com/cat/says/'+encodeURIComponent(LANGS[currentLang].hi)+'?size=200&color=white&fontSize=25';
     }
 }
 
+let lastDemoIndex=-1;
 function nextDemo(){
     if(!activeDemos.length) return;
-    const p=activeDemos[Math.floor(Math.random()*activeDemos.length)];
-    const pEl=document.getElementById('demoPhrase'), mEl=document.getElementById('demoMeaning'), img=document.getElementById('catImage'), srcEl=document.getElementById('demoSource');
-    pEl.style.opacity='0'; mEl.style.opacity='0'; img.style.opacity='0'; srcEl.style.opacity='0';
+    let idx;
+    if(activeDemos.length===1){ idx=0; }
+    else{ do{ idx=Math.floor(Math.random()*activeDemos.length); }while(idx===lastDemoIndex); }
+    lastDemoIndex=idx;
+    const p=activeDemos[idx];
+    const pEl=document.getElementById('demoPhrase'), mEl=document.getElementById('demoMeaning'), img=document.getElementById('catImage');
+    pEl.style.opacity='0'; mEl.style.opacity='0'; img.style.opacity='0';
     setTimeout(()=>{
         pEl.textContent=p.p; mEl.textContent=p.m;
         if(p.kw){ const kw=p.kw[Math.floor(Math.random()*p.kw.length)]; img.src='https://cataas.com/cat/says/'+encodeURIComponent(kw)+'?size=200&color=white&fontSize=25'; }
-        if(p.source){
-            srcEl.textContent='📘 From your notes: '+p.source;
-            srcEl.style.display='inline-block';
-        }else{
-            srcEl.style.display='none';
-        }
-        pEl.style.opacity='1'; mEl.style.opacity='1'; img.style.opacity='1'; srcEl.style.opacity='1';
+        pEl.style.opacity='1'; mEl.style.opacity='1'; img.style.opacity='1';
     },200);
     demoCount++;
     document.getElementById('phrasesLearned').textContent=demoCount;
@@ -1210,19 +630,12 @@ function nextDemo(){
 }
 
 document.getElementById('catImage').style.transition='opacity 0.3s';
-document.getElementById('demoSource').style.transition='opacity 0.3s';
 document.getElementById('refreshBtn').addEventListener('click', nextDemo);
 
 // ═══════════ Text-to-Speech ═══════════
 const LANG_VOICE_MAP = {
     french:     { lang:'fr-FR', preferNames:['Google français','Microsoft Julie','Amélie','Marie','Céline'] },
-    spanish:    { lang:'es-ES', preferNames:['Google español','Microsoft Helena','Mónica','Paulina'] },
     korean:     { lang:'ko-KR', preferNames:['Google 한국어','Microsoft Heami','Yuna','Sora','SunHi'] },
-    japanese:   { lang:'ja-JP', preferNames:['Google 日本語','Microsoft Haruka','O-Ren','Kyoko'] },
-    german:     { lang:'de-DE', preferNames:['Google Deutsch','Microsoft Katja','Anna','Petra'] },
-    italian:    { lang:'it-IT', preferNames:['Google italiano','Microsoft Elsa','Alice','Federica'] },
-    portuguese: { lang:'pt-BR', preferNames:['Google português do Brasil','Microsoft Maria','Luciana','Fernanda'] },
-    chinese:    { lang:'zh-CN', preferNames:['Google 普通话','Microsoft Yaoyao','Ting-Ting','Lili'] }
 };
 
 let cachedVoices = [];
@@ -1273,164 +686,6 @@ function speakPhrase(){
 }
 
 document.getElementById('speakBtn').addEventListener('click', speakPhrase);
-
-// ═══════════ Notes overlay ═══════════
-document.getElementById('openNotesBtn').addEventListener('click', ()=>{
-    document.getElementById('notesOverlay').classList.add('open');
-    renderSavedNotes(); renderPhraseList();
-});
-document.getElementById('closeNotesBtn').addEventListener('click', ()=>document.getElementById('notesOverlay').classList.remove('open'));
-document.getElementById('notesOverlay').addEventListener('click', e=>{ if(e.target.id==='notesOverlay') e.target.classList.remove('open'); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.getElementById('notesOverlay').classList.remove('open'); });
-
-// Tabs
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-        document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
-        if(btn.dataset.tab==='study') initStudy();
-        if(btn.dataset.tab==='phrases') renderPhraseList();
-        if(btn.dataset.tab==='notes') renderSavedNotes();
-    });
-});
-
-// ═══════════ Notes Tab ═══════════
-function populateLessonSelect(){
-    const sel=document.getElementById('lessonSelect'), cur=sel.value;
-    sel.innerHTML='<option value="">— Select a lesson —</option>';
-    Object.keys(langData.lessons).sort().forEach(n=>{
-        const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
-    });
-    if(cur && langData.lessons[cur]) sel.value=cur;
-}
-
-document.getElementById('lessonSelect').addEventListener('change', ()=>{
-    const n=document.getElementById('lessonSelect').value;
-    document.getElementById('notesTextarea').value=n?(langData.lessons[n]||''):'';
-    document.getElementById('newLessonName').value='';
-});
-
-document.getElementById('addLessonBtn').addEventListener('click', ()=>{
-    const n=document.getElementById('newLessonName').value.trim();
-    if(!n) return;
-    if(!langData.lessons[n]) langData.lessons[n]='';
-    saveLangData();
-    populateLessonSelect();
-    document.getElementById('lessonSelect').value=n;
-    document.getElementById('notesTextarea').value='';
-    document.getElementById('newLessonName').value='';
-});
-
-document.getElementById('saveNotesBtn').addEventListener('click', async()=>{
-    let n=document.getElementById('lessonSelect').value;
-    if(!n){ n=document.getElementById('newLessonName').value.trim(); if(!n){ showStatus('⚠ Select or create a lesson first'); return; } }
-    langData.lessons[n]=document.getElementById('notesTextarea').value;
-    await saveLangData();
-    populateLessonSelect();
-    document.getElementById('lessonSelect').value=n;
-    renderSavedNotes();
-    buildActiveDemos();
-    showStatus('✅ Saved! Phrases updated from your notes.');
-});
-
-document.getElementById('deleteLessonBtn').addEventListener('click', async()=>{
-    const n=document.getElementById('lessonSelect').value;
-    if(!n||!confirm('Delete "'+n+'" and its notes?')) return;
-    delete langData.lessons[n];
-    await saveLangData();
-    populateLessonSelect();
-    document.getElementById('notesTextarea').value='';
-    renderSavedNotes();
-    buildActiveDemos();
-});
-
-function renderSavedNotes(){
-    const c=document.getElementById('savedNotesDisplay'), names=Object.keys(langData.lessons).sort();
-    if(!names.length){ c.innerHTML='<div class="empty-state">No lesson notes saved yet.</div>'; return; }
-    c.innerHTML=names.map(n=>'<div class="notes-section"><div class="notes-lesson-title">📘 '+esc(n)+'</div><div class="notes-display">'+esc(langData.lessons[n]||'(empty)')+'</div></div>').join('');
-}
-
-// ═══════════ Phrases Tab ═══════════
-document.getElementById('addPhraseBtn').addEventListener('click', async()=>{
-    const ph=document.getElementById('phrasePhrase').value.trim();
-    const me=document.getElementById('phraseMeaning').value.trim();
-    if(!ph||!me) return;
-    langData.phrases.push({ id:Date.now().toString(), phrase:ph, meaning:me, context:document.getElementById('phraseContext').value.trim(), lesson:document.getElementById('phraseLesson').value.trim() });
-    await saveLangData();
-    document.getElementById('phrasePhrase').value='';
-    document.getElementById('phraseMeaning').value='';
-    document.getElementById('phraseContext').value='';
-    renderPhraseList();
-});
-
-function renderPhraseList(){
-    const list=document.getElementById('phraseList');
-    document.getElementById('phraseCount').textContent=langData.phrases.length+' phrase'+(langData.phrases.length!==1?'s':'');
-    if(!langData.phrases.length){ list.innerHTML='<div class="empty-state">No phrases yet.</div>'; return; }
-    list.innerHTML=langData.phrases.map(p=>`
-        <div class="phrase-item"><div class="phrase-item-content">
-            <div class="phrase-item-phrase">${esc(p.phrase)}</div>
-            <div class="phrase-item-meaning">${esc(p.meaning)}</div>
-            ${p.context?'<div class="phrase-item-context">💡 '+esc(p.context)+'</div>':''}
-            ${p.lesson?'<div class="phrase-item-lesson">📘 '+esc(p.lesson)+'</div>':''}
-        </div><button class="del-btn" data-id="${p.id}" title="Delete">✕</button></div>`).join('');
-    list.querySelectorAll('.del-btn').forEach(b=>{
-        b.addEventListener('click', async()=>{
-            langData.phrases=langData.phrases.filter(p=>p.id!==b.dataset.id);
-            await saveLangData();
-            renderPhraseList();
-        });
-    });
-}
-
-// ═══════════ Study Tab ═══════════
-let deck=[], sIdx=0, flipped=false;
-
-function initStudy(){
-    const sel=document.getElementById('studyLessonFilter'), cur=sel.value;
-    sel.innerHTML='<option value="all">All lessons</option>';
-    [...new Set(langData.phrases.map(p=>p.lesson).filter(Boolean))].sort().forEach(l=>{
-        const o=document.createElement('option'); o.value=l; o.textContent=l; sel.appendChild(o);
-    });
-    sel.value=cur||'all';
-    buildDeck(); renderFC();
-}
-
-function buildDeck(){
-    const f=document.getElementById('studyLessonFilter').value;
-    deck=f==='all'?[...langData.phrases]:langData.phrases.filter(p=>p.lesson===f);
-    sIdx=0; flipped=false;
-}
-
-function shuffleDeck(){ for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]];} sIdx=0;flipped=false;renderFC(); }
-
-function renderFC(){
-    const pEl=document.getElementById('fcPhrase'),mEl=document.getElementById('fcMeaning'),cEl=document.getElementById('fcContext'),lEl=document.getElementById('fcLesson'),hEl=document.getElementById('fcHint'),prog=document.getElementById('studyProgress'),fill=document.getElementById('studyProgressFill');
-    if(!deck.length){ pEl.textContent='No phrases to study!'; hEl.textContent='Add phrases in the Phrases tab.'; mEl.style.display=cEl.style.display=lEl.style.display='none'; prog.textContent=''; fill.style.width='0%'; return; }
-    const c=deck[sIdx];
-    pEl.textContent=c.phrase;
-    if(flipped){ mEl.textContent=c.meaning;mEl.style.display='block'; cEl.textContent=c.context?'💡 '+c.context:'';cEl.style.display=c.context?'block':'none'; lEl.textContent=c.lesson||'';lEl.style.display=c.lesson?'inline-block':'none'; hEl.textContent=''; }
-    else{ mEl.style.display=cEl.style.display=lEl.style.display='none'; hEl.textContent='👆 Click or press Flip to reveal'; }
-    prog.textContent=(sIdx+1)+' / '+deck.length;
-    fill.style.width=((sIdx+1)/deck.length*100)+'%';
-}
-
-document.getElementById('flashcard').addEventListener('click', ()=>{ if(!deck.length)return; flipped=!flipped; renderFC(); });
-document.getElementById('flipBtn').addEventListener('click', ()=>{ if(!deck.length)return; flipped=!flipped; renderFC(); });
-document.getElementById('nextBtn').addEventListener('click', ()=>{ if(!deck.length)return; sIdx=(sIdx+1)%deck.length; flipped=false; renderFC(); });
-document.getElementById('prevBtn').addEventListener('click', ()=>{ if(!deck.length)return; sIdx=(sIdx-1+deck.length)%deck.length; flipped=false; renderFC(); });
-document.getElementById('shuffleBtn').addEventListener('click', ()=>{ buildDeck(); shuffleDeck(); });
-document.getElementById('studyLessonFilter').addEventListener('change', ()=>{ buildDeck(); renderFC(); });
-
-document.addEventListener('keydown', e=>{
-    if(!document.getElementById('notesOverlay').classList.contains('open')) return;
-    if(!document.getElementById('panel-study').classList.contains('active')) return;
-    if(e.key==='ArrowRight') document.getElementById('nextBtn').click();
-    if(e.key==='ArrowLeft') document.getElementById('prevBtn').click();
-    if(e.key===' '||e.key==='Enter'){ e.preventDefault(); document.getElementById('flipBtn').click(); }
-});
 
 // Confetti
 function spawnConfetti(){
