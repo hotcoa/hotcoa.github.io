@@ -3,102 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐱 Cat Language | Learn Languages</title>
+    <title>🐱 Le Chat Parisien | Learn Languages</title>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Josefin+Sans:wght@300;400;600;700&display=swap');
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Fredoka',sans-serif;min-height:100vh;overflow-x:hidden}
+        body{font-family:'Josefin Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+        :root{
+            --navy:#1B2A4A;
+            --cream:#F5EFE0;
+            --ivory:#FFFDF7;
+            --gold:#C9A227;
+            --burgundy:#9E2B25;
+        }
 
         /* Screens */
         .screen{display:none;min-height:100vh}
         .screen.active{display:flex}
 
         /* Login */
-        #loginScreen{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);align-items:center;justify-content:center}
-        .login-card{background:#fff;border-radius:24px;padding:3rem 2.5rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:400px;width:90%}
-        .login-card h1{font-size:2rem;color:#2d3436;margin-bottom:0.5rem}
-        .login-card p{color:#636e72;font-size:1rem;margin-bottom:2rem;font-weight:300}
-        .google-btn{display:inline-flex;align-items:center;gap:0.8rem;background:#fff;color:#444;border:2px solid #ddd;border-radius:50px;padding:0.8rem 2rem;font-family:'Fredoka',sans-serif;font-size:1.1rem;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-        .google-btn:hover{border-color:#4285f4;box-shadow:0 4px 15px rgba(66,133,244,0.3);transform:translateY(-2px)}
+        #loginScreen{background:linear-gradient(160deg,#EAF4FB 0%,#FBEAF0 55%,#FFF6E8 100%);align-items:center;justify-content:center}
+        .login-card{background:var(--cream);border:3px solid var(--gold);box-shadow:0 0 0 7px var(--ivory),0 20px 45px rgba(0,0,0,0.25);padding:3rem 2.5rem;text-align:center;max-width:400px;width:90%;position:relative}
+        .login-card::before,.login-card::after,.container::before,.container::after{content:'';position:absolute;width:18px;height:18px;border:2px solid var(--gold);pointer-events:none}
+        .login-card::before,.container::before{top:-9px;left:-9px;border-right:none;border-bottom:none}
+        .login-card::after,.container::after{bottom:-9px;right:-9px;border-left:none;border-top:none}
+        .login-card h1{font-family:'Poiret One',serif;font-size:2.2rem;color:var(--navy);margin-bottom:0.5rem;letter-spacing:1px}
+        .login-card p{color:var(--burgundy);font-size:1rem;margin-bottom:2rem;font-weight:300;font-style:italic}
+        .google-btn{display:inline-flex;align-items:center;gap:0.8rem;background:var(--ivory);color:var(--navy);border:2px dashed var(--gold);border-radius:50px;padding:0.8rem 2rem;font-family:'Josefin Sans',sans-serif;font-size:1.1rem;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+        .google-btn:hover{border-color:var(--burgundy);box-shadow:0 4px 15px rgba(158,43,37,0.25);transform:translateY(-2px)}
         .google-btn img{width:24px;height:24px}
-        .login-error{color:#d63031;font-size:0.9rem;margin-top:1rem;min-height:1.2rem}
+        .login-error{color:var(--burgundy);font-size:0.9rem;margin-top:1rem;min-height:1.2rem}
 
         /* Loading */
-        #loadingScreen{background:linear-gradient(135deg,#ffeaa7 0%,#fab1a0 50%,#fd79a8 100%);align-items:center;justify-content:center}
-        .loader{font-size:2rem;color:#2d3436;animation:pulse 1.5s infinite}
+        #loadingScreen{background:linear-gradient(160deg,#EAF4FB 0%,#FBEAF0 55%,#FFF6E8 100%);align-items:center;justify-content:center}
+        .loader{font-family:'Poiret One',serif;font-size:1.8rem;color:var(--navy);animation:pulse 1.5s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 
         /* Top Bar */
-        .top-bar{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);padding:0.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
-        .top-bar-left{display:flex;align-items:center;gap:0.8rem}
-        .user-avatar{width:34px;height:34px;border-radius:50%;border:2px solid #dfe6e9}
-        .user-name{font-size:0.9rem;color:#2d3436;font-weight:400}
-        .top-bar-right{display:flex;align-items:center;gap:0.6rem}
-        .top-select-group{display:flex;align-items:center;gap:0.3rem}
-        .top-select-label{font-size:0.7rem;color:#636e72;font-weight:400;text-transform:uppercase;letter-spacing:0.5px}
-        .lang-select{font-family:'Fredoka',sans-serif;padding:0.35rem 0.8rem;border:2px solid #dfe6e9;border-radius:10px;font-size:0.85rem;color:#2d3436;background:#fff;cursor:pointer;transition:all 0.2s}
-        .lang-select:hover{border-color:#74b9ff}
-        .lang-select:focus{outline:none;border-color:#74b9ff;box-shadow:0 0 0 3px rgba(116,185,255,0.15)}
+        .top-bar{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(245,239,224,0.95);backdrop-filter:blur(8px);padding:0.5rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 2px 10px rgba(0,0,0,0.15);flex-wrap:nowrap;overflow-x:auto;white-space:nowrap}
+        .top-bar-left{display:flex;align-items:center;gap:0.6rem;flex-shrink:0}
+        .user-avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--gold)}
+        .user-name{font-size:0.85rem;color:var(--navy);font-weight:400}
+        .top-bar-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
 
-        .top-divider{width:1px;height:20px;background:#dfe6e9;margin:0 0.2rem}
-        .logout-btn{font-family:'Fredoka',sans-serif;background:none;border:1px solid #dfe6e9;border-radius:50px;padding:0.3rem 0.8rem;font-size:0.85rem;color:#636e72;cursor:pointer;transition:all 0.2s}
-        .logout-btn:hover{border-color:#d63031;color:#d63031}
+        .stamp-row{display:flex;align-items:center;gap:0.4rem;flex-shrink:0}
+        .stamp-row-label{font-size:0.6rem;color:var(--navy);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-right:0.1rem;flex-shrink:0}
+        #topLangStamps,#animalStamps{display:flex;align-items:center;gap:0.4rem}
+        .stamp-btn{font-family:'Josefin Sans',sans-serif;background:var(--ivory);border:2px dashed var(--gold);border-radius:4px;padding:0.25rem 0.5rem;font-size:0.85rem;cursor:pointer;transition:all 0.2s;color:var(--navy);display:inline-flex;align-items:center;gap:0.3rem;line-height:1;flex-shrink:0}
+        .stamp-btn .stamp-icon{font-size:1.2rem}
+        .stamp-btn .stamp-text{font-size:0.55rem;text-transform:uppercase;letter-spacing:0.5px}
+        .stamp-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.15)}
+        .stamp-btn.active{background:var(--gold);border-color:var(--burgundy);color:var(--ivory);box-shadow:0 2px 8px rgba(201,162,39,0.5)}
+
+        .top-divider{width:1px;height:20px;background:rgba(27,42,74,0.2);margin:0 0.2rem;flex-shrink:0}
+        .logout-btn{font-family:'Josefin Sans',sans-serif;background:none;border:1px solid var(--navy);border-radius:50px;padding:0.3rem 0.8rem;font-size:0.85rem;color:var(--navy);cursor:pointer;transition:all 0.2s;flex-shrink:0}
+        .logout-btn:hover{border-color:var(--burgundy);color:var(--burgundy)}
 
         /* Main App */
-        #mainApp{background:linear-gradient(135deg,#ffeaa7 0%,#fab1a0 50%,#fd79a8 100%);align-items:center;justify-content:center;padding-top:60px}
+        #mainApp{background:linear-gradient(160deg,#EAF4FB 0%,#FBEAF0 55%,#FFF6E8 100%);align-items:center;justify-content:center;padding-top:70px}
 
         /* Language Picker */
         .lang-picker-wrap{text-align:center;padding:2rem}
-        .lang-picker-wrap h2{color:#2d3436;font-size:1.8rem;margin-bottom:0.5rem}
-        .lang-picker-wrap>p{color:#636e72;margin-bottom:2rem;font-weight:300}
+        .lang-picker-wrap h2{font-family:'Poiret One',serif;color:var(--navy);font-size:1.8rem;margin-bottom:0.5rem;letter-spacing:0.5px}
+        .lang-picker-wrap>p{color:var(--burgundy);margin-bottom:2rem;font-weight:300;font-style:italic}
         .lang-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;max-width:600px;margin:0 auto}
-        .lang-card{background:rgba(255,255,255,0.95);border-radius:16px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.3s;border:3px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
-        .lang-card:hover{transform:translateY(-4px);border-color:#74b9ff;box-shadow:0 8px 25px rgba(0,0,0,0.12)}
+        .lang-card{background:var(--ivory);border:2px dashed var(--gold);border-radius:8px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+        .lang-card:hover{transform:translateY(-4px);border-color:var(--burgundy);box-shadow:0 8px 20px rgba(0,0,0,0.12)}
         .lang-card-flag{font-size:2.5rem;margin-bottom:0.5rem}
-        .lang-card-name{font-size:1rem;color:#2d3436;font-weight:600}
-        .lang-card-native{font-size:0.85rem;color:#636e72;font-weight:300}
+        .lang-card-name{font-family:'Poiret One',serif;font-size:1.1rem;color:var(--navy);font-weight:600}
+        .lang-card-native{font-size:0.85rem;color:var(--burgundy);font-weight:300}
 
 
 
-        /* Cat page */
-        .container{width:90%;max-width:600px;background:rgba(255,255,255,0.95);border-radius:30px;padding:2rem;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);backdrop-filter:blur(10px);position:relative;overflow:hidden}
-        .container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff7675' fill-opacity='0.05' fill-rule='nonzero'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;animation:float 20s infinite linear;pointer-events:none}
-        @keyframes float{0%{transform:translate(-50%,-50%) rotate(0deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
-        .main-header{position:relative;z-index:1;margin-bottom:2rem}
-        .title{color:#2d3436;font-size:2.5rem;font-weight:600;margin-bottom:0.5rem;text-shadow:2px 2px 4px rgba(0,0,0,0.1)}
-        .subtitle{color:#636e72;font-size:1.1rem;font-weight:300}
-        .cat-container{position:relative;z-index:1;margin:2rem 0}
-        .cat-image{width:200px;height:200px;border-radius:50%;object-fit:cover;border:6px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,0.2);transition:all 0.3s ease}
-        .cat-image:hover{transform:scale(1.05)}
-        .phrase-container{position:relative;z-index:1;background:linear-gradient(135deg,#a8e6cf,#dcedc1);border-radius:20px;padding:2rem;margin:2rem 0;border:3px solid #fff;box-shadow:0 8px 25px rgba(0,0,0,0.1)}
-        #demoPhrase{font-size:1.8rem;font-weight:600;color:#2d3436;margin-bottom:1rem;transition:opacity 0.3s}
-        #demoMeaning{font-size:1.2rem;color:#636e72;font-weight:400;font-style:italic;transition:opacity 0.3s}
-        .speak-btn{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff;border:none;border-radius:50%;width:48px;height:48px;font-size:1.4rem;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 15px rgba(108,92,231,0.3);position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;margin-top:1rem}
-        .speak-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(108,92,231,0.4)}
+        /* Postcard (main card) */
+        .container{width:90%;max-width:560px;background:var(--cream);padding:1.75rem;text-align:center;position:relative;border:3px solid var(--gold);box-shadow:0 0 0 7px var(--ivory),0 20px 45px rgba(0,0,0,0.35)}
+        .postmark{position:absolute;top:14px;right:18px;width:64px;height:64px;border:2.5px solid var(--burgundy);border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg);opacity:0.55;font-family:'Poiret One',serif;font-size:0.6rem;color:var(--burgundy);text-align:center;line-height:1.1}
+        .bunting{display:flex;justify-content:center;margin-bottom:1.1rem}
+        .bunting span{width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:16px solid var(--navy);margin:0 3px}
+        .bunting span:nth-child(3n+1){border-top-color:var(--burgundy)}
+        .bunting span:nth-child(3n+2){border-top-color:var(--gold)}
+        .main-header{margin-bottom:1.1rem}
+        .title{font-family:'Poiret One',serif;color:var(--navy);font-size:2.6rem;font-weight:400;letter-spacing:1px}
+        .subtitle{color:var(--burgundy);font-size:1rem;font-style:italic;font-weight:300;margin-top:0.2rem}
+        .cat-container{margin:1.2rem auto;width:200px;position:relative}
+        .cat-frame{background:var(--ivory);padding:10px 10px 30px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.25);transform:rotate(-1.2deg);position:relative}
+        .cat-image{width:180px;height:180px;object-fit:cover;display:block;filter:saturate(0.92) contrast(1.03);transition:opacity 0.3s}
+        .cat-caption{font-family:'Poiret One',serif;color:var(--navy);font-size:0.85rem;position:absolute;bottom:6px;left:0;right:0;text-align:center}
+        .phrase-container{background:var(--ivory);border-radius:4px;padding:1.5rem;margin:1.5rem 0;border-left:4px solid var(--burgundy);border-right:4px solid var(--navy);box-shadow:0 4px 12px rgba(0,0,0,0.08);text-align:left}
+        #demoPhrase{font-size:1.5rem;font-weight:600;color:var(--navy);margin-bottom:0.6rem;transition:opacity 0.3s;font-family:'Josefin Sans',sans-serif}
+        #demoMeaning{font-size:1rem;color:#5a5247;font-weight:300;font-style:italic;transition:opacity 0.3s}
+        .speak-btn{background:radial-gradient(circle at 30% 30%,#e3c869,var(--gold));color:var(--navy);border:none;border-radius:50%;width:46px;height:46px;font-size:1.3rem;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 12px rgba(201,162,39,0.5);display:inline-flex;align-items:center;justify-content:center;margin-top:0.9rem}
+        .speak-btn:hover{transform:scale(1.1)}
         .speak-btn:active{transform:scale(0.95)}
         .speak-btn.speaking{animation:speakPulse 1s infinite}
-        @keyframes speakPulse{0%,100%{box-shadow:0 4px 15px rgba(108,92,231,0.3)}50%{box-shadow:0 4px 25px rgba(108,92,231,0.6)}}
-        .refresh-btn{background:linear-gradient(135deg,#ff7675,#fd79a8);color:white;border:none;border-radius:50px;padding:1rem 2.5rem;font-size:1.2rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;box-shadow:0 8px 25px rgba(255,118,117,0.3);font-family:'Fredoka',sans-serif;margin:1.5rem 0}
-        .refresh-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,118,117,0.4)}
-        .refresh-btn:active{transform:translateY(-1px)}
-        .motivation-text{color:#74b9ff;font-size:1rem;font-weight:400;margin-top:1.5rem;position:relative;z-index:1}
-        .paw-prints{position:absolute;font-size:1.5rem;color:rgba(255,118,117,0.3);animation:bounce 2s infinite}
-        .paw1{top:10%;left:10%}.paw2{top:20%;right:15%;animation-delay:.5s}.paw3{bottom:30%;left:8%;animation-delay:1s}.paw4{bottom:15%;right:12%;animation-delay:1.5s}
-        @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-10px)}60%{transform:translateY(-5px)}}
-        .progress-bar{background:rgba(116,185,255,0.2);height:8px;border-radius:10px;overflow:hidden;margin:1.5rem 0;position:relative;z-index:1}
-        .progress-fill{background:linear-gradient(90deg,#74b9ff,#0984e3);height:100%;border-radius:10px;transition:width 0.5s ease}
-        .stats{display:flex;justify-content:space-between;margin-top:1rem;font-size:0.9rem;color:#636e72;position:relative;z-index:1}
+        @keyframes speakPulse{0%,100%{box-shadow:0 4px 12px rgba(201,162,39,0.5)}50%{box-shadow:0 4px 22px rgba(201,162,39,0.85)}}
+        .refresh-btn{position:relative;background:var(--burgundy);color:var(--ivory);border:none;padding:0.9rem 2.2rem 0.9rem 2.6rem;font-size:1.05rem;font-weight:600;cursor:pointer;transition:all 0.25s ease;font-family:'Josefin Sans',sans-serif;margin:1.5rem 0;clip-path:polygon(0% 0%,4% 50%,0% 100%,100% 100%,100% 0%);box-shadow:0 6px 18px rgba(158,43,37,0.4)}
+        .refresh-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(158,43,37,0.5)}
+        .refresh-btn:active{transform:translateY(0)}
+        .motivation-text{color:var(--navy);font-size:0.9rem;font-weight:300;margin-top:1.3rem;font-style:italic}
+        .progress-bar{background:rgba(27,42,74,0.12);height:6px;border-radius:0;overflow:hidden;margin:1.4rem 0;position:relative}
+        .progress-fill{background:linear-gradient(90deg,var(--burgundy),var(--gold));height:100%;transition:width 0.5s ease}
+        .stats{display:flex;justify-content:space-between;margin-top:0.8rem;font-size:0.85rem;color:#5a5247}
 
         @media(max-width:600px){
-            .container{width:95%;padding:1.5rem}.title{font-size:2rem}.cat-image{width:150px;height:150px}
-            #demoPhrase{font-size:1.4rem}#demoMeaning{font-size:1rem}
-            .top-bar{padding:0.5rem 0.8rem}.user-name{display:none}
-            .top-select-label{display:none}
+            .container{width:95%;padding:1.25rem}.title{font-size:2rem}
+            .cat-container{width:160px}.cat-image{width:140px;height:140px}
+            #demoPhrase{font-size:1.25rem}#demoMeaning{font-size:0.9rem}
+            .top-bar{padding:0.5rem 0.6rem;gap:0.9rem}.user-name{display:none}
+            .stamp-row-label{display:none}
             .top-divider{display:none}
-            .lang-select{font-size:0.78rem;padding:0.3rem 0.5rem}
+            .postmark{width:50px;height:50px;font-size:0.5rem;top:8px;right:8px}
             .lang-grid{grid-template-columns:repeat(2,1fr)}
             .login-card{padding:2rem 1.5rem}
         }
@@ -109,8 +126,8 @@
 <!-- ═══ Login Screen ═══ -->
 <div id="loginScreen" class="screen active">
     <div class="login-card">
-        <h1>🐱 Cat Language</h1>
-        <p>Learn languages with fun flashcards</p>
+        <h1>🐱 Le Chat Parisien</h1>
+        <p>Learn languages with adorable animals</p>
         <button class="google-btn" id="googleLoginBtn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"/>
             Sign in with Google
@@ -132,11 +149,14 @@
             <span class="user-name" id="userName"></span>
         </div>
         <div class="top-bar-right">
-            <div class="top-select-group">
-                <span class="top-select-label">🌍</span>
-                <select class="lang-select" id="topLangSelect"></select>
+            <div class="stamp-row">
+                <span class="stamp-row-label">Langue</span>
+                <div id="topLangStamps"></div>
             </div>
-
+            <div class="stamp-row">
+                <span class="stamp-row-label">Animal</span>
+                <div id="animalStamps"></div>
+            </div>
             <div class="top-divider"></div>
             <button class="logout-btn" id="logoutBtn">Sign out</button>
         </div>
@@ -154,23 +174,24 @@
     <!-- Main Content -->
     <div id="mainContent" style="display:none">
         <div class="container">
-            <div class="paw-prints paw1">🐾</div>
-            <div class="paw-prints paw2">🐾</div>
-            <div class="paw-prints paw3">🐾</div>
-            <div class="paw-prints paw4">🐾</div>
+            <div class="postmark">CACHET<br/>DE LA POSTE<br/>PARIS</div>
+            <div class="bunting"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
             <div class="main-header">
-                <h1 class="title" id="mainTitle">🐱 Français Chat 🐱</h1>
+                <h1 class="title" id="mainTitle">Le Chat Parisien</h1>
                 <p class="subtitle" id="mainSubtitle">Learn French with adorable cats!</p>
             </div>
             <div class="cat-container">
-                <img id="catImage" class="cat-image" src="https://cataas.com/cat/says/Bonjour?size=200&color=white&fontSize=30" alt="Cat"/>
+                <div class="cat-frame">
+                    <img id="catImage" class="cat-image" src="" alt="Animal"/>
+                    <div class="cat-caption">Paris</div>
+                </div>
             </div>
             <div class="phrase-container">
                 <div id="demoPhrase">Cliquez pour commencer!</div>
                 <div id="demoMeaning">Click to start!</div>
                 <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
             </div>
-            <button id="refreshBtn" class="refresh-btn">🔄 Nouvelle phrase!</button>
+            <button id="refreshBtn" class="refresh-btn">Nouvelle carte postale ✉️</button>
             <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
             <div class="stats">
                 <span>Phrases seen: <span id="phrasesLearned">0</span></span>
@@ -283,7 +304,7 @@ const LEVEL_DEMO = {
             { p:"Il fait chaud.", m:"It's hot.", kw:["chaud","weather"] },
             { p:"Il fait froid.", m:"It's cold.", kw:["froid","weather"] },
             { p:"Il pleut.", m:"It's raining.", kw:["pluie","weather"] },
-            { p:"Quelle heure il est ?", m:"What time is it?", kw:["heure","time"] },
+            { p:"Quelle heure est-il ?", m:"What time is it?", kw:["heure","time"] },
             { p:"Je dîne.", m:"I'm having dinner.", kw:["dîner","food"] },
             { p:"Je fais de la musculation.", m:"I do weight training.", kw:["muscu","sport"] },
             { p:"Je me lave le visage.", m:"I wash my face.", kw:["visage","routine"] },
@@ -360,7 +381,7 @@ const LEVEL_DEMO = {
             { p:"Vous êtes prête ?", m:"Are you ready? (formal)", kw:["prête","ready"] },
             { p:"Ça vous a plu ?", m:"Did you enjoy it?", kw:["plaire","enjoy"] },
             { p:"Que recommandez-vous ?", m:"What do you recommend?", kw:["recommend","question"] },
-            { p:"Combien coûte le prix du bus ?", m:"How much does the bus cost?", kw:["prix","bus"] },
+            { p:"Combien coûte le bus ?", m:"How much does the bus cost?", kw:["prix","bus"] },
             { p:"À quelle heure est le prochain bus ?", m:"What time is the next bus?", kw:["heure","bus"] },
             { p:"Je travaille dans une entreprise technologique.", m:"I work in a tech company.", kw:["entreprise","work"] },
             { p:"Je ne passe pas de temps avec mes collègues.", m:"I don't spend time with my colleagues.", kw:["collègues","negation"] },
@@ -409,6 +430,50 @@ const LEVEL_DEMO = {
             { p:"On a créé une application pour trouver des amis.", m:"We created an app to find friends.", kw:["créer","trouver"] },
             { p:"Je viens de Corée — j'en viens et j'y retourne chaque été.", m:"I come from Korea — I come from there and return there every summer. (EN + Y)", kw:["EN","Y"] },
             { p:"Tu ne te lèves pas tôt ? — Si, je me lève tôt le lundi !", m:"You don't get up early? — Actually yes, I do on Monday! (si vs non)", kw:["si","negation"] },
+            // B1 — Subjunctive (il faut que, vouloir que, bien que, douter que)
+            { p:"Il faut que tu viennes à la réunion demain.", m:"You need to come to the meeting tomorrow.", kw:["subjonctif","réunion"] },
+            { p:"Je veux que tu sois heureux.", m:"I want you to be happy.", kw:["subjonctif","heureux"] },
+            { p:"Il est important que nous arrivions à l'heure.", m:"It's important that we arrive on time.", kw:["subjonctif","heure"] },
+            { p:"Bien qu'il pleuve, je sors quand même.", m:"Although it's raining, I'm going out anyway.", kw:["subjonctif","pleuvoir"] },
+            { p:"Il faut que je fasse les courses ce soir.", m:"I need to go grocery shopping tonight.", kw:["subjonctif","courses"] },
+            { p:"Je doute qu'il vienne à la fête.", m:"I doubt he'll come to the party.", kw:["subjonctif","fête"] },
+            { p:"Il faut que vous soyez patients.", m:"You need to be patient.", kw:["subjonctif","patience"] },
+            { p:"Avant que tu partes, dis-moi la vérité.", m:"Before you leave, tell me the truth.", kw:["subjonctif","vérité"] },
+            { p:"Il est nécessaire que tu apprennes le français.", m:"It's necessary that you learn French.", kw:["subjonctif","français"] },
+            { p:"Je suis content que tu sois là.", m:"I'm glad you're here.", kw:["subjonctif","content"] },
+            // B1 — Futur simple
+            { p:"Demain, je travaillerai à la maison.", m:"Tomorrow, I will work from home.", kw:["futur simple","demain"] },
+            { p:"L'année prochaine, nous voyagerons en France.", m:"Next year, we will travel to France.", kw:["futur simple","voyage"] },
+            { p:"Elle finira ses études en juin.", m:"She will finish her studies in June.", kw:["futur simple","études"] },
+            { p:"Quand je serai grand, je serai médecin.", m:"When I grow up, I will be a doctor.", kw:["futur simple","médecin"] },
+            { p:"Tu verras, tout ira bien.", m:"You'll see, everything will be fine.", kw:["futur simple","bien"] },
+            { p:"Nous nous marierons l'année prochaine.", m:"We will get married next year.", kw:["futur simple","mariage"] },
+            { p:"Il pleuvra demain selon la météo.", m:"It will rain tomorrow according to the forecast.", kw:["futur simple","météo"] },
+            { p:"Je t'appellerai dès que j'arriverai.", m:"I'll call you as soon as I arrive.", kw:["futur simple","appeler"] },
+            { p:"Ils achèteront une nouvelle maison.", m:"They will buy a new house.", kw:["futur simple","maison"] },
+            { p:"Qu'est-ce que tu feras après tes études ?", m:"What will you do after your studies?", kw:["futur simple","études"] },
+            // B1 — Conditional (polite requests, hypotheses with si)
+            { p:"Si j'avais plus de temps, je voyagerais davantage.", m:"If I had more time, I would travel more.", kw:["conditionnel","voyage"] },
+            { p:"Si j'étais riche, j'achèterais une grande maison.", m:"If I were rich, I would buy a big house.", kw:["conditionnel","riche"] },
+            { p:"Pourriez-vous m'aider, s'il vous plaît ?", m:"Could you help me, please?", kw:["conditionnel","aider"] },
+            { p:"Je voudrais réserver une table pour deux.", m:"I would like to reserve a table for two.", kw:["conditionnel","réserver"] },
+            { p:"Si tu avais le choix, où habiterais-tu ?", m:"If you had the choice, where would you live?", kw:["conditionnel","choix"] },
+            { p:"À ta place, je ne dirais rien.", m:"In your place, I wouldn't say anything.", kw:["conditionnel","place"] },
+            { p:"Si nous partions plus tôt, nous éviterions le trafic.", m:"If we left earlier, we would avoid the traffic.", kw:["conditionnel","trafic"] },
+            { p:"Aimeriez-vous venir avec nous ?", m:"Would you like to come with us?", kw:["conditionnel","venir"] },
+            { p:"Sans ton aide, je ne réussirais pas.", m:"Without your help, I wouldn't succeed.", kw:["conditionnel","aide"] },
+            { p:"Que ferais-tu à ma place ?", m:"What would you do in my place?", kw:["conditionnel","place"] },
+            // B1 — Imperative
+            { p:"Viens ici tout de suite !", m:"Come here right now!", kw:["impératif","viens"] },
+            { p:"Ferme la porte, s'il te plaît.", m:"Close the door, please.", kw:["impératif","porte"] },
+            { p:"Ne sois pas en retard.", m:"Don't be late.", kw:["impératif","retard"] },
+            { p:"Asseyez-vous, je vous prie.", m:"Please sit down. (formal)", kw:["impératif","asseyez"] },
+            { p:"Faisons une pause.", m:"Let's take a break.", kw:["impératif","pause"] },
+            { p:"Ne t'inquiète pas, tout va bien.", m:"Don't worry, everything's fine.", kw:["impératif","inquiète"] },
+            { p:"Parlez plus lentement, s'il vous plaît.", m:"Please speak more slowly. (formal)", kw:["impératif","lentement"] },
+            { p:"Allons-y !", m:"Let's go!", kw:["impératif","allons"] },
+            { p:"Écoute-moi bien.", m:"Listen to me carefully.", kw:["impératif","écoute"] },
+            { p:"N'oublie pas ton parapluie.", m:"Don't forget your umbrella.", kw:["impératif","parapluie"] },
             // B1 — Conversational phrases
             { p:"Quand j'étais enfant, je jouais du piano.", m:"When I was a child, I played the piano.", kw:["imparfait","piano"] },
             { p:"J'habitais en Corée.", m:"I used to live in Korea.", kw:["imparfait","habiter"] },
@@ -434,7 +499,7 @@ const LEVEL_DEMO = {
             { p:"Comment est la semaine ? Tu fais quoi ?", m:"How's the week? What are you doing?", kw:["semaine","question"] },
             { p:"Tu utilises beaucoup l'IA ?", m:"Do you use AI a lot?", kw:["AI","question"] },
             { p:"Je suis intéressée par votre entreprise.", m:"I'm interested in your company.", kw:["intéressé","entreprise"] },
-            { p:"J'aime les intentions de votre entreprise.", m:"I like your company's intentions.", kw:["intentions","entreprise"] },
+            { p:"J'aime les valeurs de votre entreprise.", m:"I like your company's values.", kw:["valeurs","entreprise"] },
             // May 29 — Wedding conversation
             { p:"Beaucoup de mariages font une entrée comme ça ?", m:"Do a lot of weddings have an entrance like that?", kw:["mariage","question"] },
             { p:"Le marié était derrière l'écran.", m:"The groom was behind the screen.", kw:["marié","wedding"] },
@@ -511,6 +576,7 @@ const LEVEL_DEMO = {
 let currentUser = null, userProfile = null, currentLang = null, currentLevel = null;
 let demoCount = 0;
 let activeDemos = [];
+let currentAnimal = 'cat';
 
 // ═══════════ Utility ═══════════
 function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
@@ -560,7 +626,7 @@ auth.onAuthStateChanged(async(user)=>{
             showScreen('mainApp');
             if(userProfile.selectedLanguage){
                 currentLang=userProfile.selectedLanguage;
-                document.getElementById('topLangSelect').value=currentLang;
+                renderTopLangStamps();
                 currentLevel=getAutoLevel(currentLang);
                 showMainContent();
             }else{
@@ -581,27 +647,66 @@ async function loadUserProfile(){
         userProfile={ displayName:currentUser.displayName, email:currentUser.email, photoURL:currentUser.photoURL, selectedLanguage:null, createdAt:firebase.firestore.FieldValue.serverTimestamp() };
         await db.collection('users').doc(currentUser.uid).set(userProfile);
     }
-    populateTopLangSelect();
+    renderTopLangStamps();
+    renderAnimalStamps();
 }
 
 async function saveUserProfile(){
     await db.collection('users').doc(currentUser.uid).update({ ...userProfile, updatedAt:firebase.firestore.FieldValue.serverTimestamp() });
 }
 
-// ═══════════ Top bar lang select ═══════════
-function populateTopLangSelect(){
-    const sel=document.getElementById('topLangSelect');
-    sel.innerHTML='<option value="">Choose language...</option>';
-    Object.entries(LANGS).forEach(([k,v])=>{
-        const o=document.createElement('option'); o.value=k; o.textContent=v.flag+' '+v.name; sel.appendChild(o);
-    });
-    if(currentLang) sel.value=currentLang;
+// ═══════════ Top bar stamps (language + animal) ═══════════
+function renderTopLangStamps(){
+    const wrap=document.getElementById('topLangStamps');
+    wrap.innerHTML=Object.entries(LANGS).map(([k,v])=>`
+        <button class="stamp-btn${k===currentLang?' active':''}" data-lang="${k}">
+            <span class="stamp-icon">${v.flag}</span><span class="stamp-text">${v.name}</span>
+        </button>`).join('');
+    wrap.querySelectorAll('.stamp-btn').forEach(b=>b.addEventListener('click', ()=>selectLanguage(b.dataset.lang)));
 }
 
-document.getElementById('topLangSelect').addEventListener('change', async(e)=>{
-    if(!e.target.value) return;
-    await selectLanguage(e.target.value);
-});
+const ANIMALS = {
+    cat: { icon:'🐱', label:'Chat' },
+    dog: { icon:'🐶', label:'Chien' },
+    fox: { icon:'🦊', label:'Renard' }
+};
+
+function renderAnimalStamps(){
+    const wrap=document.getElementById('animalStamps');
+    wrap.innerHTML=Object.entries(ANIMALS).map(([k,v])=>`
+        <button class="stamp-btn${k===currentAnimal?' active':''}" data-animal="${k}">
+            <span class="stamp-icon">${v.icon}</span><span class="stamp-text">${v.label}</span>
+        </button>`).join('');
+    wrap.querySelectorAll('.stamp-btn').forEach(b=>b.addEventListener('click', ()=>selectAnimal(b.dataset.animal)));
+}
+
+function selectAnimal(animal){
+    currentAnimal=animal;
+    renderAnimalStamps();
+    const p=activeDemos[lastDemoIndex];
+    const kw=p?.kw ? p.kw[Math.floor(Math.random()*p.kw.length)] : LANGS[currentLang].hi;
+    setAnimalImage(kw);
+}
+
+async function fetchAnimalUrl(animal, keyword){
+    if(animal==='dog'){
+        try{ const r=await fetch('https://dog.ceo/api/breeds/image/random'); const j=await r.json(); return j.message; }
+        catch(e){ animal='cat'; }
+    }
+    if(animal==='fox'){
+        try{ const r=await fetch('https://randomfox.ca/floof/'); const j=await r.json(); return j.image; }
+        catch(e){ animal='cat'; }
+    }
+    return 'https://cataas.com/cat/says/'+encodeURIComponent(keyword||'Bonjour')+'?size=200&color=white&fontSize=22';
+}
+
+async function setAnimalImage(keyword){
+    const img=document.getElementById('catImage');
+    img.style.opacity='0';
+    const url=await fetchAnimalUrl(currentAnimal, keyword);
+    img.onload=()=>{ img.style.opacity='1'; };
+    img.src=url;
+}
 
 // ═══════════ Language Picker ═══════════
 function showLangPicker(){
@@ -624,7 +729,7 @@ async function selectLanguage(lang){
     userProfile.selectedLanguage=lang;
     currentLevel=getAutoLevel(lang);
     await saveUserProfile();
-    document.getElementById('topLangSelect').value=lang;
+    renderTopLangStamps();
     showMainContent();
 }
 
@@ -633,8 +738,7 @@ function showMainContent(){
     document.getElementById('langPicker').style.display='none';
     document.getElementById('mainContent').style.display='flex';
     const L=LANGS[currentLang];
-    document.getElementById('mainTitle').textContent=`🐱 ${L.name} Cat 🐱`;
-    document.getElementById('mainSubtitle').textContent=`Learn ${L.name} with adorable cats!`;
+    document.getElementById('mainSubtitle').textContent=currentLang==='french' ? 'Une carte postale de Paris, chaque jour' : `Learn ${L.name} with adorable animals!`;
     document.getElementById('motivationText').textContent=`${L.hi} Keep learning ${L.name}! 💪`;
     if(currentLang==='korean'){
         document.getElementById('levelBadge').textContent='🌿 Elementary';
@@ -657,7 +761,7 @@ function initDemo(){
     }else{
         document.getElementById('demoPhrase').textContent=LANGS[currentLang].hi;
         document.getElementById('demoMeaning').textContent=`Start learning ${LANGS[currentLang].name}!`;
-        document.getElementById('catImage').src='https://cataas.com/cat/says/'+encodeURIComponent(LANGS[currentLang].hi)+'?size=200&color=white&fontSize=25';
+        setAnimalImage(LANGS[currentLang].hi);
     }
 }
 
@@ -669,19 +773,19 @@ function nextDemo(){
     else{ do{ idx=Math.floor(Math.random()*activeDemos.length); }while(idx===lastDemoIndex); }
     lastDemoIndex=idx;
     const p=activeDemos[idx];
-    const pEl=document.getElementById('demoPhrase'), mEl=document.getElementById('demoMeaning'), img=document.getElementById('catImage');
-    pEl.style.opacity='0'; mEl.style.opacity='0'; img.style.opacity='0';
+    const pEl=document.getElementById('demoPhrase'), mEl=document.getElementById('demoMeaning');
+    pEl.style.opacity='0'; mEl.style.opacity='0';
     setTimeout(()=>{
         pEl.textContent=p.p; mEl.textContent=p.m;
-        if(p.kw){ const kw=p.kw[Math.floor(Math.random()*p.kw.length)]; img.src='https://cataas.com/cat/says/'+encodeURIComponent(kw)+'?size=200&color=white&fontSize=25'; }
-        pEl.style.opacity='1'; mEl.style.opacity='1'; img.style.opacity='1';
+        pEl.style.opacity='1'; mEl.style.opacity='1';
+        const kw=p.kw ? p.kw[Math.floor(Math.random()*p.kw.length)] : LANGS[currentLang].hi;
+        setAnimalImage(kw);
     },200);
     demoCount++;
     document.getElementById('phrasesLearned').textContent=demoCount;
     document.getElementById('progressFill').style.width=Math.min((demoCount/activeDemos.length)*100,100)+'%';
 }
 
-document.getElementById('catImage').style.transition='opacity 0.3s';
 document.getElementById('refreshBtn').addEventListener('click', nextDemo);
 
 // ═══════════ Text-to-Speech ═══════════
