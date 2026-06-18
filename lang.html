@@ -535,7 +535,82 @@ const LEVEL_DEMO = {
             { p:"C'est pareil pour moi.", m:"It's the same for me.", kw:["pareil","expression"] },
             { p:"Il y a eu un éclair dans le ciel.", m:"There was a lightning bolt in the sky.", kw:["éclair","weather"] },
             { p:"Elle prie tous les soirs.", m:"She prays every evening.", kw:["prier","verb"] },
-            { p:"Ma fille collectionne les poupées et les figurines.", m:"My daughter collects dolls and figurines.", kw:["poupée","figurine"] }
+            { p:"Ma fille collectionne les poupées et les figurines.", m:"My daughter collects dolls and figurines.", kw:["poupée","figurine"] },
+            // B1 — Plus-que-parfait (past before another past)
+            { p:"J'avais déjà mangé quand il est arrivé.", m:"I had already eaten when he arrived.", kw:["plus-que-parfait","manger"] },
+            { p:"Elle avait fini ses devoirs avant de sortir.", m:"She had finished her homework before going out.", kw:["plus-que-parfait","finir"] },
+            { p:"Nous avions réservé une table, mais le restaurant était fermé.", m:"We had reserved a table, but the restaurant was closed.", kw:["plus-que-parfait","réserver"] },
+            { p:"Il avait oublié son parapluie, alors il est revenu.", m:"He had forgotten his umbrella, so he came back.", kw:["plus-que-parfait","oublier"] },
+            { p:"J'avais toujours voulu visiter le Japon.", m:"I had always wanted to visit Japan.", kw:["plus-que-parfait","vouloir"] },
+            { p:"Ils avaient déménagé avant la fin de l'année.", m:"They had moved before the end of the year.", kw:["plus-que-parfait","déménager"] },
+            { p:"Tu n'avais jamais goûté ce plat avant ?", m:"You had never tasted this dish before?", kw:["plus-que-parfait","goûter"] },
+            { p:"On s'était déjà rencontrés à une fête.", m:"We had already met at a party.", kw:["plus-que-parfait","se rencontrer"] },
+            // B1 — Passive voice (la voix passive)
+            { p:"Ce livre a été écrit par un auteur français.", m:"This book was written by a French author.", kw:["passif","écrire"] },
+            { p:"La maison a été construite en 1920.", m:"The house was built in 1920.", kw:["passif","construire"] },
+            { p:"Les résultats seront annoncés demain.", m:"The results will be announced tomorrow.", kw:["passif","annoncer"] },
+            { p:"Le voleur a été arrêté par la police.", m:"The thief was arrested by the police.", kw:["passif","arrêter"] },
+            { p:"Cette chanson est chantée partout dans le monde.", m:"This song is sung all over the world.", kw:["passif","chanter"] },
+            { p:"Le dîner est préparé par ma grand-mère.", m:"Dinner is prepared by my grandmother.", kw:["passif","préparer"] },
+            // B1 — Reported speech (discours indirect)
+            { p:"Il m'a dit qu'il viendrait demain.", m:"He told me he would come tomorrow.", kw:["discours indirect","dire"] },
+            { p:"Elle a demandé si j'avais fini.", m:"She asked if I had finished.", kw:["discours indirect","demander"] },
+            { p:"Mon patron m'a expliqué que le projet était urgent.", m:"My boss explained to me that the project was urgent.", kw:["discours indirect","expliquer"] },
+            { p:"Il a répondu qu'il ne savait pas.", m:"He replied that he didn't know.", kw:["discours indirect","répondre"] },
+            { p:"Elle m'a demandé ce que je voulais manger.", m:"She asked me what I wanted to eat.", kw:["discours indirect","ce que"] },
+            { p:"Ils ont annoncé que le vol était retardé.", m:"They announced that the flight was delayed.", kw:["discours indirect","annoncer"] },
+            // B1 — Opinions & argumentation connectors
+            { p:"À mon avis, ce film est excellent.", m:"In my opinion, this movie is excellent.", kw:["opinion","à mon avis"] },
+            { p:"Je pense que tu as raison.", m:"I think you're right.", kw:["opinion","penser"] },
+            { p:"Je crois que c'est une bonne idée.", m:"I believe it's a good idea.", kw:["opinion","croire"] },
+            { p:"Je suis d'accord avec toi.", m:"I agree with you.", kw:["opinion","d'accord"] },
+            { p:"Je ne suis pas du tout d'accord.", m:"I don't agree at all.", kw:["opinion","désaccord"] },
+            { p:"D'un côté c'est pratique, de l'autre c'est cher.", m:"On one hand it's practical, on the other it's expensive.", kw:["argumentation","d'un côté"] },
+            { p:"Il pleut, donc je reste à la maison.", m:"It's raining, so I'm staying home.", kw:["connecteur","donc"] },
+            { p:"Puisque tu es là, on peut commencer.", m:"Since you're here, we can start.", kw:["connecteur","puisque"] },
+            { p:"Il est fatigué, pourtant il continue de travailler.", m:"He's tired, yet he keeps working.", kw:["connecteur","pourtant"] },
+            { p:"J'aime le café, en revanche je déteste le thé.", m:"I like coffee; on the other hand, I hate tea.", kw:["connecteur","en revanche"] },
+            { p:"C'est un bon restaurant, cependant les prix sont élevés.", m:"It's a good restaurant; however, the prices are high.", kw:["connecteur","cependant"] },
+            { p:"J'adore voyager, car ça me permet de découvrir de nouvelles cultures.", m:"I love traveling because it lets me discover new cultures.", kw:["connecteur","car"] },
+            { p:"D'abord, je fais mes devoirs, ensuite je regarde la télé, enfin je me couche.", m:"First I do my homework, then I watch TV, finally I go to bed.", kw:["connecteur","séquence"] },
+            { p:"En ce qui me concerne, je préfère le train à l'avion.", m:"As far as I'm concerned, I prefer the train to the plane.", kw:["opinion","en ce qui me concerne"] },
+            // B1 — More subjunctive triggers (pour que, avant que, à moins que, jusqu'à ce que)
+            { p:"Je parle lentement pour que tu comprennes.", m:"I speak slowly so that you understand.", kw:["subjonctif","pour que"] },
+            { p:"Finis tes devoirs avant qu'il soit trop tard.", m:"Finish your homework before it's too late.", kw:["subjonctif","avant que"] },
+            { p:"On sort à moins qu'il pleuve.", m:"We'll go out unless it rains.", kw:["subjonctif","à moins que"] },
+            { p:"J'attendrai jusqu'à ce que tu sois prêt.", m:"I'll wait until you're ready.", kw:["subjonctif","jusqu'à ce que"] },
+            { p:"Je doute qu'il vienne ce soir.", m:"I doubt he'll come tonight.", kw:["subjonctif","douter que"] },
+            { p:"Il est possible qu'on parte plus tôt.", m:"It's possible we leave earlier.", kw:["subjonctif","il est possible que"] },
+            { p:"Je suis content que tu aies réussi ton examen.", m:"I'm glad you passed your exam.", kw:["subjonctif","content que"] },
+            { p:"Il faut que nous fassions attention.", m:"We need to be careful.", kw:["subjonctif","il faut que"] },
+            // B1 — Formal register (email/letter writing)
+            { p:"Madame, Monsieur, je vous écris au sujet de ma candidature.", m:"Dear Sir/Madam, I'm writing regarding my application.", kw:["formel","candidature"] },
+            { p:"Veuillez trouver ci-joint mon CV.", m:"Please find attached my CV.", kw:["formel","ci-joint"] },
+            { p:"Je vous remercie par avance de votre réponse.", m:"Thank you in advance for your reply.", kw:["formel","remercier"] },
+            { p:"Dans l'attente de votre réponse, je vous prie d'agréer mes salutations distinguées.", m:"Awaiting your reply, yours sincerely.", kw:["formel","salutations"] },
+            { p:"Suite à notre conversation téléphonique, je vous confirme ma disponibilité.", m:"Following our phone call, I confirm my availability.", kw:["formel","confirmer"] },
+            { p:"Je me permets de vous contacter au sujet de l'annonce.", m:"I'm taking the liberty of contacting you regarding the ad.", kw:["formel","se permettre"] },
+            { p:"Pourriez-vous me donner plus de renseignements ?", m:"Could you give me more information?", kw:["formel","renseignements"] },
+            { p:"Je souhaiterais prendre rendez-vous.", m:"I would like to make an appointment.", kw:["formel","rendez-vous"] },
+            // B1 — Everyday French expressions (real-life usage)
+            { p:"C'est n'importe quoi !", m:"That's nonsense!", kw:["expression","n'importe quoi"] },
+            { p:"J'en ai marre de ce bruit.", m:"I'm fed up with this noise.", kw:["expression","en avoir marre"] },
+            { p:"T'inquiète, c'est pas grave.", m:"Don't worry, it's no big deal.", kw:["expression","t'inquiète"] },
+            { p:"Ça me fait plaisir de te voir.", m:"It makes me happy to see you.", kw:["expression","faire plaisir"] },
+            { p:"On verra bien.", m:"We'll see.", kw:["expression","on verra"] },
+            { p:"Ça vaut le coup d'essayer.", m:"It's worth trying.", kw:["expression","valoir le coup"] },
+            { p:"Je n'en reviens pas !", m:"I can't believe it!", kw:["expression","revenir"] },
+            { p:"Ça m'énerve.", m:"That annoys me.", kw:["expression","énerver"] },
+            { p:"On se tient au courant.", m:"Let's keep each other posted.", kw:["expression","au courant"] },
+            { p:"J'ai la flemme.", m:"I can't be bothered / I'm feeling lazy.", kw:["expression","flemme"] },
+            { p:"C'est pas mon truc.", m:"It's not my thing.", kw:["expression","truc"] },
+            { p:"Il faut que j'y aille.", m:"I have to go.", kw:["expression","y aller"] },
+            { p:"Ça me dit rien.", m:"I don't feel like it. / Doesn't ring a bell.", kw:["expression","ça me dit"] },
+            { p:"Tu me manques.", m:"I miss you.", kw:["expression","manquer"] },
+            { p:"C'est la galère.", m:"It's a nightmare / hassle.", kw:["expression","galère"] },
+            { p:"Bonne continuation !", m:"All the best! (going forward)", kw:["expression","continuation"] },
+            { p:"Ça roule !", m:"Sounds good! / All good!", kw:["expression","ça roule"] },
+            { p:"Je suis débordé en ce moment.", m:"I'm swamped right now.", kw:["expression","débordé"] }
         ]
     },
     korean: {
@@ -598,7 +673,8 @@ function buildActiveDemos(){
         const a1=(LEVEL_DEMO.french?.beginner||[]);
         const a2=(LEVEL_DEMO.french?.elementary||[]);
         const b1=(LEVEL_DEMO.french?.intermediate||[]);
-        levelPhrases=[...a1,...a2,...b1];
+        // Weight B1 phrases 3x and A2 phrases 2x so learners see harder content more often
+        levelPhrases=[...a1,...a2,...a2,...b1,...b1,...b1];
     }else{
         levelPhrases=(DEMO[currentLang]||[]);
     }
@@ -743,7 +819,7 @@ function showMainContent(){
     if(currentLang==='korean'){
         document.getElementById('levelBadge').textContent='🌿 Elementary';
     }else if(currentLang==='french'){
-        document.getElementById('levelBadge').textContent='📚 A1–B1';
+        document.getElementById('levelBadge').textContent='📚 A1–B1 (B1 weighted)';
     }else if(currentLevel){
         document.getElementById('levelBadge').textContent=LEVELS[currentLevel].emoji+' '+LEVELS[currentLevel].name;
     }
@@ -788,36 +864,124 @@ function nextDemo(){
 
 document.getElementById('refreshBtn').addEventListener('click', nextDemo);
 
-// ═══════════ Text-to-Speech ═══════════
-const LANG_VOICE_MAP = {
-    french:     { lang:'fr-FR', preferNames:['Google français','Microsoft Julie','Amélie','Marie','Céline'] },
-    korean:     { lang:'ko-KR', preferNames:['Google 한국어','Microsoft Heami','Yuna','Sora','SunHi'] },
+// ═══════════ Text-to-Speech (Neural voice mixing) ═══════════
+const VOICE_CONFIG = {
+    french: {
+        lang: 'fr-FR',
+        // Preferred female voices — neural/natural first (Edge & Chrome)
+        female: [
+            'Denise Online','Eloise Online','Vivienne Online',  // Edge neural
+            'Denise','Eloise','Vivienne',                       // Edge fallback names
+            'Amélie','Céline','Marie','Aurélie','Léa',          // macOS/iOS
+            'Google français',                                   // Chrome
+            'Julie','Caroline','Hortense'                       // Older Microsoft
+        ],
+        // Preferred male voices — neural/natural first
+        male: [
+            'Henri Online','Alain Online','Claude Online',      // Edge neural
+            'Henri','Alain','Claude','Fabrice','Théo',          // Edge fallback
+            'Thomas','Jacques','Nicolas',                       // macOS/iOS
+            'Paul'                                              // Older Microsoft
+        ],
+        // 50/50 male-female mix
+        femaleBias: 0.5
+    },
+    korean: {
+        lang: 'ko-KR',
+        female: [
+            'SunHi Online','JiMin Online',                      // Edge neural
+            'SunHi','JiMin','Yuna','Sora',                     // Edge fallback
+            'Google 한국어',                                     // Chrome
+            'Heami'                                             // Older Microsoft
+        ],
+        male: [
+            'InJoon Online','BongJin Online',                   // Edge neural
+            'InJoon','BongJin'                                  // Edge fallback
+        ],
+        femaleBias: 0.5
+    }
 };
 
 let cachedVoices = [];
+let voiceCache = {};  // { langKey: { female: [...], male: [...] } }
+
 function loadVoices(){
     cachedVoices = speechSynthesis.getVoices();
+    voiceCache = {};  // Reset cache when voices change
 }
 speechSynthesis.addEventListener('voiceschanged', loadVoices);
 loadVoices();
 
-function pickVoice(langKey){
-    const config = LANG_VOICE_MAP[langKey];
-    if(!config) return null;
+function isNeural(voice){
+    const n = voice.name.toLowerCase();
+    return n.includes('online') || n.includes('natural') || n.includes('neural');
+}
+
+function buildVoicePool(langKey){
+    if(voiceCache[langKey]) return voiceCache[langKey];
     if(!cachedVoices.length) cachedVoices = speechSynthesis.getVoices();
 
-    // Try preferred voice names first (case-insensitive partial match)
-    for(const name of config.preferNames){
-        const v = cachedVoices.find(v => v.name.toLowerCase().includes(name.toLowerCase()) && v.lang.startsWith(config.lang.split('-')[0]));
-        if(v) return v;
+    const config = VOICE_CONFIG[langKey];
+    if(!config) return { female:[], male:[] };
+
+    const langPrefix = config.lang.split('-')[0];
+    const langVoices = cachedVoices.filter(v => v.lang.startsWith(langPrefix));
+
+    function findByPrefs(prefs){
+        const found = [];
+        const seen = new Set();
+        for(const name of prefs){
+            const v = langVoices.find(v =>
+                v.name.toLowerCase().includes(name.toLowerCase()) && !seen.has(v.name)
+            );
+            if(v){ found.push(v); seen.add(v.name); }
+        }
+        return found;
     }
-    // Fall back: any female-sounding voice for this language
-    const langVoices = cachedVoices.filter(v => v.lang.startsWith(config.lang.split('-')[0]));
-    // Prefer voices with female-associated names or keywords
-    const femaleV = langVoices.find(v => /female|woman|julie|helena|haruka|yuna|katja|alice|maria|yaoyao|amélie|mónica|elsa|anna|luciana|kyoko|sora|heami|sunhi|lili|céline|marie|hye|jian|xiaoxiao/i.test(v.name));
-    if(femaleV) return femaleV;
-    // Any voice for this language
-    return langVoices[0] || null;
+
+    let female = findByPrefs(config.female);
+    let male = findByPrefs(config.male);
+
+    // If no preferred voices found, split all available voices by name heuristic
+    if(!female.length && !male.length){
+        const malePattern = /henri|alain|claude|paul|fabrice|théo|thomas|jacques|nicolas|injoon|bongjin|male|homme/i;
+        male = langVoices.filter(v => malePattern.test(v.name));
+        female = langVoices.filter(v => !malePattern.test(v.name));
+        if(!female.length) female = langVoices;
+    }
+
+    // Sort: neural/natural voices first within each pool
+    const sortNeural = (a,b) => (isNeural(b)?1:0) - (isNeural(a)?1:0);
+    female.sort(sortNeural);
+    male.sort(sortNeural);
+
+    voiceCache[langKey] = { female, male };
+    return voiceCache[langKey];
+}
+
+let lastVoiceGender = null;
+
+function pickVoice(langKey){
+    const pool = buildVoicePool(langKey);
+    const config = VOICE_CONFIG[langKey];
+    if(!config) return null;
+
+    const hasFemale = pool.female.length > 0;
+    const hasMale = pool.male.length > 0;
+    if(!hasFemale && !hasMale) return null;
+
+    // Pick gender: biased random, but avoid same gender 3x in a row
+    let useFemale;
+    if(!hasMale) useFemale = true;
+    else if(!hasFemale) useFemale = false;
+    else useFemale = Math.random() < config.femaleBias;
+
+    const voices = useFemale ? pool.female : pool.male;
+    lastVoiceGender = useFemale ? 'f' : 'm';
+
+    // Pick randomly from top 3 voices (neural ones are sorted first)
+    const topN = Math.min(voices.length, 3);
+    return voices[Math.floor(Math.random() * topN)];
 }
 
 function speakPhrase(){
@@ -827,14 +991,23 @@ function speakPhrase(){
     speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     const voice = pickVoice(currentLang);
+    const config = VOICE_CONFIG[currentLang];
+
     if(voice) utter.voice = voice;
-    utter.lang = (LANG_VOICE_MAP[currentLang]||{}).lang || 'en-US';
-    utter.rate = 0.85;
-    utter.pitch = 1.1;
+    utter.lang = config?.lang || 'en-US';
+
+    // Natural adult voice — no high pitch, no child-like sound
+    if(voice && isNeural(voice)){
+        utter.rate = 0.92 + Math.random() * 0.06;   // 0.92–0.98
+        utter.pitch = 0.95;                          // Slightly low = mature adult tone
+    } else {
+        utter.rate = 0.84 + Math.random() * 0.06;   // 0.84–0.90
+        utter.pitch = lastVoiceGender === 'f' ? 0.92 : 0.85;  // Low pitch avoids childish sound
+    }
 
     const btn = document.getElementById('speakBtn');
     btn.classList.add('speaking');
-    btn.textContent = '🔉';
+    btn.textContent = lastVoiceGender === 'f' ? '👩' : '👨';
     utter.onend = () => { btn.classList.remove('speaking'); btn.textContent = '🔊'; };
     utter.onerror = () => { btn.classList.remove('speaking'); btn.textContent = '🔊'; };
 
