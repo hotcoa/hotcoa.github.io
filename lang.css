@@ -837,69 +837,103 @@ body {
 
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
-    /* Stack the carnet below the postcard */
+    /* Stack #mainApp vertically. Critical: once the top bar becomes sticky
+       (≤768) it re-enters the flow, so #mainApp must be a column — otherwise
+       the header and the postcard sit side-by-side and the content overflows. */
+    #mainApp {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+    /* Stack the carnet below the postcard, centered */
     .layout {
         flex-direction: column;
         align-items: center;
         gap: 1.25rem;
-        max-width: 560px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
     .layout .container {
-        flex: 1 1 auto;
+        flex: 0 0 auto;
         width: 100%;
+        max-width: 520px;
     }
     .lesson-panel {
-        flex: 1 1 auto;
-        max-width: 100%;
+        flex: 0 0 auto;
+        max-width: 520px;
         width: 100%;
         align-self: auto;
-    }
-    #mainApp {
-        align-items: flex-start;
     }
 }
 
 @media (max-width: 768px) {
-    /* Top bar flows in normal document order and wraps instead of scrolling */
+    /* Top bar leaves the fixed layer and becomes a full-width sticky header
+       that stacks its rows instead of scrolling sideways. */
     .top-bar {
         position: sticky;
+        align-self: stretch;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.55rem;
         overflow-x: visible;
         white-space: normal;
-        flex-wrap: wrap;
-        row-gap: 0.5rem;
-        padding: 0.5rem 0.8rem;
+        padding: 0.6rem 0.9rem;
+    }
+    .top-bar-left {
+        width: 100%;
+        justify-content: space-between;
     }
     .top-bar-right {
+        width: 100%;
         flex-wrap: wrap;
-        gap: 0.6rem;
-        row-gap: 0.5rem;
-        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem 0.9rem;
+        justify-content: flex-start;
     }
     #topLangStamps,
     #levelStamps {
         flex-wrap: wrap;
     }
+    /* Push Sign out to the end of its wrapped row */
+    .logout-btn {
+        margin-left: auto;
+    }
+    /* Sticky header is in-flow now, so the fixed-bar offset is not needed */
     #mainApp {
-        padding-top: 1rem;
+        padding-top: 0;
     }
 }
 
 @media (max-width: 600px) {
-    .container { width: 95%; padding: 1.25rem; }
+    .layout { padding: 0 14px; gap: 1rem; }
+    .container { padding: 1.3rem 1.15rem; }
     .title { font-size: 2rem; }
     .subtitle { font-size: 0.9rem; }
-    .cat-container { width: 160px; }
-    .cat-image { width: 140px; height: 140px; }
-    #demoPhrase { font-size: 1.25rem; }
+    .bunting span { border-left-width: 9px; border-right-width: 9px; border-top-width: 13px; margin: 0 2px; }
+    .cat-container { width: 168px; margin: 1rem auto; }
+    .cat-image { width: 148px; height: 148px; }
+    #demoPhrase { font-size: 1.3rem; }
     #demoMeaning { font-size: 0.9rem; }
-    .phrase-container { padding: 1.2rem; }
-    .top-bar { padding: 0.5rem 0.6rem; gap: 0.6rem; }
+    .phrase-container { padding: 1.2rem 1.1rem; }
+    .stats { font-size: 0.78rem; }
+    .motivation-text { font-size: 0.82rem; }
+
+    /* Top bar: compact avatar row + wrapped stamp chips */
+    .top-bar { padding: 0.5rem 0.7rem; gap: 0.5rem; }
     .user-name { display: none; }
     .stamp-row { gap: 0.3rem; }
-    .stamp-btn { padding: 0.35rem 0.5rem; }
+    .stamp-row-label { font-size: 0.55rem; }
+    .stamp-btn { padding: 0.4rem 0.55rem; min-height: 34px; }
+    .stamp-btn .stamp-icon { font-size: 1.15rem; }
     .stamp-btn .stamp-text { font-size: 0.5rem; }
     .top-divider { display: none; }
-    .postmark { width: 50px; height: 50px; font-size: 0.5rem; top: 8px; right: 8px; }
+    .logout-btn { padding: 0.35rem 0.7rem; }
+
+    .postmark { width: 52px; height: 52px; font-size: 0.5rem; top: 10px; right: 10px; }
+
+    /* Language picker + login */
     .lang-picker-wrap { padding: 1.5rem 1rem; }
     .lang-picker-wrap h2 { font-size: 1.5rem; }
     .lang-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
@@ -907,13 +941,30 @@ body {
     .lang-card-flag { font-size: 2rem; }
     .login-card { padding: 2rem 1.5rem; }
     .login-card h1 { font-size: 1.9rem; }
-    .refresh-btn { font-size: 1rem; padding: 0.8rem 1.8rem 0.8rem 2.2rem; }
+
+    /* Full-width, tappable primary button */
+    .refresh-btn { font-size: 1rem; padding: 0.85rem 1.6rem; width: 100%; }
+
+    /* Carnet: tighter cards; stack vocab term over its gloss so nothing clips */
+    .lesson-card { padding: 1.15rem 1.05rem 1.25rem; }
+    .lesson-card-head h3 { font-size: 1.2rem; }
+    .vocab-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+    }
+    .vocab-gloss { text-align: left; }
+    .rtl-lang .vocab-item { align-items: flex-end; }
+    .rtl-lang .vocab-gloss { text-align: right; }
 }
 
 @media (max-width: 380px) {
     .stamp-row-label { display: none; }
     .stamp-btn .stamp-text { display: none; }
     .stamp-btn .stamp-icon { font-size: 1.35rem; }
-    .title { font-size: 1.7rem; }
-    .lang-grid { grid-template-columns: 1fr 1fr; }
+    .stamp-btn { padding: 0.4rem 0.5rem; }
+    .title { font-size: 1.75rem; }
+    .cat-container { width: 150px; }
+    .cat-image { width: 132px; height: 132px; }
+    #demoPhrase { font-size: 1.2rem; }
 }
