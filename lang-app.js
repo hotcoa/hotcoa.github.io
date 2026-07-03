@@ -24,6 +24,7 @@ const state = {
     userProfile: null,
     currentLang: null,
     currentLevel: 'beginner',
+    hasLocalPref: false,
     demoCount: 0,
     activeDemos: [],
     lastDemoIndex: -1,
@@ -620,6 +621,7 @@ async function selectLanguage(lang) {
 
 // Remember the language + level, locally always and to the account if signed in.
 function persistSelection() {
+    state.hasLocalPref = true;
     LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
     if (state.currentUser) UserService.saveProfile().catch(e => console.error('Save failed:', e));
 }
@@ -729,14 +731,15 @@ auth.onAuthStateChanged(async (user) => {
         const savedLang = state.userProfile.selectedLanguage;
         const savedLevel = state.userProfile.selectedLevel;
 
-        if (!state.currentLang && savedLang && LANGS[savedLang]) {
-            // Visitor hadn't chosen yet this session — restore their account choice.
+        if (!state.hasLocalPref && savedLang && LANGS[savedLang]) {
+            // Visitor hadn't made a local choice — restore their account choice.
             state.currentLang = savedLang;
             if (savedLevel && SKILL_LEVELS[savedLevel]) state.currentLevel = savedLevel;
+            state.hasLocalPref = true;
             LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
             renderTopLangStamps();
             showMainContent();
-        } else if (state.currentLang) {
+        } else {
             // Push the local choice up to the account.
             UserService.saveProfile().catch(e => console.error('Save failed:', e));
         }
@@ -750,16 +753,17 @@ auth.onAuthStateChanged(async (user) => {
 // localStorage — no login required.
 function boot() {
     const prefs = LocalPrefs.read();
-    if (prefs.lang && LANGS[prefs.lang]) state.currentLang = prefs.lang;
-    if (prefs.level && SKILL_LEVELS[prefs.level]) state.currentLevel = prefs.level;
+    // Default experience: French at intermediate — no picker screen shown.
+    // A saved local choice always overrides the default and is honored on return.
+    state.hasLocalPref = !!(prefs.lang && LANGS[prefs.lang]);
+    state.currentLang = state.hasLocalPref ? prefs.lang : 'french';
+    state.currentLevel = (prefs.level && SKILL_LEVELS[prefs.level]) ? prefs.level : 'intermediate';
 
     updateAuthUI();
     renderTopLangStamps();
     renderLevelStamps();
     showScreen('mainApp');
-
-    if (state.currentLang) showMainContent();
-    else showLangPicker();
+    showMainContent();
 }
 
 // ═══════════ Event Listeners ═══════════
