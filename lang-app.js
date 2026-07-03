@@ -23,8 +23,7 @@ const state = {
     currentUser: null,
     userProfile: null,
     currentLang: null,
-    currentLevel: null,
-    currentAnimal: 'cat',
+    currentLevel: 'beginner',
     demoCount: 0,
     activeDemos: [],
     lastDemoIndex: -1,
@@ -50,7 +49,7 @@ const dom = {
     get levelBadge() { return document.getElementById('levelBadge'); },
     get motivationText() { return document.getElementById('motivationText'); },
     get topLangStamps() { return document.getElementById('topLangStamps'); },
-    get animalStamps() { return document.getElementById('animalStamps'); },
+    get levelStamps() { return document.getElementById('levelStamps'); },
 };
 
 // ═══════════ Utilities ═══════════
@@ -60,9 +59,15 @@ function showScreen(id) {
 }
 
 function getAutoLevel(lang) {
-    // Default level for all languages
-    return 'elementary';
+    return 'beginner';
 }
+
+// Skill levels available for selection
+const SKILL_LEVELS = {
+    beginner:     { icon: '🌱', label: 'Beginner' },
+    intermediate: { icon: '🌳', label: 'Intermediate' },
+    advanced:     { icon: '🏔️', label: 'Advanced' },
+};
 
 function randomFrom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -70,17 +75,32 @@ function randomFrom(arr) {
 
 // ═══════════ Phrase Engine ═══════════
 function buildActiveDemos() {
-    const { currentLang } = state;
+    const { currentLang, currentLevel } = state;
     let phrases = [];
 
-    if (currentLang === 'korean') {
-        phrases = LEVEL_DEMO.korean?.elementary || DEMO.korean || [];
-    } else if (currentLang === 'french') {
+    if (currentLang === 'french') {
         const a1 = LEVEL_DEMO.french?.beginner || [];
         const a2 = LEVEL_DEMO.french?.elementary || [];
         const b1 = LEVEL_DEMO.french?.intermediate || [];
-        // Weight harder content more heavily for spaced repetition effect
-        phrases = [...a1, ...a2, ...a2, ...b1, ...b1, ...b1];
+
+        if (currentLevel === 'beginner') {
+            phrases = a1;
+        } else if (currentLevel === 'intermediate') {
+            // B1-weighted mix (original DELF B1 prep behavior)
+            phrases = [...a1, ...a2, ...a2, ...b1, ...b1, ...b1];
+        } else {
+            // Advanced: B1 content only
+            phrases = b1;
+        }
+    } else if (currentLang === 'korean') {
+        const kr = LEVEL_DEMO.korean || {};
+        if (currentLevel === 'beginner') {
+            phrases = kr.beginner || [];
+        } else if (currentLevel === 'intermediate') {
+            phrases = [...(kr.beginner || []), ...(kr.elementary || []), ...(kr.intermediate || [])];
+        } else {
+            phrases = [...(kr.upper || []), ...(kr.advanced || [])];
+        }
     } else {
         phrases = DEMO[currentLang] || [];
     }
@@ -118,7 +138,7 @@ function nextDemo() {
         meaningEl.style.opacity = '1';
 
         const keyword = phrase.kw ? randomFrom(phrase.kw) : LANGS[state.currentLang].hi;
-        setAnimalImage(keyword);
+        setCatImage(keyword);
     }, 200);
 
     state.demoCount++;
@@ -126,33 +146,15 @@ function nextDemo() {
     dom.progressFill.style.width = Math.min((state.demoCount / activeDemos.length) * 100, 100) + '%';
 }
 
-// ═══════════ Animal Image Service ═══════════
-async function fetchAnimalUrl(animal, keyword) {
-    const apis = {
-        dog: async () => {
-            const r = await fetch('https://dog.ceo/api/breeds/image/random');
-            const j = await r.json();
-            return j.message;
-        },
-        fox: async () => {
-            const r = await fetch('https://randomfox.ca/floof/');
-            const j = await r.json();
-            return j.image;
-        },
-        cat: (kw) => `https://cataas.com/cat/says/${encodeURIComponent(kw || 'Bonjour')}?size=200&color=white&fontSize=22`,
-    };
-
-    if (animal !== 'cat' && apis[animal]) {
-        try { return await apis[animal](); }
-        catch { /* fall through to cat */ }
-    }
-    return apis.cat(keyword);
+// ═══════════ Cat Image Service ═══════════
+async function fetchCatUrl(keyword) {
+    return `https://cataas.com/cat/says/${encodeURIComponent(keyword || 'Bonjour')}?size=200&color=white&fontSize=22`;
 }
 
-async function setAnimalImage(keyword) {
+async function setCatImage(keyword) {
     const img = dom.catImage;
     img.style.opacity = '0';
-    const url = await fetchAnimalUrl(state.currentAnimal, keyword);
+    const url = await fetchCatUrl(keyword);
     img.onload = () => { img.style.opacity = '1'; };
     img.src = url;
 }
@@ -351,7 +353,7 @@ const UserService = {
             await db.collection('users').doc(state.currentUser.uid).set(state.userProfile);
         }
         renderTopLangStamps();
-        renderAnimalStamps();
+        renderLevelStamps();
     },
 
     async saveProfile() {
@@ -377,27 +379,31 @@ function renderTopLangStamps() {
     );
 }
 
-function renderAnimalStamps() {
-    const wrap = dom.animalStamps;
-    wrap.innerHTML = Object.entries(ANIMALS).map(([key, animal]) => `
-        <button class="stamp-btn${key === state.currentAnimal ? ' active' : ''}" data-animal="${key}">
-            <span class="stamp-icon">${animal.icon}</span>
-            <span class="stamp-text">${animal.label}</span>
+function renderLevelStamps() {
+    const wrap = dom.levelStamps;
+    if (!wrap) return;
+    wrap.innerHTML = Object.entries(SKILL_LEVELS).map(([key, level]) => `
+        <button class="stamp-btn${key === state.currentLevel ? ' active' : ''}" data-level="${key}">
+            <span class="stamp-icon">${level.icon}</span>
+            <span class="stamp-text">${level.label}</span>
         </button>
     `).join('');
 
     wrap.querySelectorAll('.stamp-btn').forEach(btn =>
-        btn.addEventListener('click', () => selectAnimal(btn.dataset.animal))
+        btn.addEventListener('click', () => selectLevel(btn.dataset.level))
     );
 }
 
-function selectAnimal(animal) {
-    state.currentAnimal = animal;
-    renderAnimalStamps();
+function selectLevel(level) {
+    state.currentLevel = level;
+    renderLevelStamps();
+    updateLevelBadge();
+    initDemo();
+}
 
-    const phrase = state.activeDemos[state.lastDemoIndex];
-    const keyword = phrase?.kw ? randomFrom(phrase.kw) : LANGS[state.currentLang]?.hi;
-    setAnimalImage(keyword);
+function updateLevelBadge() {
+    const lvl = SKILL_LEVELS[state.currentLevel];
+    dom.levelBadge.textContent = `${lvl.icon} ${lvl.label}`;
 }
 
 // ═══════════ Language Selection ═══════════
@@ -435,19 +441,11 @@ function showMainContent() {
     const lang = LANGS[state.currentLang];
     dom.mainSubtitle.textContent = state.currentLang === 'french'
         ? 'Une carte postale de Paris, chaque jour'
-        : `Learn ${lang.name} with adorable animals!`;
+        : `Learn ${lang.name} with adorable cats!`;
     dom.motivationText.textContent = `${lang.hi} Keep learning ${lang.name}! 💪`;
 
-    // Set level badge
-    if (state.currentLang === 'korean') {
-        dom.levelBadge.textContent = '🌿 Elementary';
-    } else if (state.currentLang === 'french') {
-        dom.levelBadge.textContent = '📚 A1–B1 (B1 weighted)';
-    } else if (state.currentLevel) {
-        const level = LEVELS[state.currentLevel];
-        dom.levelBadge.textContent = `${level.emoji} ${level.name}`;
-    }
-
+    renderLevelStamps();
+    updateLevelBadge();
     initDemo();
 }
 
@@ -463,7 +461,7 @@ function initDemo() {
         const lang = LANGS[state.currentLang];
         dom.demoPhrase.textContent = lang.hi;
         dom.demoMeaning.textContent = `Start learning ${lang.name}!`;
-        setAnimalImage(lang.hi);
+        setCatImage(lang.hi);
     }
 }
 

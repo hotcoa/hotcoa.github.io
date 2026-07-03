@@ -9,13 +9,6 @@ const LANGS = {
     korean: { name: 'Korean', flag: '🇰🇷', native: '한국어', hi: '안녕하세요!' },
 };
 
-// ═══════════ Animal Options ═══════════
-const ANIMALS = {
-    cat: { icon: '🐱', label: 'Chat' },
-    dog: { icon: '🐶', label: 'Chien' },
-    fox: { icon: '🦊', label: 'Renard' },
-};
-
 // ═══════════ Fluency Levels ═══════════
 const LEVELS = {
     beginner:     { name: 'Complete Beginner',  emoji: '🌱', desc: 'I know almost nothing yet' },
