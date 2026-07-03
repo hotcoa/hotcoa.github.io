@@ -22,6 +22,32 @@
     --transition-normal: 0.3s ease;
 }
 
+/* ─── Per-language postcard themes (override design tokens) ───
+   Applied to #mainContent as .theme-<lang>. CSS variables inherit,
+   so the whole postcard + carnet re-skin instantly on language change. */
+.theme-french {
+    --gold: #C9A227;      /* Parisian gilt */
+    --burgundy: #9E2B25;  /* wine red */
+    --cream: #F5EFE0;
+    --gradient-bg: linear-gradient(160deg, #EAF4FB 0%, #FBEAF0 55%, #FFF6E8 100%);
+}
+.theme-korean {
+    --gold: #3E7C5A;      /* celadon green (청자) */
+    --burgundy: #C0392B;  /* obangsaek red (단청) */
+    --cream: #F5F1E6;     /* hanji paper */
+    --gradient-bg: linear-gradient(160deg, #EAF3EC 0%, #FBEFE9 55%, #FFF7EA 100%);
+}
+.theme-hebrew {
+    --gold: #7E9B5B;      /* olive */
+    --burgundy: #2E6FA8;  /* tekhelet blue */
+    --cream: #F4ECD7;     /* Jerusalem stone */
+    --gradient-bg: linear-gradient(160deg, #EAF1F7 0%, #F3F0E2 55%, #FBF3E6 100%);
+}
+
+/* Retint the animated page background to match the active theme. */
+body:has(.theme-korean) { background: linear-gradient(160deg, #EAF3EC 0%, #FBEFE9 55%, #FFF7EA 100%); }
+body:has(.theme-hebrew) { background: linear-gradient(160deg, #EAF1F7 0%, #F3F0E2 55%, #FBF3E6 100%); }
+
 /* ─── Reset ─── */
 * {
     margin: 0;
@@ -587,19 +613,307 @@ body {
     color: var(--text-muted);
 }
 
+/* ─── Two-Column Layout (postcard + lesson carnet) ─── */
+.layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.75rem;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.layout .container {
+    flex: 0 1 560px;
+    width: auto;
+    margin: 0;
+    min-width: 0;
+}
+
+/* ─── Lesson Carnet (right column) ─── */
+.lesson-panel {
+    flex: 1 1 320px;
+    max-width: 360px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-self: stretch;
+}
+
+.lesson-card {
+    background: var(--ivory);
+    border: 2px solid rgba(201, 162, 39, 0.55);
+    border-radius: 6px;
+    padding: 1.4rem 1.3rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.lesson-card-head {
+    margin-bottom: 1rem;
+}
+
+.lesson-tab {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ivory);
+    background: var(--navy);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    transform: rotate(-1.5deg);
+}
+
+.lesson-tab-alt {
+    background: var(--burgundy);
+}
+
+.lesson-card-head h3 {
+    font-family: var(--font-display);
+    color: var(--navy);
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 0.55rem;
+}
+
+/* Grammar note + vocabulary (matched lesson) */
+.lesson-note {
+    font-size: 0.95rem;
+    color: var(--navy);
+    line-height: 1.55;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.lesson-note b {
+    font-weight: 700;
+    color: var(--burgundy);
+}
+
+.lesson-note i {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.vocab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed rgba(27, 42, 74, 0.2);
+}
+
+.vocab-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.vocab-term {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 0.95rem;
+    background: rgba(201, 162, 39, 0.16);
+    border-bottom: 2px solid var(--gold);
+    padding: 0.05rem 0.4rem;
+    border-radius: 3px;
+    overflow-wrap: break-word;
+}
+
+.vocab-gloss {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* Sentence spotlight — word-by-word breakdown (fallback view) */
+.spotlight-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+}
+
+.spotlight-word {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--navy);
+    background: rgba(201, 162, 39, 0.16);
+    border-bottom: 2px solid var(--gold);
+    padding: 0.1rem 0.5rem 0.15rem;
+    border-radius: 3px;
+    line-height: 1.5;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.spotlight-translation {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    padding-top: 0.7rem;
+    border-top: 1px dashed rgba(27, 42, 74, 0.2);
+}
+
+.spotlight-empty {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Example / application sentences */
+.example-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.example-item {
+    text-align: left;
+    background: var(--cream);
+    border: 1px solid rgba(27, 42, 74, 0.12);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    padding: 0.7rem 0.85rem;
+    font-family: var(--font-body);
+    width: 100%;
+}
+
+.example-target {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.15rem;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+}
+
+.example-meaning {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+/* RTL support inside the carnet */
+.rtl-lang .spotlight-words,
+.rtl-lang .example-target,
+.rtl-lang .vocab-term {
+    direction: rtl;
+    text-align: right;
+}
+
+.rtl-lang .example-item {
+    border-left: 1px solid rgba(27, 42, 74, 0.12);
+    border-right: 3px solid var(--gold);
+}
+
+/* ─── RTL Languages (Hebrew) ─── */
+.phrase-container #demoPhrase[dir="rtl"] {
+    text-align: right;
+    direction: rtl;
+}
+
+.rtl-lang .phrase-container {
+    border-left: 4px solid var(--navy);
+    border-right: 4px solid var(--burgundy);
+}
+
 /* ─── Responsive ─── */
+@media (max-width: 900px) {
+    /* Stack the carnet below the postcard */
+    .layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        max-width: 560px;
+    }
+    .layout .container {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+    .lesson-panel {
+        flex: 1 1 auto;
+        max-width: 100%;
+        width: 100%;
+        align-self: auto;
+    }
+    #mainApp {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Top bar flows in normal document order and wraps instead of scrolling */
+    .top-bar {
+        position: sticky;
+        overflow-x: visible;
+        white-space: normal;
+        flex-wrap: wrap;
+        row-gap: 0.5rem;
+        padding: 0.5rem 0.8rem;
+    }
+    .top-bar-right {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        row-gap: 0.5rem;
+        justify-content: flex-end;
+    }
+    #topLangStamps,
+    #levelStamps {
+        flex-wrap: wrap;
+    }
+    #mainApp {
+        padding-top: 1rem;
+    }
+}
+
 @media (max-width: 600px) {
     .container { width: 95%; padding: 1.25rem; }
     .title { font-size: 2rem; }
+    .subtitle { font-size: 0.9rem; }
     .cat-container { width: 160px; }
     .cat-image { width: 140px; height: 140px; }
     #demoPhrase { font-size: 1.25rem; }
     #demoMeaning { font-size: 0.9rem; }
-    .top-bar { padding: 0.5rem 0.6rem; gap: 0.9rem; }
+    .phrase-container { padding: 1.2rem; }
+    .top-bar { padding: 0.5rem 0.6rem; gap: 0.6rem; }
     .user-name { display: none; }
-    .stamp-row-label { display: none; }
+    .stamp-row { gap: 0.3rem; }
+    .stamp-btn { padding: 0.35rem 0.5rem; }
+    .stamp-btn .stamp-text { font-size: 0.5rem; }
     .top-divider { display: none; }
     .postmark { width: 50px; height: 50px; font-size: 0.5rem; top: 8px; right: 8px; }
-    .lang-grid { grid-template-columns: repeat(2, 1fr); }
+    .lang-picker-wrap { padding: 1.5rem 1rem; }
+    .lang-picker-wrap h2 { font-size: 1.5rem; }
+    .lang-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+    .lang-card { padding: 1.2rem 0.8rem; }
+    .lang-card-flag { font-size: 2rem; }
     .login-card { padding: 2rem 1.5rem; }
+    .login-card h1 { font-size: 1.9rem; }
+    .refresh-btn { font-size: 1rem; padding: 0.8rem 1.8rem 0.8rem 2.2rem; }
+}
+
+@media (max-width: 380px) {
+    .stamp-row-label { display: none; }
+    .stamp-btn .stamp-text { display: none; }
+    .stamp-btn .stamp-icon { font-size: 1.35rem; }
+    .title { font-size: 1.7rem; }
+    .lang-grid { grid-template-columns: 1fr 1fr; }
 }

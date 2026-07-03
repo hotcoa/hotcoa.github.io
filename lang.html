@@ -59,36 +59,58 @@
 
     <!-- Main Content -->
     <div id="mainContent" style="display:none">
-        <div class="container">
-            <div class="postmark">CACHET<br/>DE LA POSTE<br/>PARIS</div>
-            <div class="bunting">
-                <span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-            </div>
-            <div class="main-header">
-                <h1 class="title" id="mainTitle">Le Chat Parisien</h1>
-                <p class="subtitle" id="mainSubtitle">Learn French with adorable cats!</p>
-            </div>
-            <div class="cat-container">
-                <div class="cat-frame">
-                    <img id="catImage" class="cat-image" src="" alt="Animal"/>
-                    <div class="cat-caption">Paris</div>
+        <div class="layout">
+            <!-- Left: the postcard -->
+            <div class="container">
+                <div class="postmark" id="postmark">CACHET<br/>DE LA POSTE<br/>PARIS</div>
+                <div class="bunting">
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span>
                 </div>
+                <div class="main-header">
+                    <h1 class="title" id="mainTitle">Le Chat Parisien</h1>
+                    <p class="subtitle" id="mainSubtitle">Learn French with adorable cats!</p>
+                </div>
+                <div class="cat-container">
+                    <div class="cat-frame">
+                        <img id="catImage" class="cat-image" src="" alt="Animal"/>
+                        <div class="cat-caption" id="catCaption">Paris</div>
+                    </div>
+                </div>
+                <div class="phrase-container">
+                    <div id="demoPhrase">Cliquez pour commencer!</div>
+                    <div id="demoMeaning">Click to start!</div>
+                    <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
+                </div>
+                <button id="refreshBtn" class="refresh-btn">Nouvelle carte postale ✉️</button>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="stats">
+                    <span>Phrases seen: <span id="phrasesLearned">0</span></span>
+                    <span id="levelBadge">A2 🌟</span>
+                </div>
+                <p class="motivation-text" id="motivationText">Chaque phrase vous rapproche de la maîtrise! 💪</p>
             </div>
-            <div class="phrase-container">
-                <div id="demoPhrase">Cliquez pour commencer!</div>
-                <div id="demoMeaning">Click to start!</div>
-                <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
-            </div>
-            <button id="refreshBtn" class="refresh-btn">Nouvelle carte postale ✉️</button>
-            <div class="progress-bar">
-                <div id="progressFill" class="progress-fill" style="width:0%"></div>
-            </div>
-            <div class="stats">
-                <span>Phrases seen: <span id="phrasesLearned">0</span></span>
-                <span id="levelBadge">A2 🌟</span>
-            </div>
-            <p class="motivation-text" id="motivationText">Chaque phrase vous rapproche de la maîtrise! 💪</p>
+
+            <!-- Right: the lesson carnet -->
+            <aside class="lesson-panel" id="lessonPanel">
+                <div class="lesson-card">
+                    <div class="lesson-card-head">
+                        <span class="lesson-tab" id="lessonTopTab">Le carnet</span>
+                        <h3 id="lessonTopTitle">Grammar &amp; vocab</h3>
+                    </div>
+                    <div id="lessonTopBody"></div>
+                </div>
+
+                <div class="lesson-card">
+                    <div class="lesson-card-head">
+                        <span class="lesson-tab lesson-tab-alt" id="lessonBottomTab">En pratique</span>
+                        <h3 id="lessonBottomTitle">How to use it</h3>
+                    </div>
+                    <div class="example-list" id="lessonExamples"></div>
+                </div>
+            </aside>
         </div>
     </div>
 </div>

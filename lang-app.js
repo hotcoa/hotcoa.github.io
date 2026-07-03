@@ -48,8 +48,16 @@ const dom = {
     get phrasesLearned() { return document.getElementById('phrasesLearned'); },
     get levelBadge() { return document.getElementById('levelBadge'); },
     get motivationText() { return document.getElementById('motivationText'); },
+    get postmark() { return document.getElementById('postmark'); },
+    get catCaption() { return document.getElementById('catCaption'); },
     get topLangStamps() { return document.getElementById('topLangStamps'); },
     get levelStamps() { return document.getElementById('levelStamps'); },
+    get lessonTopTab() { return document.getElementById('lessonTopTab'); },
+    get lessonTopTitle() { return document.getElementById('lessonTopTitle'); },
+    get lessonTopBody() { return document.getElementById('lessonTopBody'); },
+    get lessonBottomTab() { return document.getElementById('lessonBottomTab'); },
+    get lessonBottomTitle() { return document.getElementById('lessonBottomTitle'); },
+    get lessonExamples() { return document.getElementById('lessonExamples'); },
 };
 
 // ═══════════ Utilities ═══════════
@@ -101,6 +109,16 @@ function buildActiveDemos() {
         } else {
             phrases = [...(kr.upper || []), ...(kr.advanced || [])];
         }
+    } else if (LEVEL_DEMO[currentLang]) {
+        // Generic multi-level languages (hebrew)
+        const d = LEVEL_DEMO[currentLang];
+        if (currentLevel === 'beginner') {
+            phrases = [...(d.beginner || []), ...(d.elementary || [])];
+        } else if (currentLevel === 'intermediate') {
+            phrases = [...(d.elementary || []), ...(d.intermediate || [])];
+        } else {
+            phrases = [...(d.upper || []), ...(d.advanced || [])];
+        }
     } else {
         phrases = DEMO[currentLang] || [];
     }
@@ -121,9 +139,15 @@ function nextDemo() {
         do { idx = Math.floor(Math.random() * activeDemos.length); }
         while (idx === state.lastDemoIndex);
     }
+    displayPhrase(idx, true);
+}
+
+function displayPhrase(idx, countIt) {
+    const { activeDemos } = state;
+    const phrase = activeDemos[idx];
+    if (!phrase) return;
     state.lastDemoIndex = idx;
 
-    const phrase = activeDemos[idx];
     const phraseEl = dom.demoPhrase;
     const meaningEl = dom.demoMeaning;
 
@@ -136,14 +160,135 @@ function nextDemo() {
         meaningEl.textContent = phrase.m;
         phraseEl.style.opacity = '1';
         meaningEl.style.opacity = '1';
-
         const keyword = phrase.kw ? randomFrom(phrase.kw) : LANGS[state.currentLang].hi;
         setCatImage(keyword);
+        renderLesson(idx);
     }, 200);
 
-    state.demoCount++;
-    dom.phrasesLearned.textContent = state.demoCount;
-    dom.progressFill.style.width = Math.min((state.demoCount / activeDemos.length) * 100, 100) + '%';
+    if (countIt) {
+        state.demoCount++;
+        dom.phrasesLearned.textContent = state.demoCount;
+        dom.progressFill.style.width = Math.min((state.demoCount / activeDemos.length) * 100, 100) + '%';
+    }
+}
+
+// ═══════════ Lesson Carnet (right column) ═══════════
+// Find the most relevant grammar/vocab lesson for a phrase. Lessons are
+// ordered specific → general, so the first pattern match wins.
+function findLesson(phrase, lang) {
+    const lessons = (typeof LESSONS !== 'undefined' && LESSONS[lang]) || null;
+    if (!lessons || !phrase) return null;
+    const text = phrase.p || '';
+    for (const lesson of lessons) {
+        if (lesson.match.some(re => re.test(text))) return lesson;
+    }
+    return null;
+}
+
+function renderLesson(currentIdx) {
+    const { activeDemos, currentLang } = state;
+    const phrase = activeDemos[currentIdx];
+    if (!phrase) return;
+
+    const isRtl = !!LANGS[currentLang]?.rtl;
+    const lesson = findLesson(phrase, currentLang);
+
+    if (lesson) {
+        renderLessonFromData(lesson, isRtl);
+    } else {
+        renderLessonFallback(phrase, currentIdx, isRtl);
+    }
+}
+
+// A curated grammar/vocab lesson matched to the current phrase.
+function renderLessonFromData(lesson, isRtl) {
+    dom.lessonTopTab.textContent = 'Le carnet';
+    dom.lessonTopTitle.textContent = lesson.focus;
+
+    const vocab = (lesson.vocab || []).map(v => `
+        <div class="vocab-item">
+            <span class="vocab-term"${isRtl ? ' dir="rtl"' : ''}>${escapeHtml(v.t)}</span>
+            <span class="vocab-gloss">${escapeHtml(v.g)}</span>
+        </div>
+    `).join('');
+
+    dom.lessonTopBody.innerHTML = `
+        <p class="lesson-note">${mdBold(lesson.note)}</p>
+        ${vocab ? `<div class="vocab-list">${vocab}</div>` : ''}
+    `;
+
+    dom.lessonBottomTab.textContent = 'En pratique';
+    dom.lessonBottomTitle.textContent = 'How to use it';
+    renderExampleList(lesson.examples || [], isRtl);
+}
+
+// No curated lesson: spotlight the phrase words + show related bank phrases.
+function renderLessonFallback(phrase, currentIdx, isRtl) {
+    const { activeDemos } = state;
+
+    dom.lessonTopTab.textContent = 'Le carnet';
+    dom.lessonTopTitle.textContent = 'Phrase spotlight';
+
+    const tokens = tokenizePhrase(phrase.p);
+    const chips = tokens.map(t => `<span class="spotlight-word">${escapeHtml(t)}</span>`).join('');
+    dom.lessonTopBody.innerHTML = `
+        <div class="spotlight-words"${isRtl ? ' dir="rtl"' : ''}>${chips}</div>
+        <p class="spotlight-translation">${escapeHtml(phrase.m)}</p>
+    `;
+
+    dom.lessonBottomTab.textContent = 'Encore';
+    dom.lessonBottomTitle.textContent = 'Related phrases';
+
+    const others = activeDemos.map((p, i) => ({ p, i })).filter(o => o.i !== currentIdx);
+    shuffle(others);
+    renderExampleList(others.slice(0, 3).map(o => o.p), isRtl);
+}
+
+function renderExampleList(examples, isRtl) {
+    const list = dom.lessonExamples;
+    if (!list) return;
+    if (!examples.length) {
+        list.innerHTML = '<p class="spotlight-empty">More phrases coming soon.</p>';
+        return;
+    }
+    list.innerHTML = examples.map(o => `
+        <div class="example-item">
+            <div class="example-target"${isRtl ? ' dir="rtl"' : ''}>${escapeHtml(o.p)}</div>
+            <div class="example-meaning">${escapeHtml(o.m)}</div>
+        </div>
+    `).join('');
+}
+
+// Split a phrase into display tokens. Space-delimited languages split on
+// whitespace; scriptio-continua languages (Chinese/Japanese) show the whole
+// phrase as a single unit since word boundaries aren't marked by spaces.
+function tokenizePhrase(text) {
+    if (!text) return [];
+    const spaced = text.trim().split(/\s+/).filter(Boolean);
+    return spaced.length > 1 ? spaced : [text.trim()];
+}
+
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+// Minimal **bold** / *italic* rendering for lesson notes (input pre-escaped).
+function mdBold(str) {
+    return escapeHtml(str)
+        .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+        .replace(/\*(.+?)\*/g, '<i>$1</i>');
 }
 
 // ═══════════ Cat Image Service ═══════════
@@ -190,6 +335,18 @@ const TTS = (() => {
             male: [
                 'InJoon Online', 'BongJin Online',
                 'InJoon', 'BongJin',
+            ],
+            femaleBias: 0.5,
+        },
+        hebrew: {
+            lang: 'he-IL',
+            female: [
+                'Hila Online', 'Hila',
+                'Carmit',
+                'Google עברית',
+            ],
+            male: [
+                'Avri Online', 'Avri',
             ],
             femaleBias: 0.5,
         },
@@ -439,10 +596,26 @@ function showMainContent() {
     dom.mainContent.style.display = 'flex';
 
     const lang = LANGS[state.currentLang];
-    dom.mainSubtitle.textContent = state.currentLang === 'french'
-        ? 'Une carte postale de Paris, chaque jour'
-        : `Learn ${lang.name} with adorable cats!`;
-    dom.motivationText.textContent = `${lang.hi} Keep learning ${lang.name}! 💪`;
+    const theme = THEMES[state.currentLang] || THEMES.french;
+
+    // Right-to-left languages (e.g. Hebrew) render the target phrase RTL for a native feel.
+    const isRtl = !!lang.rtl;
+    dom.demoPhrase.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    dom.mainContent.classList.toggle('rtl-lang', isRtl);
+
+    // Re-skin the whole postcard for the selected language.
+    Object.values(THEMES).forEach(t => dom.mainContent.classList.remove(t.cls));
+    dom.mainContent.classList.add(theme.cls);
+
+    dom.mainTitle.textContent = theme.title;
+    dom.mainTitle.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    dom.mainSubtitle.textContent = theme.subtitle;
+    dom.mainSubtitle.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    dom.postmark.innerHTML = theme.postmark.map(escapeHtml).join('<br/>');
+    dom.catCaption.textContent = theme.caption;
+    dom.refreshBtn.textContent = theme.refresh;
+    dom.motivationText.textContent = theme.motivation;
+    dom.motivationText.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
 
     renderLevelStamps();
     updateLevelBadge();
@@ -462,6 +635,12 @@ function initDemo() {
         dom.demoPhrase.textContent = lang.hi;
         dom.demoMeaning.textContent = `Start learning ${lang.name}!`;
         setCatImage(lang.hi);
+        dom.lessonTopTab.textContent = 'Le carnet';
+        dom.lessonTopTitle.textContent = 'Phrase spotlight';
+        dom.lessonTopBody.innerHTML = `<div class="spotlight-words"><span class="spotlight-word">${escapeHtml(lang.hi)}</span></div>`;
+        dom.lessonBottomTab.textContent = 'Encore';
+        dom.lessonBottomTitle.textContent = 'Related phrases';
+        dom.lessonExamples.innerHTML = '<p class="spotlight-empty">More phrases coming soon.</p>';
     }
 }
 

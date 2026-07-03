@@ -7,6 +7,44 @@
 const LANGS = {
     french: { name: 'French', flag: '🇫🇷', native: 'Français', hi: 'Bonjour!' },
     korean: { name: 'Korean', flag: '🇰🇷', native: '한국어', hi: '안녕하세요!' },
+    hebrew: { name: 'Hebrew', flag: '🇮🇱', native: 'עברית', hi: 'שלום!', rtl: true },
+};
+
+// ═══════════ Per-language Postcard Themes ═══════════
+// Each language re-skins the postcard: brand title, subtitle, postmark,
+// city caption, refresh button, placeholder text and motivation — all
+// written natively so the whole card reads in the target language.
+const THEMES = {
+    french: {
+        cls: 'theme-french',
+        title: 'Le Chat Parisien',
+        subtitle: 'Une carte postale de Paris, chaque jour',
+        postmark: ['CACHET', 'DE LA POSTE', 'PARIS'],
+        caption: 'Paris',
+        refresh: 'Nouvelle carte postale ✉️',
+        placeholder: { p: 'Cliquez pour commencer !', m: 'Click to start!' },
+        motivation: 'Chaque phrase vous rapproche de la maîtrise ! 💪',
+    },
+    korean: {
+        cls: 'theme-korean',
+        title: '서울 고양이',
+        subtitle: '매일 받아 보는 서울발 엽서',
+        postmark: ['우편', '서울중앙', '우체국'],
+        caption: '서울',
+        refresh: '새 엽서 받기 ✉️',
+        placeholder: { p: '눌러서 시작하세요!', m: 'Click to start!' },
+        motivation: '한 문장씩, 매일 실력이 늘어요! 💪',
+    },
+    hebrew: {
+        cls: 'theme-hebrew',
+        title: 'החתול הישראלי',
+        subtitle: 'גלויה מישראל, בכל יום',
+        postmark: ['דואר', 'ירושלים', 'ישראל'],
+        caption: 'תל אביב',
+        refresh: 'גלויה חדשה ✉️',
+        placeholder: { p: '!לחצו כדי להתחיל', m: 'Click to start!' },
+        motivation: '!כל משפט מקרב אותך לשליטה בשפה 💪',
+    },
 };
 
 // ═══════════ Fluency Levels ═══════════
@@ -403,10 +441,28 @@ const LEVEL_DEMO = {
     },
     korean: {
         beginner: [
-            { p: "고양이가 요리해요.", m: "My cat cooks.", kw: ["cook", "kitchen"] },
-            { p: "고양이가 공부해요.", m: "The cat studies.", kw: ["study", "learn"] },
-            { p: "고양이가 일해요.", m: "The cat works.", kw: ["work", "job"] },
-            { p: "고양이가 먹어요.", m: "The cat eats.", kw: ["eat", "food"] },
+            // 20 beginner phrases based on "Master Korean" (Chapters 1–3).
+            // Formal 합쇼체 (-습니다/-ㅂ니다) register, exactly as the textbook teaches beginners.
+            { p: "안녕하세요?", m: "Hello!", kw: ["greeting", "hello"] },
+            { p: "저는 고양이입니다.", m: "I'm a cat.", kw: ["introduce", "be"] },
+            { p: "만나서 반갑습니다.", m: "Nice to meet you.", kw: ["greeting", "polite"] },
+            { p: "이것은 무엇입니까?", m: "What is this?", kw: ["what", "question"] },
+            { p: "이것은 사전입니다.", m: "This is a dictionary.", kw: ["this", "noun"] },
+            { p: "저 사람은 누구입니까?", m: "Who is that person?", kw: ["who", "question"] },
+            { p: "저는 미국 사람이 아닙니다.", m: "I'm not American.", kw: ["negation", "nationality"] },
+            { p: "고양이가 책을 읽습니다.", m: "The cat reads a book.", kw: ["read", "object"] },
+            { p: "고양이가 밥을 먹습니다.", m: "The cat eats a meal.", kw: ["eat", "food"] },
+            { p: "고양이가 커피를 마십니다.", m: "The cat drinks coffee.", kw: ["drink", "coffee"] },
+            { p: "고양이가 음악을 듣습니다.", m: "The cat listens to music.", kw: ["listen", "music"] },
+            { p: "고양이가 운동을 합니다.", m: "The cat exercises.", kw: ["exercise", "verb"] },
+            { p: "고양이가 영화를 봅니다.", m: "The cat watches a movie.", kw: ["watch", "movie"] },
+            { p: "지우개가 있습니까?", m: "Is there an eraser?", kw: ["exist", "question"] },
+            { p: "네, 지우개가 있습니다.", m: "Yes, there is an eraser.", kw: ["exist", "yes"] },
+            { p: "사전이 없습니다.", m: "There is no dictionary.", kw: ["exist", "negation"] },
+            { p: "가방이 어디에 있습니까?", m: "Where is the bag?", kw: ["where", "location"] },
+            { p: "가방이 책상 위에 있습니다.", m: "The bag is on the desk.", kw: ["location", "on"] },
+            { p: "고양이는 도서관에 안 갑니다.", m: "The cat doesn't go to the library.", kw: ["negation", "go"] },
+            { p: "학교가 크고 깨끗합니다.", m: "The school is big and clean.", kw: ["and", "adjective"] },
         ],
         elementary: [
             { p: "내 고양이는 학교에 가요.", m: "My cat goes to school.", kw: ["school", "go"] },
@@ -433,4 +489,419 @@ const LEVEL_DEMO = {
             { p: "내 고양이는 아침 커피 없이는 하루를 시작할 수 없대요.", m: "My cat says he can't start the day without morning coffee.", kw: ["coffee", "morning"] },
         ],
     },
+    hebrew: {
+        beginner: [
+            // Present tense, basic vocabulary — written the way Israelis write, without nikud
+            { p: "החתול שלי אוכל.", m: "My cat is eating.", kw: ["eat", "food"] },
+            { p: "החתול שותה חלב.", m: "The cat drinks milk.", kw: ["milk", "drink"] },
+            { p: "אני אוהב את החתול שלי.", m: "I love my cat.", kw: ["love", "cat"] },
+            { p: "החתול ישן על הספה.", m: "The cat sleeps on the couch.", kw: ["sleep", "couch"] },
+            { p: "החתול שלי שמח.", m: "My cat is happy.", kw: ["happy", "mood"] },
+            { p: "אני שותה קפה בבוקר.", m: "I drink coffee in the morning.", kw: ["coffee", "morning"] },
+            { p: "החתול משחק עם כדור.", m: "The cat plays with a ball.", kw: ["play", "ball"] },
+            { p: "אני הולך לעבודה.", m: "I go to work.", kw: ["work", "go"] },
+            { p: "החתול שלי רעב.", m: "My cat is hungry.", kw: ["hungry", "food"] },
+            { p: "שלום, מה שלומך?", m: "Hello, how are you?", kw: ["greeting", "hello"] },
+            { p: "תודה רבה.", m: "Thank you very much.", kw: ["thanks", "polite"] },
+            { p: "בבקשה.", m: "You're welcome. / Here you go.", kw: ["welcome", "polite"] },
+            { p: "כן, בטח.", m: "Yes, sure.", kw: ["yes", "agree"] },
+            { p: "אני לא יודע.", m: "I don't know.", kw: ["know", "negation"] },
+            { p: "זה טעים מאוד.", m: "It's very tasty.", kw: ["tasty", "food"] },
+            { p: "החתול שלי חמוד.", m: "My cat is cute.", kw: ["cute", "adjective"] },
+            { p: "אני קם מוקדם בבוקר.", m: "I get up early in the morning.", kw: ["wake", "morning"] },
+            { p: "החתול רץ בגינה.", m: "The cat runs in the garden.", kw: ["run", "garden"] },
+            { p: "אני אוהב מוזיקה.", m: "I love music.", kw: ["music", "like"] },
+            { p: "כמה זה עולה?", m: "How much does it cost?", kw: ["price", "shopping"] },
+            { p: "נעים מאוד!", m: "Nice to meet you!", kw: ["greeting", "polite"] },
+            { p: "אני גר בתל אביב.", m: "I live in Tel Aviv.", kw: ["live", "city"] },
+            { p: "מה השעה?", m: "What time is it?", kw: ["time", "question"] },
+            { p: "אני עייף.", m: "I'm tired.", kw: ["tired", "feeling"] },
+        ],
+        elementary: [
+            // Near-future, basic connectors, simple past introduced
+            { p: "מחר אני אלך לים.", m: "Tomorrow I'll go to the sea.", kw: ["sea", "future"] },
+            { p: "החתול שלי אוהב לישון כל היום.", m: "My cat loves to sleep all day.", kw: ["sleep", "cat"] },
+            { p: "אני רוצה לשתות מים, בבקשה.", m: "I'd like to drink water, please.", kw: ["water", "polite"] },
+            { p: "אנחנו הולכים לסופר לקנות אוכל.", m: "We're going to the supermarket to buy food.", kw: ["shop", "grocery"] },
+            { p: "החתול קיבל מתנה מהשכן.", m: "The cat got a gift from the neighbor.", kw: ["gift", "neighbor"] },
+            { p: "אני עובד מהבית בימי שני.", m: "I work from home on Mondays.", kw: ["work", "home"] },
+            { p: "בבוקר אני מצחצח שיניים ושותה קפה.", m: "In the morning I brush my teeth and drink coffee.", kw: ["routine", "morning"] },
+            { p: "החתול שלי חכם אבל עצלן.", m: "My cat is smart but lazy.", kw: ["smart", "lazy"] },
+            { p: "אני לומד עברית כי אני אוהב את השפה.", m: "I'm learning Hebrew because I love the language.", kw: ["learn", "language"] },
+            { p: "אתה רוצה לבוא איתי?", m: "Do you want to come with me?", kw: ["come", "question"] },
+            { p: "אין בעד מה.", m: "You're welcome. (in reply to thanks)", kw: ["welcome", "polite"] },
+            { p: "סליחה, איפה התחנה?", m: "Excuse me, where is the station?", kw: ["direction", "station"] },
+        ],
+        intermediate: [
+            // Past tense, subordinate clauses, conditions
+            { p: "אתמול החתול שלי אכל דג טעים.", m: "Yesterday my cat ate a tasty fish.", kw: ["past", "fish"] },
+            { p: "החתול שלי גר בירושלים כשהוא היה צעיר.", m: "My cat lived in Jerusalem when he was young.", kw: ["past", "city"] },
+            { p: "הלכתי לשוק וקניתי ירקות טריים.", m: "I went to the market and bought fresh vegetables.", kw: ["market", "past"] },
+            { p: "החתול ישן כל היום כי הוא היה עייף.", m: "The cat slept all day because he was tired.", kw: ["tired", "because"] },
+            { p: "אני לומד עברית כבר שנה שלמה.", m: "I've been learning Hebrew for a whole year.", kw: ["learn", "duration"] },
+            { p: "בסוף השבוע נסענו לים עם המשפחה.", m: "On the weekend we went to the sea with the family.", kw: ["weekend", "family"] },
+            { p: "החתול שלי מחפש דירה חדשה.", m: "My cat is looking for a new apartment.", kw: ["apartment", "search"] },
+            { p: "הכנתי ארוחת ערב מיוחדת לכל המשפחה.", m: "I made a special dinner for the whole family.", kw: ["dinner", "cook"] },
+            { p: "אני חושב שאתה צודק.", m: "I think you're right.", kw: ["opinion", "agree"] },
+            { p: "אם יהיה לי זמן, אבוא מחר.", m: "If I have time, I'll come tomorrow.", kw: ["condition", "future"] },
+            { p: "החתול נסע באוטובוס לעבודה.", m: "The cat took the bus to work.", kw: ["bus", "work"] },
+            { p: "למרות שירד גשם, יצאנו לטייל.", m: "Even though it was raining, we went for a walk.", kw: ["rain", "walk"] },
+            { p: "מה עשית בסוף השבוע?", m: "What did you do over the weekend?", kw: ["weekend", "question"] },
+            { p: "אני מקווה שהכול יהיה בסדר.", m: "I hope everything will be okay.", kw: ["hope", "future"] },
+        ],
+        upper: [
+            // Complex structures, relative clauses, nuance
+            { p: "החתול שעליו סיפרתי לך גר עכשיו אצל השכנים.", m: "The cat I told you about now lives with the neighbors.", kw: ["relative", "neighbor"] },
+            { p: "אחרי שסיימתי את העבודה, הלכתי לפגוש חברים.", m: "After I finished work, I went to meet friends.", kw: ["after", "friends"] },
+            { p: "ככל שאני לומד יותר, כך העברית נעשית קלה יותר.", m: "The more I study, the easier Hebrew becomes.", kw: ["study", "progress"] },
+            { p: "היה כדאי לחכות, כי בסוף הכול הסתדר.", m: "It was worth waiting, because in the end everything worked out.", kw: ["worth", "wait"] },
+            { p: "לו הייתי יודע את זה קודם, הייתי מחליט אחרת.", m: "Had I known this earlier, I would have decided differently.", kw: ["condition", "decision"] },
+            { p: "החתול שלי מתלבט אם לעבור לעיר אחרת.", m: "My cat can't decide whether to move to another city.", kw: ["decide", "move"] },
+            { p: "בזמן שדיברתי בטלפון, החתול ברח מהחדר.", m: "While I was talking on the phone, the cat escaped the room.", kw: ["while", "escape"] },
+            { p: "זה בדיוק מה שהתכוונתי אליו.", m: "That's exactly what I meant.", kw: ["mean", "clarify"] },
+        ],
+        advanced: [
+            // Idioms, elevated register, abstract ideas
+            { p: "אחרי מחשבה ארוכה, החתול שלי החליט לפתוח עסק משלו.", m: "After long deliberation, my cat decided to open his own business.", kw: ["business", "decide"] },
+            { p: "החתול שלי עסוק עד מעל לראש בין העבודה ללימודים.", m: "My cat is up to his neck between work and studies. (idiom: עד מעל הראש)", kw: ["busy", "idiom"] },
+            { p: "למרות שנכשל בפעם הראשונה, החתול שלי לא ויתר.", m: "Even though he failed the first time, my cat didn't give up.", kw: ["fail", "persist"] },
+            { p: "בזכות עבודה קשה ומתמדת, החתול שלי הגשים את חלומו.", m: "Through hard, persistent work, my cat realized his dream.", kw: ["dream", "effort"] },
+            { p: "החתול שלי שוקל לעבור לחו\"ל בשביל הקריירה.", m: "My cat is considering moving abroad for his career.", kw: ["abroad", "career"] },
+            { p: "לא היה לי מושג שזה כל כך מסובך.", m: "I had no idea it was so complicated.", kw: ["idea", "complex"] },
+            { p: "נאלצתי לבטל את החופשה כי הייתה לי יותר מדי עבודה.", m: "I had to cancel the vacation because I had too much work.", kw: ["cancel", "vacation"] },
+            { p: "כדאי לך לנצל את ההזדמנות הזאת.", m: "You'd do well to seize this opportunity.", kw: ["opportunity", "advice"] },
+            { p: "בסופו של דבר, מה שחשוב זה לא לוותר על החלומות.", m: "At the end of the day, what matters is not giving up on your dreams.", kw: ["dream", "idiom"] },
+        ],
+    },
+};
+
+// ═══════════ Grammar & Vocabulary Lessons ═══════════
+// Each lesson is matched against the phrase currently shown on the postcard.
+// `match` is an ordered list of RegExps — the FIRST lesson whose pattern hits
+// wins, so lessons are arranged from most-specific to most-general.
+// `note` supports **bold**. `vocab` gives key terms; `examples` show the same
+// grammar/vocab applied in other sentences (rendered in the bottom card).
+const LESSONS = {
+    french: [
+        {
+            id: 'faire-amis',
+            focus: 'Se faire des amis · grâce à',
+            note: "**Se faire des amis** means \u201cto make friends.\u201d **Grâce à** (thanks to) introduces the positive cause of something.",
+            vocab: [
+                { t: 'se faire des amis', g: 'to make friends' },
+                { t: 'grâce à', g: 'thanks to' },
+                { t: 'beaucoup de', g: 'a lot of' },
+            ],
+            match: [/grâce à/i, /me suis fait[^.]*ami/i, /me fais[^.]*ami/i, /se fait[^.]*ami/i, /fait beaucoup d['\u2019]ami/i],
+            examples: [
+                { p: "Je me fais des amis grâce au sport.", m: "I make friends thanks to sport." },
+                { p: "Grâce à mon chat, je rencontre mes voisins.", m: "Thanks to my cat, I meet my neighbors." },
+                { p: "Elle s'est fait des amis au travail.", m: "She made friends at work." },
+            ],
+        },
+        {
+            id: 'venir-de',
+            focus: 'Venir de + infinitive (recent past)',
+            note: "**Venir de + infinitive** expresses the recent past \u2014 something that *just* happened.",
+            vocab: [
+                { t: 'je viens de…', g: 'I just…' },
+                { t: 'il vient de…', g: 'he just…' },
+                { t: 'venir de + inf.', g: 'to have just done' },
+            ],
+            match: [/\b(viens|vient|venons|venez|viennent)\s+d['\u2019e]\s*[a-zàâçéèêëîïôûùüÿœ]+(er|ir|re)\b/i],
+            examples: [
+                { p: "Mon chat vient de se réveiller.", m: "My cat just woke up." },
+                { p: "Je viens de finir mon café.", m: "I just finished my coffee." },
+                { p: "Nous venons d'arriver à Paris.", m: "We just arrived in Paris." },
+            ],
+        },
+        {
+            id: 'avoir-expr',
+            focus: 'Idioms with avoir',
+            note: "French uses **avoir** (to have) where English uses *to be*: **avoir faim** (to be hungry), **avoir l'air** (to look/seem), **avoir hâte** (to look forward).",
+            vocab: [
+                { t: "avoir l'air", g: 'to look / seem' },
+                { t: 'avoir hâte', g: 'to look forward' },
+                { t: 'avoir faim / soif', g: 'to be hungry / thirsty' },
+            ],
+            match: [/\b(ai|as|a|avons|avez|ont)\s+l['\u2019]air/i, /\b(ai|as|a|avons|avez|ont)\s+hâte/i, /\b(ai|as|a|avons|avez|ont)\s+(faim|soif|peur|raison|tort|besoin|envie|sommeil)\b/i],
+            examples: [
+                { p: "Mon chat a l'air fatigué.", m: "My cat looks tired." },
+                { p: "J'ai hâte de partir en vacances.", m: "I can't wait to go on holiday." },
+                { p: "Tu as faim ? On mange ?", m: "Are you hungry? Shall we eat?" },
+            ],
+        },
+        {
+            id: 'reflexive-passe',
+            focus: 'Reflexive verbs in the passé composé',
+            note: "Reflexive (pronominal) verbs form the passé composé with **être**, and the past participle agrees with the subject.",
+            vocab: [
+                { t: 'je me suis levé(e)', g: 'I got up' },
+                { t: "s'est passé", g: 'happened / went' },
+                { t: 'être + participle', g: 'agrees w/ subject' },
+            ],
+            match: [/\b(me suis|t['\u2019]es|s['\u2019]est|se sont)\s+[a-zàâçéèêëîïôûùüÿœ]+(é|és|ée|ées)(?![a-zàâçéèêëîïôûùüÿœ])/i, /\bnous nous sommes\b/i, /\bvous vous êtes\s+[a-zàâçéèêëîïôûù]+(é|és|ée|ées)(?![a-zàâçéèêëîïôûùüÿœ])/i, /tout s['\u2019]est/i],
+            examples: [
+                { p: "Je me suis levé très tôt.", m: "I got up very early." },
+                { p: "Elle s'est présentée aux voisins.", m: "She introduced herself to the neighbors." },
+                { p: "Tout s'est bien passé.", m: "Everything went well." },
+            ],
+        },
+        {
+            id: 'passe-compose',
+            focus: 'Passé composé with avoir',
+            note: "The **passé composé** describes completed past actions: **avoir** (present) + past participle. Most verbs take *avoir*.",
+            vocab: [
+                { t: "j'ai trouvé", g: 'I found' },
+                { t: 'il a acheté', g: 'he bought' },
+                { t: "j'ai reçu", g: 'I received' },
+            ],
+            match: [/\b(ai|as|a|avons|avez|ont)\s+[a-zàâçéèêëîïôûùüÿœ]+(é|és|ée|ées|is|it|us|ue)(?![a-zàâçéèêëîïôûùüÿœ])/i, /\b(ai|as|a|avons|avez|ont)\s+(connu|reçu|vu|bu|lu|perdu|couru|voulu|pu|su|tenu|venu|répondu|entendu|attendu|vendu|rendu|descendu|découvert|ouvert|offert|souffert|pris|appris|compris|écrit|dit|eu|été|fait)(?![a-zàâçéèêëîïôûùüÿœ])/i],
+            examples: [
+                { p: "J'ai mangé au restaurant hier.", m: "I ate at the restaurant yesterday." },
+                { p: "Mon chat a dormi toute la journée.", m: "My cat slept all day." },
+                { p: "Nous avons visité le musée.", m: "We visited the museum." },
+            ],
+        },
+        {
+            id: 'conditionnel',
+            focus: 'Conditional (politeness & wishes)',
+            note: "The **conditional** softens requests and expresses wishes: *je voudrais* (I would like), *je pourrais* (I could).",
+            vocab: [
+                { t: 'je voudrais', g: 'I would like' },
+                { t: 'tu pourrais', g: 'you could' },
+                { t: 'ce serait', g: 'it would be' },
+            ],
+            match: [/\b(voudrais|voudrait|voudriez|aimerais|aimerait|pourrais|pourrait|serait|ferais|ferait|devrait|devrais)\b/i],
+            examples: [
+                { p: "Je voudrais un café, s'il vous plaît.", m: "I'd like a coffee, please." },
+                { p: "Tu pourrais m'aider ?", m: "Could you help me?" },
+                { p: "Ce serait super de se revoir.", m: "It would be great to meet again." },
+            ],
+        },
+        {
+            id: 'subjonctif',
+            focus: 'Subjunctive (il faut que…)',
+            note: "The **subjunctive** follows necessity, emotion, or doubt \u2014 e.g. *il faut que*, *bien que*, *pour que*.",
+            vocab: [
+                { t: 'il faut que', g: "it's necessary that" },
+                { t: 'bien que', g: 'although' },
+                { t: 'pour que', g: 'so that' },
+            ],
+            match: [/\bil faut que\b/i, /\bbien que\b/i, /\bpour que\b/i, /\bavant que\b/i, /\bqu['\u2019]il (soit|fasse|aille|ait|puisse|vienne)\b/i, /\bque je (sois|fasse|aille|puisse|parte)\b/i],
+            examples: [
+                { p: "Il faut que je parte tôt.", m: "I have to leave early." },
+                { p: "Bien qu'il soit fatigué, il travaille.", m: "Although he's tired, he keeps working." },
+                { p: "Je reste pour que tu puisses dormir.", m: "I'm staying so that you can sleep." },
+            ],
+        },
+        {
+            id: 'futur',
+            focus: 'Simple future',
+            note: "The **simple future** adds -ai, -as, -a, -ons, -ez, -ont to the infinitive. Some stems are irregular: être \u2192 *ser-*, aller \u2192 *ir-*.",
+            vocab: [
+                { t: 'je serai', g: 'I will be' },
+                { t: 'il ira', g: 'he will go' },
+                { t: 'nous mangerons', g: 'we will eat' },
+            ],
+            match: [/\b(serai|sera|seras|serons|serez|seront|irai|ira|iras|irons|irez|iront|aurai|aura|auras|auront|ferai|fera|feras|feront|pourrai|pourra|viendra|voudra|pleuvra)\b/i, /\b[a-zàâçéèêëîïôûùüÿœ]{2,}er(a|ai|as|ons|ez|ont)(?![a-zàâçéèêëîïôûùüÿœ])/i, /\b[a-zàâçéèêëîïôûùüÿœ]{2,}ir(a|ai|as|ons|ez|ont)(?![a-zàâçéèêëîïôûùüÿœ])/i],
+            examples: [
+                { p: "Demain, je travaillerai à la maison.", m: "Tomorrow I'll work from home." },
+                { p: "Mon chat sera content de te voir.", m: "My cat will be happy to see you." },
+                { p: "Nous irons à Paris cet été.", m: "We'll go to Paris this summer." },
+            ],
+        },
+        {
+            id: 'plus-que-parfait',
+            focus: 'Pluperfect (le plus-que-parfait)',
+            note: "The **plus-que-parfait** describes an action finished *before* another past action: imperfect of **avoir/être** + past participle.",
+            vocab: [
+                { t: "j'avais fait", g: 'I had done' },
+                { t: 'il était parti', g: 'he had left' },
+                { t: "s'était couché", g: 'had gone to bed' },
+            ],
+            match: [/\b(avais|avait|avaient|avions|aviez|étais|était|étaient|étions|étiez)\s+(?:(?:déjà|toujours|jamais|bien|enfin|encore)\s+)?[a-zàâçéèêëîïôûùüÿœ]+(é|és|ée|ées|is|it|us|ue|u|ert)(?![a-zàâçéèêëîïôûùüÿœ])/i, /\bs['\u2019]était\s+(?:(?:déjà|toujours|bien|enfin)\s+)?[a-zàâçéèêëîïôûùüÿœ]+(é|és|ée|ées|us)(?![a-zàâçéèêëîïôûùüÿœ])/i],
+            examples: [
+                { p: "J'avais déjà mangé quand tu es arrivé.", m: "I had already eaten when you arrived." },
+                { p: "Nous avions réservé une table.", m: "We had booked a table." },
+                { p: "Elle s'était couchée tôt ce soir-là.", m: "She had gone to bed early that night." },
+            ],
+        },
+        {
+            id: 'imparfait',
+            focus: 'Imperfect (l\'imparfait)',
+            note: "The **imparfait** paints ongoing, habitual, or background past actions (*I used to…*, *it was…*). Endings: -ais, -ait, -aient.",
+            vocab: [
+                { t: "j'étais", g: 'I was' },
+                { t: 'il habitait', g: 'he used to live' },
+                { t: 'quand j\'étais petit', g: 'when I was little' },
+            ],
+            match: [/\b(habitais|habitait|habitaient|grimpais|grimpait|portait|portaient|voyait|voyaient|manquait|comportait|comportaient|faisait|allait|voulait|pouvait|prenait|jouait|jouaient|regardait|mangeait|pleuvait|savait|venait|disait|disaient|avait|avais|avaient|avions)\b/i, /(?:^|[\s'\u2019])(était|étais|étaient|étions|étiez)(?![a-zàâçéèêëîïôûùüÿœ])/i],
+            examples: [
+                { p: "Quand j'étais petit, j'habitais à Paris.", m: "When I was little, I lived in Paris." },
+                { p: "Mon chat jouait dans le jardin.", m: "My cat used to play in the garden." },
+                { p: "Il faisait beau ce jour-là.", m: "The weather was nice that day." },
+            ],
+        },
+        {
+            id: 'imperatif',
+            focus: 'Imperative (giving orders & invitations)',
+            note: "The **imperative** gives orders, advice, or invitations \u2014 drop the subject. The *tu* form of -er verbs loses its final -s. **Veuillez** is the polite formal command.",
+            vocab: [
+                { t: 'écoute / écoutez', g: 'listen!' },
+                { t: 'allons-y', g: "let's go" },
+                { t: 'veuillez…', g: 'please (formal)' },
+            ],
+            match: [/^(viens|venez|va|allez|allons|fais|faisons|faites|écoute|écoutez|parle|parlez|regarde|regardez|prends|prenez|donne|donnez|arrête|arrêtez|attends|attendez|dis|dites|reste|restez|entre|entrez)\b/i, /\b(allons-y|écoute-moi|écoutez-moi|assieds-toi|asseyez-vous|tais-toi|taisez-vous|dépêche-toi|dépêchez-vous|vas-y)\b/i, /\bveuillez\b/i],
+            examples: [
+                { p: "Viens ici tout de suite !", m: "Come here right now!" },
+                { p: "Asseyez-vous, je vous en prie.", m: "Please have a seat." },
+                { p: "Parlez plus lentement, s'il vous plaît.", m: "Please speak more slowly." },
+            ],
+        },
+        {
+            id: 'reflexive',
+            focus: 'Reflexive (pronominal) verbs',
+            note: "**Reflexive verbs** use a pronoun (me, te, se, nous, vous) when the subject acts on itself \u2014 daily-routine verbs are often reflexive.",
+            vocab: [
+                { t: 'se lever', g: 'to get up' },
+                { t: 'se coucher', g: 'to go to bed' },
+                { t: 'se laver', g: 'to wash (oneself)' },
+            ],
+            match: [/\b(je me|tu te|il se|elle se|on se|nous nous|vous vous)\s+[a-zàâçéèêëîïôûù]/i, /\bchat se\s+[a-zàâçéèêëîïôûù]/i, /\bse (lève|lever|couche|coucher|brosse|brosser|douche|doucher|lave|laver|occupe|occuper|entraîne|entraîner|présente|présenter|souvient|souvenir|sent|sentir|repose|reposer)\b/i, /\b[mts]['\u2019](occupe|entraîne|appelle|habille|réveille|amuse|ennuie|installe|arrête|inquiète|repose|prépare|dépêche)/i],
+            examples: [
+                { p: "Je me lève à sept heures.", m: "I get up at seven." },
+                { p: "Mon chat se lave après le repas.", m: "My cat washes himself after the meal." },
+                { p: "Nous nous couchons tard le week-end.", m: "We go to bed late on weekends." },
+            ],
+        },
+        {
+            id: 'negation',
+            focus: 'Negation (ne … pas / jamais / rien)',
+            note: "Negation wraps the verb: **ne … pas**. Swap *pas* for **jamais** (never), **rien** (nothing), **plus** (no longer), **personne** (nobody).",
+            vocab: [
+                { t: 'ne… pas', g: 'not' },
+                { t: 'ne… jamais', g: 'never' },
+                { t: 'ne… plus', g: 'no longer' },
+            ],
+            match: [/\bne\s+[a-zàâçéèêëîïôûù'\u2019]+\s+(pas|jamais|rien|plus|personne|que)\b/i, /\bn['\u2019][a-zàâçéèêëîïôûù]+\s+(pas|jamais|rien|plus|personne)\b/i, /\bpersonne ne\b/i, /\bne (sais|veux|peux|sort|dors) (pas|plus|jamais)\b/i],
+            examples: [
+                { p: "Je ne sais pas encore.", m: "I don't know yet." },
+                { p: "Mon chat ne dort jamais la nuit.", m: "My cat never sleeps at night." },
+                { p: "Il n'y a plus de lait.", m: "There's no more milk." },
+            ],
+        },
+        {
+            id: 'faire-jouer-de',
+            focus: 'Faire de · Jouer de',
+            note: "Use **faire du/de la** for sports & activities, and **jouer du/de la** for musical instruments.",
+            vocab: [
+                { t: 'faire de la muscu', g: 'to work out' },
+                { t: 'jouer du piano', g: 'to play piano' },
+                { t: 'faire les courses', g: 'to go shopping' },
+            ],
+            match: [/\b(fais|fait|faisons|faites|font)\s+(du|de la|de l['\u2019])/i, /\b(joue|joues|jouons|jouez|jouent)\s+(du|de la|de l['\u2019])/i, /faire de la|faire les courses/i],
+            examples: [
+                { p: "Je fais du sport le matin.", m: "I do sport in the morning." },
+                { p: "Elle joue de la guitare.", m: "She plays the guitar." },
+                { p: "On fait de la randonnée le dimanche.", m: "We go hiking on Sundays." },
+            ],
+        },
+        {
+            id: 'devoir',
+            focus: 'Devoir + infinitive (obligation)',
+            note: "**Devoir + infinitive** expresses obligation or necessity \u2014 *must / have to*.",
+            vocab: [
+                { t: 'je dois', g: 'I must / have to' },
+                { t: 'on doit', g: 'one must' },
+                { t: 'devoir + inf.', g: 'to have to do' },
+            ],
+            match: [/\b(dois|doit|devons|devez|doivent)\s+[a-zàâçéèêëîïôûùüÿœ]+(er|ir|re)\b/i],
+            examples: [
+                { p: "Je dois partir maintenant.", m: "I must leave now." },
+                { p: "Mon chat doit voir le vétérinaire.", m: "My cat has to see the vet." },
+                { p: "Nous devons réserver une table.", m: "We have to book a table." },
+            ],
+        },
+        {
+            id: 'weather',
+            focus: 'Talking about the weather',
+            note: "Weather uses the impersonal **il fait +** adjective, or a single verb: **il pleut** (it's raining), **il neige** (it's snowing).",
+            vocab: [
+                { t: 'il fait chaud', g: "it's hot" },
+                { t: 'il fait froid', g: "it's cold" },
+                { t: 'il pleut', g: "it's raining" },
+            ],
+            match: [/\bil fait (chaud|froid|beau|mauvais|frais|bon|gris)\b/i, /\bil pleut\b/i, /\bil neige\b/i],
+            examples: [
+                { p: "Il fait beau aujourd'hui.", m: "The weather is nice today." },
+                { p: "Il pleut, je reste à la maison.", m: "It's raining, I'm staying home." },
+                { p: "En hiver, il fait très froid.", m: "In winter, it's very cold." },
+            ],
+        },
+        {
+            id: 'partitive',
+            focus: 'Partitive articles (du, de la, de l\u2019)',
+            note: "The **partitive** (du, de la, de l') means *some / an unspecified amount* \u2014 used with food, drink, and abstract nouns.",
+            vocab: [
+                { t: 'du (m.)', g: 'some' },
+                { t: 'de la (f.)', g: 'some' },
+                { t: "de l' (vowel)", g: 'some' },
+            ],
+            match: [/\b(du|de la|de l['\u2019])\s+[a-zàâçéèêëîïôûùüÿœ]/i],
+            examples: [
+                { p: "Je bois du café le matin.", m: "I drink coffee in the morning." },
+                { p: "Il mange de la soupe.", m: "He eats soup." },
+                { p: "Tu veux de l'eau ?", m: "Do you want some water?" },
+            ],
+        },
+        {
+            id: 'question',
+            focus: 'Asking questions',
+            note: "Three ways to ask: rising intonation (*Tu viens ?*), **est-ce que** (*Est-ce que tu viens ?*), or inversion (*Viens-tu ?*).",
+            vocab: [
+                { t: 'est-ce que…?', g: '(question marker)' },
+                { t: "qu'est-ce que…?", g: 'what…?' },
+                { t: 'combien ?', g: 'how much / many?' },
+            ],
+            match: [/\?\s*$/],
+            examples: [
+                { p: "Est-ce que tu aimes les chats ?", m: "Do you like cats?" },
+                { p: "Qu'est-ce que tu fais ce soir ?", m: "What are you doing tonight?" },
+                { p: "Combien ça coûte ?", m: "How much does it cost?" },
+            ],
+        },
+        {
+            id: 'etre-adj',
+            focus: 'Être + adjective (describing)',
+            note: "Use **être** (to be) + adjective to describe. The adjective agrees in gender and number with the subject.",
+            vocab: [
+                { t: 'il est / elle est', g: 'he is / she is' },
+                { t: 'ils / elles sont', g: 'they are' },
+                { t: 'agreement', g: '-e (f.), -s (pl.)' },
+            ],
+            match: [/\b(suis|es|est|sommes|êtes|sont)\b/i],
+            examples: [
+                { p: "Mon chat est très calme.", m: "My cat is very calm." },
+                { p: "Elle est sociable et gentille.", m: "She is sociable and kind." },
+                { p: "Ils sont fatigués ce soir.", m: "They are tired tonight." },
+            ],
+        },
+        {
+            id: 'present-er',
+            focus: 'Present tense: -er verbs',
+            note: "Regular **-er verbs** are the biggest French group. Drop **-er** and add: -e, -es, -e, -ons, -ez, -ent.",
+            vocab: [
+                { t: 'je mange', g: 'I eat' },
+                { t: 'tu manges', g: 'you eat' },
+                { t: 'nous mangeons', g: 'we eat' },
+            ],
+            match: [/\bje\s+[a-zàâçéèêëîïôûùüÿœ]+e\b/i, /\b(mange|joue|travaille|écoute|cherche|aide|achète|ferme|prépare|salue|habite|parle|aime|donne|brosse|regarde|adore|déteste|cuisine)\b/i],
+            examples: [
+                { p: "Je travaille à la maison.", m: "I work from home." },
+                { p: "Nous écoutons de la musique.", m: "We listen to music." },
+                { p: "Mon chat mange à midi.", m: "My cat eats at noon." },
+            ],
+        },
+    ],
 };
