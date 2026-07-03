@@ -34,6 +34,10 @@ const dom = {
     get loginError() { return document.getElementById('loginError'); },
     get userAvatar() { return document.getElementById('userAvatar'); },
     get userName() { return document.getElementById('userName'); },
+    get topLoginBtn() { return document.getElementById('topLoginBtn'); },
+    get logoutBtn() { return document.getElementById('logoutBtn'); },
+    get langueLabel() { return document.getElementById('langueLabel'); },
+    get levelLabel() { return document.getElementById('levelLabel'); },
     get langPicker() { return document.getElementById('langPicker'); },
     get langGrid() { return document.getElementById('langGrid'); },
     get mainContent() { return document.getElementById('mainContent'); },
@@ -66,9 +70,26 @@ function showScreen(id) {
     document.getElementById(id).classList.add('active');
 }
 
-function getAutoLevel(lang) {
-    return 'beginner';
+// Native UI labels for the selected language (falls back to French).
+function currentUI() {
+    return (THEMES[state.currentLang] || THEMES.french).ui;
 }
+
+// ═══════════ Local Preferences (works without an account) ═══════════
+// Persists the language + level choice so the site honors the last selection
+// on the next visit, whether or not the visitor is signed in.
+const LocalPrefs = {
+    KEY: 'lcp_prefs',
+    read() {
+        try { return JSON.parse(localStorage.getItem(this.KEY)) || {}; }
+        catch { return {}; }
+    },
+    write(patch) {
+        const next = { ...this.read(), ...patch };
+        try { localStorage.setItem(this.KEY, JSON.stringify(next)); } catch { /* ignore */ }
+        return next;
+    },
+};
 
 // Skill levels available for selection
 const SKILL_LEVELS = {
@@ -202,7 +223,8 @@ function renderLesson(currentIdx) {
 
 // A curated grammar/vocab lesson matched to the current phrase.
 function renderLessonFromData(lesson, isRtl) {
-    dom.lessonTopTab.textContent = 'Le carnet';
+    const ui = currentUI();
+    dom.lessonTopTab.textContent = ui.carnet;
     dom.lessonTopTitle.textContent = lesson.focus;
 
     const vocab = (lesson.vocab || []).map(v => `
@@ -217,17 +239,18 @@ function renderLessonFromData(lesson, isRtl) {
         ${vocab ? `<div class="vocab-list">${vocab}</div>` : ''}
     `;
 
-    dom.lessonBottomTab.textContent = 'En pratique';
-    dom.lessonBottomTitle.textContent = 'How to use it';
+    dom.lessonBottomTab.textContent = ui.pratique;
+    dom.lessonBottomTitle.textContent = ui.howTo;
     renderExampleList(lesson.examples || [], isRtl);
 }
 
 // No curated lesson: spotlight the phrase words + show related bank phrases.
 function renderLessonFallback(phrase, currentIdx, isRtl) {
     const { activeDemos } = state;
+    const ui = currentUI();
 
-    dom.lessonTopTab.textContent = 'Le carnet';
-    dom.lessonTopTitle.textContent = 'Phrase spotlight';
+    dom.lessonTopTab.textContent = ui.carnet;
+    dom.lessonTopTitle.textContent = ui.spotlight;
 
     const tokens = tokenizePhrase(phrase.p);
     const chips = tokens.map(t => `<span class="spotlight-word">${escapeHtml(t)}</span>`).join('');
@@ -236,8 +259,8 @@ function renderLessonFallback(phrase, currentIdx, isRtl) {
         <p class="spotlight-translation">${escapeHtml(phrase.m)}</p>
     `;
 
-    dom.lessonBottomTab.textContent = 'Encore';
-    dom.lessonBottomTitle.textContent = 'Related phrases';
+    dom.lessonBottomTab.textContent = ui.encore;
+    dom.lessonBottomTitle.textContent = ui.related;
 
     const others = activeDemos.map((p, i) => ({ p, i })).filter(o => o.i !== currentIdx);
     shuffle(others);
@@ -248,7 +271,7 @@ function renderExampleList(examples, isRtl) {
     const list = dom.lessonExamples;
     if (!list) return;
     if (!examples.length) {
-        list.innerHTML = '<p class="spotlight-empty">More phrases coming soon.</p>';
+        list.innerHTML = `<p class="spotlight-empty">${escapeHtml(currentUI().comingSoon)}</p>`;
         return;
     }
     list.innerHTML = examples.map(o => `
@@ -420,17 +443,21 @@ const TTS = (() => {
         const hasMale = pool.male.length > 0;
         if (!hasFemale && !hasMale) return null;
 
+        // Alternate gender on each press so the deck naturally mixes men and
+        // women; fall back to whichever pool has voices when only one exists.
         let useFemale;
         if (!hasMale) useFemale = true;
         else if (!hasFemale) useFemale = false;
-        else useFemale = Math.random() < config.femaleBias;
+        else useFemale = (lastGender !== 'f');
 
         const voices = useFemale ? pool.female : pool.male;
         lastGender = useFemale ? 'f' : 'm';
 
-        // Pick from top 3 (neural-sorted)
-        const topN = Math.min(voices.length, 3);
-        return voices[Math.floor(Math.random() * topN)];
+        // Strongly prefer natural/neural voices — only use a robotic local
+        // voice if the browser exposes no neural voice for this gender.
+        const neural = voices.filter(isNeural);
+        const preferred = neural.length ? neural : voices;
+        return preferred[Math.floor(Math.random() * preferred.length)];
     }
 
     function speak() {
@@ -493,10 +520,11 @@ function spawnConfetti() {
     }).addEventListener('finish', () => el.remove());
 }
 
-// ═══════════ Firestore Service ═══════════
+// ═══════════ Firestore Service (only used when signed in) ═══════════
 const UserService = {
     async loadProfile() {
-        const doc = await db.collection('users').doc(state.currentUser.uid).get();
+        const ref = db.collection('users').doc(state.currentUser.uid);
+        const doc = await ref.get();
         if (doc.exists) {
             state.userProfile = doc.data();
         } else {
@@ -505,19 +533,20 @@ const UserService = {
                 email: state.currentUser.email,
                 photoURL: state.currentUser.photoURL,
                 selectedLanguage: null,
+                selectedLevel: null,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             };
-            await db.collection('users').doc(state.currentUser.uid).set(state.userProfile);
+            await ref.set(state.userProfile);
         }
-        renderTopLangStamps();
-        renderLevelStamps();
     },
 
     async saveProfile() {
-        await db.collection('users').doc(state.currentUser.uid).update({
-            ...state.userProfile,
+        if (!state.currentUser) return;
+        await db.collection('users').doc(state.currentUser.uid).set({
+            selectedLanguage: state.currentLang,
+            selectedLevel: state.currentLevel,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+        }, { merge: true });
     },
 };
 
@@ -556,6 +585,7 @@ function selectLevel(level) {
     renderLevelStamps();
     updateLevelBadge();
     initDemo();
+    persistSelection();
 }
 
 function updateLevelBadge() {
@@ -583,11 +613,15 @@ function showLangPicker() {
 
 async function selectLanguage(lang) {
     state.currentLang = lang;
-    state.userProfile.selectedLanguage = lang;
-    state.currentLevel = getAutoLevel(lang);
-    await UserService.saveProfile();
     renderTopLangStamps();
     showMainContent();
+    persistSelection();
+}
+
+// Remember the language + level, locally always and to the account if signed in.
+function persistSelection() {
+    LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
+    if (state.currentUser) UserService.saveProfile().catch(e => console.error('Save failed:', e));
 }
 
 // ═══════════ Main Content ═══════════
@@ -617,6 +651,12 @@ function showMainContent() {
     dom.motivationText.textContent = theme.motivation;
     dom.motivationText.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
 
+    // Localize the shared chrome (top-bar labels + stats) to the selected language.
+    if (dom.langueLabel) dom.langueLabel.textContent = theme.ui.langue;
+    if (dom.levelLabel) dom.levelLabel.textContent = theme.ui.level;
+    const seenLabel = document.getElementById('seenLabel');
+    if (seenLabel) seenLabel.textContent = theme.ui.seen;
+
     renderLevelStamps();
     updateLevelBadge();
     initDemo();
@@ -632,59 +672,98 @@ function initDemo() {
         nextDemo();
     } else {
         const lang = LANGS[state.currentLang];
+        const ui = currentUI();
         dom.demoPhrase.textContent = lang.hi;
-        dom.demoMeaning.textContent = `Start learning ${lang.name}!`;
+        dom.demoMeaning.textContent = ui.start;
         setCatImage(lang.hi);
-        dom.lessonTopTab.textContent = 'Le carnet';
-        dom.lessonTopTitle.textContent = 'Phrase spotlight';
+        dom.lessonTopTab.textContent = ui.carnet;
+        dom.lessonTopTitle.textContent = ui.spotlight;
         dom.lessonTopBody.innerHTML = `<div class="spotlight-words"><span class="spotlight-word">${escapeHtml(lang.hi)}</span></div>`;
-        dom.lessonBottomTab.textContent = 'Encore';
-        dom.lessonBottomTitle.textContent = 'Related phrases';
-        dom.lessonExamples.innerHTML = '<p class="spotlight-empty">More phrases coming soon.</p>';
+        dom.lessonBottomTab.textContent = ui.encore;
+        dom.lessonBottomTitle.textContent = ui.related;
+        dom.lessonExamples.innerHTML = `<p class="spotlight-empty">${escapeHtml(ui.comingSoon)}</p>`;
     }
 }
 
-// ═══════════ Authentication ═══════════
-document.getElementById('googleLoginBtn').addEventListener('click', async () => {
+// ═══════════ Authentication (optional) ═══════════
+// The app is fully usable without an account. Signing in simply syncs the
+// language/level choice to Firestore so it follows the user across devices.
+async function signIn() {
     try {
         dom.loginError.textContent = '';
         await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (e) {
         dom.loginError.textContent = e.message;
+        console.error('Sign-in failed:', e);
     }
-});
+}
 
-document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
+function updateAuthUI() {
+    const user = state.currentUser;
+    dom.logoutBtn.style.display = user ? '' : 'none';
+    dom.topLoginBtn.style.display = user ? 'none' : '';
+    if (user) {
+        const hasPhoto = !!user.photoURL;
+        dom.userAvatar.style.display = hasPhoto ? '' : 'none';
+        dom.userAvatar.src = user.photoURL || '';
+        dom.userName.textContent = user.displayName || user.email || '';
+    } else {
+        dom.userAvatar.style.display = 'none';
+        dom.userAvatar.src = '';
+        dom.userName.textContent = '';
+    }
+}
+
+dom.topLoginBtn.addEventListener('click', signIn);
+const googleLoginBtn = document.getElementById('googleLoginBtn');
+if (googleLoginBtn) googleLoginBtn.addEventListener('click', signIn);
+dom.logoutBtn.addEventListener('click', () => auth.signOut());
 
 auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        state.currentUser = user;
-        showScreen('loadingScreen');
-        try {
-            await UserService.loadProfile();
-            dom.userAvatar.src = user.photoURL || '';
-            dom.userName.textContent = user.displayName || user.email;
-            showScreen('mainApp');
+    state.currentUser = user || null;
+    updateAuthUI();
+    if (!user) return;
 
-            if (state.userProfile.selectedLanguage) {
-                state.currentLang = state.userProfile.selectedLanguage;
-                renderTopLangStamps();
-                state.currentLevel = getAutoLevel(state.currentLang);
-                showMainContent();
-            } else {
-                showLangPicker();
-            }
-        } catch (e) {
-            console.error('Auth error:', e);
-            showScreen('loginScreen');
+    try {
+        await UserService.loadProfile();
+        const savedLang = state.userProfile.selectedLanguage;
+        const savedLevel = state.userProfile.selectedLevel;
+
+        if (!state.currentLang && savedLang && LANGS[savedLang]) {
+            // Visitor hadn't chosen yet this session — restore their account choice.
+            state.currentLang = savedLang;
+            if (savedLevel && SKILL_LEVELS[savedLevel]) state.currentLevel = savedLevel;
+            LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
+            renderTopLangStamps();
+            showMainContent();
+        } else if (state.currentLang) {
+            // Push the local choice up to the account.
+            UserService.saveProfile().catch(e => console.error('Save failed:', e));
         }
-    } else {
-        state.currentUser = null;
-        state.userProfile = null;
-        showScreen('loginScreen');
+    } catch (e) {
+        console.error('Profile load failed:', e);
     }
 });
+
+// ═══════════ Boot ═══════════
+// Show content immediately, honoring the last saved language/level from
+// localStorage — no login required.
+function boot() {
+    const prefs = LocalPrefs.read();
+    if (prefs.lang && LANGS[prefs.lang]) state.currentLang = prefs.lang;
+    if (prefs.level && SKILL_LEVELS[prefs.level]) state.currentLevel = prefs.level;
+
+    updateAuthUI();
+    renderTopLangStamps();
+    renderLevelStamps();
+    showScreen('mainApp');
+
+    if (state.currentLang) showMainContent();
+    else showLangPicker();
+}
 
 // ═══════════ Event Listeners ═══════════
 dom.refreshBtn.addEventListener('click', nextDemo);
 dom.speakBtn.addEventListener('click', () => TTS.speak());
+
+boot();

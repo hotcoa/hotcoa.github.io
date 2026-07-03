@@ -24,6 +24,15 @@ const THEMES = {
         refresh: 'Nouvelle carte postale ✉️',
         placeholder: { p: 'Cliquez pour commencer !', m: 'Click to start!' },
         motivation: 'Chaque phrase vous rapproche de la maîtrise ! 💪',
+        // Native UI chrome so no foreign words leak across languages.
+        ui: {
+            langue: 'Langue', level: 'Niveau',
+            carnet: 'Le carnet', pratique: 'En pratique', encore: 'Encore',
+            grammar: 'Grammaire & vocabulaire', howTo: "Comment l'utiliser",
+            spotlight: 'La phrase du jour', related: 'Autres phrases',
+            comingSoon: "D'autres phrases arrivent bientôt.",
+            seen: 'Phrases vues :', start: 'Commencez le français !',
+        },
     },
     korean: {
         cls: 'theme-korean',
@@ -34,6 +43,14 @@ const THEMES = {
         refresh: '새 엽서 받기 ✉️',
         placeholder: { p: '눌러서 시작하세요!', m: 'Click to start!' },
         motivation: '한 문장씩, 매일 실력이 늘어요! 💪',
+        ui: {
+            langue: '언어', level: '수준',
+            carnet: '단어장', pratique: '활용하기', encore: '더 보기',
+            grammar: '문법과 어휘', howTo: '이렇게 써 보세요',
+            spotlight: '오늘의 문장', related: '관련 문장',
+            comingSoon: '문장을 준비하고 있어요.',
+            seen: '본 문장:', start: '한국어를 시작해요!',
+        },
     },
     hebrew: {
         cls: 'theme-hebrew',
@@ -44,6 +61,14 @@ const THEMES = {
         refresh: 'גלויה חדשה ✉️',
         placeholder: { p: '!לחצו כדי להתחיל', m: 'Click to start!' },
         motivation: '!כל משפט מקרב אותך לשליטה בשפה 💪',
+        ui: {
+            langue: 'שפה', level: 'רמה',
+            carnet: 'מחברת', pratique: 'בתרגול', encore: 'עוד',
+            grammar: 'דקדוק ואוצר מילים', howTo: 'איך משתמשים בזה',
+            spotlight: 'משפט היום', related: 'משפטים נוספים',
+            comingSoon: '.משפטים נוספים בקרוב',
+            seen: ':משפטים שנראו', start: '!בואו נתחיל עברית',
+        },
     },
 };
 

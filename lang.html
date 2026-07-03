@@ -11,8 +11,8 @@
 </head>
 <body>
 
-<!-- ═══ Login Screen ═══ -->
-<div id="loginScreen" class="screen active">
+<!-- ═══ Login Screen (optional — sign-in also available from the top bar) ═══ -->
+<div id="loginScreen" class="screen">
     <div class="login-card">
         <h1>🐱 Le Chat Parisien</h1>
         <p>Learn languages with adorable animals</p>
@@ -30,23 +30,27 @@
 </div>
 
 <!-- ═══ Main App ═══ -->
-<div id="mainApp" class="screen">
+<div id="mainApp" class="screen active">
     <div class="top-bar">
         <div class="top-bar-left">
-            <img class="user-avatar" id="userAvatar" src="" alt="User avatar"/>
+            <img class="user-avatar" id="userAvatar" src="" alt="User avatar" style="display:none"/>
             <span class="user-name" id="userName"></span>
+            <button class="google-btn-sm" id="topLoginBtn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""/>
+                <span>Sign in</span>
+            </button>
         </div>
         <div class="top-bar-right">
             <div class="stamp-row">
-                <span class="stamp-row-label">Langue</span>
+                <span class="stamp-row-label" id="langueLabel">Langue</span>
                 <div id="topLangStamps"></div>
             </div>
             <div class="stamp-row">
-                <span class="stamp-row-label">Level</span>
+                <span class="stamp-row-label" id="levelLabel">Niveau</span>
                 <div id="levelStamps"></div>
             </div>
             <div class="top-divider"></div>
-            <button class="logout-btn" id="logoutBtn">Sign out</button>
+            <button class="logout-btn" id="logoutBtn" style="display:none">Sign out</button>
         </div>
     </div>
 
@@ -87,7 +91,7 @@
                     <div id="progressFill" class="progress-fill" style="width:0%"></div>
                 </div>
                 <div class="stats">
-                    <span>Phrases seen: <span id="phrasesLearned">0</span></span>
+                    <span><span id="seenLabel">Phrases seen:</span> <span id="phrasesLearned">0</span></span>
                     <span id="levelBadge">A2 🌟</span>
                 </div>
                 <p class="motivation-text" id="motivationText">Chaque phrase vous rapproche de la maîtrise! 💪</p>
