@@ -48,10 +48,6 @@
                 <span class="stamp-row-label" id="langueLabel">Langue</span>
                 <div id="topLangStamps"></div>
             </div>
-            <div class="stamp-row">
-                <span class="stamp-row-label" id="levelLabel">Niveau</span>
-                <div id="levelStamps"></div>
-            </div>
             <div class="top-divider"></div>
             <button class="logout-btn" id="logoutBtn" style="display:none">Sign out</button>
         </div>
@@ -84,10 +80,18 @@
                         <div class="cat-caption" id="catCaption">Paris</div>
                     </div>
                 </div>
-                <div class="phrase-container">
-                    <div id="demoPhrase">Cliquez pour commencer!</div>
-                    <div id="demoMeaning">Click to start!</div>
-                    <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
+                <div class="phrase-container quiz">
+                    <div class="quiz-head">
+                        <span class="quiz-prompt" id="quizPromptLabel">Complétez la phrase</span>
+                    </div>
+                    <div id="demoMeaning" class="quiz-hint">Click to start!</div>
+                    <div class="quiz-sentence-row">
+                        <div id="demoPhrase">Cliquez pour commencer!</div>
+                        <button class="speak-btn" id="speakBtn" title="Listen to pronunciation">🔊</button>
+                    </div>
+                    <div class="quiz-choices" id="quizChoices" hidden></div>
+                    <div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>
+                    <div class="word-gloss" id="wordGloss" aria-live="polite"></div>
                 </div>
                 <button id="refreshBtn" class="refresh-btn">Nouvelle carte postale ✉️</button>
                 <div class="progress-bar">
@@ -95,7 +99,7 @@
                 </div>
                 <div class="stats">
                     <span><span id="seenLabel">Phrases seen:</span> <span id="phrasesLearned">0</span></span>
-                    <span id="levelBadge">A2 🌟</span>
+                    <span id="levelBadge" class="score-badge">Score : 0</span>
                 </div>
                 <p class="motivation-text" id="motivationText">Chaque phrase vous rapproche de la maîtrise! 💪</p>
             </div>

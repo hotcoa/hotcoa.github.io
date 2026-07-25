@@ -23,11 +23,13 @@ const state = {
     currentUser: null,
     userProfile: null,
     currentLang: null,
-    currentLevel: 'beginner',
+    currentQuiz: null,       // { phrase, segments, blankIndex, answer, answerNorm, options, answered }
+    score: 0,
     hasLocalPref: false,
     demoCount: 0,
     activeDemos: [],
     lastDemoIndex: -1,
+    wordPool: { lang: null, words: [] },
 };
 
 // ═══════════ DOM References ═══════════
@@ -47,6 +49,10 @@ const dom = {
     get catImage() { return document.getElementById('catImage'); },
     get demoPhrase() { return document.getElementById('demoPhrase'); },
     get demoMeaning() { return document.getElementById('demoMeaning'); },
+    get quizPromptLabel() { return document.getElementById('quizPromptLabel'); },
+    get quizChoices() { return document.getElementById('quizChoices'); },
+    get quizFeedback() { return document.getElementById('quizFeedback'); },
+    get wordGloss() { return document.getElementById('wordGloss'); },
     get speakBtn() { return document.getElementById('speakBtn'); },
     get refreshBtn() { return document.getElementById('refreshBtn'); },
     get progressFill() { return document.getElementById('progressFill'); },
@@ -92,61 +98,20 @@ const LocalPrefs = {
     },
 };
 
-// Skill levels available for selection
-const SKILL_LEVELS = {
-    beginner:     { icon: '🌱', label: 'Beginner' },
-    intermediate: { icon: '🌳', label: 'Intermediate' },
-    advanced:     { icon: '🏔️', label: 'Advanced' },
-};
-
 function randomFrom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
 // ═══════════ Phrase Engine ═══════════
+// Every language now has a single level, so the active bank is simply the
+// flattened set of phrases for the current language.
 function buildActiveDemos() {
-    const { currentLang, currentLevel } = state;
-    let phrases = [];
-
-    if (currentLang === 'french') {
-        const a1 = LEVEL_DEMO.french?.beginner || [];
-        const a2 = LEVEL_DEMO.french?.elementary || [];
-        const b1 = LEVEL_DEMO.french?.intermediate || [];
-
-        if (currentLevel === 'beginner') {
-            phrases = a1;
-        } else if (currentLevel === 'intermediate') {
-            // B1-weighted mix (original DELF B1 prep behavior)
-            phrases = [...a1, ...a2, ...a2, ...b1, ...b1, ...b1];
-        } else {
-            // Advanced: B1 content only
-            phrases = b1;
-        }
-    } else if (currentLang === 'korean') {
-        const kr = LEVEL_DEMO.korean || {};
-        if (currentLevel === 'beginner') {
-            phrases = kr.beginner || [];
-        } else if (currentLevel === 'intermediate') {
-            phrases = [...(kr.beginner || []), ...(kr.elementary || []), ...(kr.intermediate || [])];
-        } else {
-            phrases = [...(kr.upper || []), ...(kr.advanced || [])];
-        }
-    } else if (LEVEL_DEMO[currentLang]) {
-        // Generic multi-level languages (hebrew)
-        const d = LEVEL_DEMO[currentLang];
-        if (currentLevel === 'beginner') {
-            phrases = [...(d.beginner || []), ...(d.elementary || [])];
-        } else if (currentLevel === 'intermediate') {
-            phrases = [...(d.elementary || []), ...(d.intermediate || [])];
-        } else {
-            phrases = [...(d.upper || []), ...(d.advanced || [])];
-        }
-    } else {
-        phrases = DEMO[currentLang] || [];
-    }
-
-    state.activeDemos = phrases;
+    const banks = LEVEL_DEMO[state.currentLang];
+    state.activeDemos = banks
+        ? Object.values(banks).flat()
+        : (DEMO[state.currentLang] || []);
     state.lastDemoIndex = -1;
+    state.wordPool = { lang: null, words: [] };
 }
 
 function nextDemo() {
@@ -161,37 +126,246 @@ function nextDemo() {
         do { idx = Math.floor(Math.random() * activeDemos.length); }
         while (idx === state.lastDemoIndex);
     }
-    displayPhrase(idx, true);
+    loadQuiz(idx, true);
 }
 
-function displayPhrase(idx, countIt) {
-    const { activeDemos } = state;
-    const phrase = activeDemos[idx];
+// ═══════════ Word tokenisation & glosses ═══════════
+const RE_EDGE = /^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu;
+
+// Split a sentence into { lead, word, trail } chunks, preserving punctuation so
+// word chips stay clean while surrounding marks render as plain text.
+function segmentWords(text) {
+    return text.trim().split(/\s+/).filter(Boolean).map(tok => {
+        const lead = (tok.match(/^[^\p{L}\p{N}]+/u) || [''])[0];
+        const trail = (tok.match(/[^\p{L}\p{N}]+$/u) || [''])[0];
+        const word = tok.slice(lead.length, tok.length - trail.length);
+        return word ? { lead, word, trail } : { lead: '', word: '', trail: tok };
+    });
+}
+
+function normalizeWord(w) {
+    return (w || '')
+        .replace(/\u2019/g, "'")            // curly → straight apostrophe
+        .toLowerCase()
+        .replace(RE_EDGE, '');
+}
+
+// Accent/punctuation-insensitive comparison so type-in answers are forgiving.
+function foldWord(w) {
+    return normalizeWord(w).normalize('NFD').replace(/\p{Diacritic}/gu, '');
+}
+
+function glossFor(word) {
+    const dict = (typeof GLOSS !== 'undefined' && GLOSS[state.currentLang]) || null;
+    if (!dict) return null;
+    return dict[normalizeWord(word)] || null;
+}
+
+function letterCount(word) {
+    return (word.match(/\p{L}/gu) || []).length;
+}
+
+// Words worth blanking / offering as multiple-choice options.
+function blankMinLetters() {
+    return state.currentLang === 'french' ? 3 : 2;
+}
+function isCandidateWord(word) {
+    if (!word) return false;
+    return letterCount(word) >= blankMinLetters() || /\d/.test(word);
+}
+
+// Unique pool of candidate words across the active bank (for MC distractors).
+function getWordPool() {
+    if (state.wordPool.lang === state.currentLang) return state.wordPool.words;
+    const seen = new Set();
+    const words = [];
+    for (const phrase of state.activeDemos) {
+        for (const seg of segmentWords(phrase.p)) {
+            if (!isCandidateWord(seg.word)) continue;
+            const norm = normalizeWord(seg.word);
+            if (norm && !seen.has(norm)) { seen.add(norm); words.push(norm); }
+        }
+    }
+    state.wordPool = { lang: state.currentLang, words };
+    return words;
+}
+
+function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// Build a quiz object: choose one content word to hide + gather MC distractors.
+function buildQuiz(phrase) {
+    const segments = segmentWords(phrase.p);
+    const candidates = segments
+        .map((seg, i) => ({ i, word: seg.word }))
+        .filter(c => isCandidateWord(c.word));
+
+    // Prefer a glossed content word so the blank is meaningful, but pick at
+    // random within that set so the same sentence quizzes different words over
+    // time (and doesn't always blank the one dominant noun).
+    let pick;
+    if (candidates.length) {
+        const glossed = candidates.filter(c => glossFor(c.word));
+        pick = randomFrom(glossed.length ? glossed : candidates);
+    } else {
+        const withWord = segments.map((seg, i) => ({ i, word: seg.word })).filter(c => c.word);
+        pick = withWord.length ? randomFrom(withWord) : { i: 0, word: segments[0].word };
+    }
+
+    const answer = segments[pick.i].word;
+    const answerNorm = normalizeWord(answer);
+    const ansLen = answer.length;
+
+    // Distractors are drawn ONLY from the current language's own word bank, so
+    // options always match the language on screen. Prefer real (glossed) words
+    // of a similar length so the choices feel parallel and plausible.
+    const pool = getWordPool().filter(w => w !== answerNorm);
+    const glossedPool = new Set(pool.filter(w => (GLOSS[state.currentLang] || {})[w]));
+    const rank = w => (glossedPool.has(w) ? 0 : 1);          // glossed first
+    const tiers = [
+        pool.filter(w => Math.abs(w.length - ansLen) <= 2),  // similar length
+        pool.filter(w => Math.abs(w.length - ansLen) > 2),   // any length
+    ];
+    const ordered = [];
+    for (const tier of tiers) {
+        for (const w of shuffle(tier).sort((a, b) => rank(a) - rank(b))) {
+            if (!ordered.includes(w)) ordered.push(w);
+        }
+    }
+    const distractors = ordered.slice(0, 3);
+    const options = shuffle([answerNorm, ...distractors]);
+
+    return { phrase, segments, blankIndex: pick.i, answer, answerNorm, options, answered: false, attempts: 0 };
+}
+
+// ═══════════ Quiz rendering ═══════════
+function loadQuiz(idx, countIt) {
+    const phrase = state.activeDemos[idx];
     if (!phrase) return;
     state.lastDemoIndex = idx;
+    state.currentQuiz = buildQuiz(phrase);
+
+    const ui = currentUI();
+    dom.demoMeaning.textContent = phrase.m;          // English hint
+    if (dom.wordGloss) { dom.wordGloss.textContent = ''; dom.wordGloss.classList.remove('is-active'); }
+    if (dom.quizFeedback) { dom.quizFeedback.textContent = ''; dom.quizFeedback.className = 'quiz-feedback'; }
+
+    const keyword = phrase.kw ? randomFrom(phrase.kw) : LANGS[state.currentLang].hi;
+    setCatImage(keyword);
+    renderLesson(idx);
 
     const phraseEl = dom.demoPhrase;
-    const meaningEl = dom.demoMeaning;
-
-    // Fade transition
     phraseEl.style.opacity = '0';
-    meaningEl.style.opacity = '0';
-
     setTimeout(() => {
-        phraseEl.textContent = phrase.p;
-        meaningEl.textContent = phrase.m;
+        renderSentence();
+        renderAnswerArea();
         phraseEl.style.opacity = '1';
-        meaningEl.style.opacity = '1';
-        const keyword = phrase.kw ? randomFrom(phrase.kw) : LANGS[state.currentLang].hi;
-        setCatImage(keyword);
-        renderLesson(idx);
-    }, 200);
+    }, 180);
 
     if (countIt) {
         state.demoCount++;
         dom.phrasesLearned.textContent = state.demoCount;
-        dom.progressFill.style.width = Math.min((state.demoCount / activeDemos.length) * 100, 100) + '%';
+        dom.progressFill.style.width = Math.min((state.demoCount / state.activeDemos.length) * 100, 100) + '%';
     }
+}
+
+// Render the sentence: a blank at the hidden word, clickable chips for glossed
+// words, and plain text for everything else.
+function renderSentence() {
+    const quiz = state.currentQuiz;
+    if (!quiz) return;
+    const reveal = quiz.answered;
+    const html = quiz.segments.map((seg, i) => {
+        const lead = escapeHtml(seg.lead);
+        const trail = escapeHtml(seg.trail);
+        if (!seg.word) return escapeHtml(seg.trail);
+
+        if (i === quiz.blankIndex && !reveal) {
+            return `${lead}<span class="quiz-blank" aria-hidden="true">${'\u00A0'.repeat(Math.max(3, seg.word.length))}</span>${trail}`;
+        }
+
+        const gloss = glossFor(seg.word);
+        const answerHere = (i === quiz.blankIndex) ? ' is-answer' : '';
+        if (gloss) {
+            return `${lead}<button type="button" class="vocab-word has-gloss${answerHere}" `
+                + `data-gloss="${escapeHtml(gloss)}" data-word="${escapeHtml(seg.word)}">${escapeHtml(seg.word)}</button>${trail}`;
+        }
+        return `${lead}<span class="vocab-word${answerHere}">${escapeHtml(seg.word)}</span>${trail}`;
+    }).join(' ');
+
+    dom.demoPhrase.innerHTML = html;
+}
+
+// Render the multiple-choice options (hidden once answered).
+function renderAnswerArea() {
+    const quiz = state.currentQuiz;
+    const choices = dom.quizChoices;
+    if (!quiz || !choices) return;
+
+    if (quiz.answered) {
+        choices.hidden = true;
+        return;
+    }
+    choices.hidden = false;
+    choices.innerHTML = quiz.options
+        .map(opt => `<button type="button" class="quiz-choice" data-opt="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
+        .join('');
+}
+
+function submitAnswer(guess) {
+    const quiz = state.currentQuiz;
+    if (!quiz || quiz.answered) return;
+    const ui = currentUI();
+    const correct = foldWord(guess) === foldWord(quiz.answer) && foldWord(guess) !== '';
+
+    if (correct) {
+        quiz.answered = true;
+        state.score++;
+        updateScoreBadge();
+        renderSentence();
+        renderAnswerArea();
+        setFeedback(ui.correct, 'is-correct');
+        if (dom.wordGloss) dom.wordGloss.textContent = ui.tapHint;
+    } else {
+        quiz.attempts++;
+        setFeedback(ui.tryAgain, 'is-wrong');
+    }
+    return correct;
+}
+
+function setFeedback(msg, cls) {
+    if (!dom.quizFeedback) return;
+    dom.quizFeedback.textContent = msg;
+    dom.quizFeedback.className = 'quiz-feedback' + (cls ? ' ' + cls : '');
+}
+
+function updateScoreBadge() {
+    if (!dom.levelBadge) return;
+    const ui = currentUI();
+    dom.levelBadge.textContent = `${ui.score} ${state.score}`;
+}
+
+// Tap a glossed word to show its translation underneath.
+function showWordGloss(btn) {
+    if (!dom.wordGloss) return;
+    const word = btn.getAttribute('data-word');
+    const gloss = btn.getAttribute('data-gloss');
+    const wasActive = btn.classList.contains('is-open');
+    dom.demoPhrase.querySelectorAll('.vocab-word.is-open').forEach(b => b.classList.remove('is-open'));
+    if (wasActive) {
+        dom.wordGloss.textContent = '';
+        dom.wordGloss.classList.remove('is-active');
+        return;
+    }
+    btn.classList.add('is-open');
+    dom.wordGloss.textContent = `${word} — ${gloss}`;
+    dom.wordGloss.classList.add('is-active');
 }
 
 // ═══════════ Lesson Carnet (right column) ═══════════
@@ -462,7 +636,7 @@ const TTS = (() => {
     }
 
     function speak() {
-        const text = dom.demoPhrase.textContent;
+        const text = (state.currentQuiz && state.currentQuiz.phrase.p) || dom.demoPhrase.textContent;
         if (!text || !state.currentLang) return;
 
         speechSynthesis.cancel();
@@ -534,7 +708,6 @@ const UserService = {
                 email: state.currentUser.email,
                 photoURL: state.currentUser.photoURL,
                 selectedLanguage: null,
-                selectedLevel: null,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             };
             await ref.set(state.userProfile);
@@ -545,7 +718,6 @@ const UserService = {
         if (!state.currentUser) return;
         await db.collection('users').doc(state.currentUser.uid).set({
             selectedLanguage: state.currentLang,
-            selectedLevel: state.currentLevel,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
     },
@@ -566,32 +738,27 @@ function renderTopLangStamps() {
     );
 }
 
-function renderLevelStamps() {
-    const wrap = dom.levelStamps;
-    if (!wrap) return;
-    wrap.innerHTML = Object.entries(SKILL_LEVELS).map(([key, level]) => `
-        <button class="stamp-btn${key === state.currentLevel ? ' active' : ''}" data-level="${key}">
-            <span class="stamp-icon">${level.icon}</span>
-            <span class="stamp-text">${level.label}</span>
-        </button>
-    `).join('');
+// Attach delegated click handlers once: answer choices and clickable vocab.
+function wireQuizControls() {
+    const choices = dom.quizChoices;
+    if (choices && !choices.dataset.wired) {
+        choices.dataset.wired = '1';
+        choices.addEventListener('click', e => {
+            const btn = e.target.closest('.quiz-choice');
+            if (!btn || btn.disabled) return;
+            const correct = submitAnswer(btn.dataset.opt);
+            if (!correct) { btn.classList.add('is-wrong'); btn.disabled = true; }
+        });
+    }
 
-    wrap.querySelectorAll('.stamp-btn').forEach(btn =>
-        btn.addEventListener('click', () => selectLevel(btn.dataset.level))
-    );
-}
-
-function selectLevel(level) {
-    state.currentLevel = level;
-    renderLevelStamps();
-    updateLevelBadge();
-    initDemo();
-    persistSelection();
-}
-
-function updateLevelBadge() {
-    const lvl = SKILL_LEVELS[state.currentLevel];
-    dom.levelBadge.textContent = `${lvl.icon} ${lvl.label}`;
+    const phraseEl = dom.demoPhrase;
+    if (phraseEl && !phraseEl.dataset.wired) {
+        phraseEl.dataset.wired = '1';
+        phraseEl.addEventListener('click', e => {
+            const btn = e.target.closest('.vocab-word.has-gloss');
+            if (btn) showWordGloss(btn);
+        });
+    }
 }
 
 // ═══════════ Language Selection ═══════════
@@ -619,10 +786,10 @@ async function selectLanguage(lang) {
     persistSelection();
 }
 
-// Remember the language + level, locally always and to the account if signed in.
+// Remember the language locally always and to the account if signed in.
 function persistSelection() {
     state.hasLocalPref = true;
-    LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
+    LocalPrefs.write({ lang: state.currentLang });
     if (state.currentUser) UserService.saveProfile().catch(e => console.error('Save failed:', e));
 }
 
@@ -649,18 +816,19 @@ function showMainContent() {
     dom.mainSubtitle.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     dom.postmark.innerHTML = theme.postmark.map(escapeHtml).join('<br/>');
     dom.catCaption.textContent = theme.caption;
-    dom.refreshBtn.textContent = theme.refresh;
     dom.motivationText.textContent = theme.motivation;
     dom.motivationText.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
 
     // Localize the shared chrome (top-bar labels + stats) to the selected language.
     if (dom.langueLabel) dom.langueLabel.textContent = theme.ui.langue;
-    if (dom.levelLabel) dom.levelLabel.textContent = theme.ui.level;
     const seenLabel = document.getElementById('seenLabel');
     if (seenLabel) seenLabel.textContent = theme.ui.seen;
+    if (dom.quizPromptLabel) dom.quizPromptLabel.textContent = theme.ui.quizPrompt;
+    dom.refreshBtn.textContent = theme.ui.next;
 
-    renderLevelStamps();
-    updateLevelBadge();
+    state.score = 0;
+    updateScoreBadge();
+    wireQuizControls();
     initDemo();
 }
 
@@ -729,14 +897,12 @@ auth.onAuthStateChanged(async (user) => {
     try {
         await UserService.loadProfile();
         const savedLang = state.userProfile.selectedLanguage;
-        const savedLevel = state.userProfile.selectedLevel;
 
         if (!state.hasLocalPref && savedLang && LANGS[savedLang]) {
             // Visitor hadn't made a local choice — restore their account choice.
             state.currentLang = savedLang;
-            if (savedLevel && SKILL_LEVELS[savedLevel]) state.currentLevel = savedLevel;
             state.hasLocalPref = true;
-            LocalPrefs.write({ lang: state.currentLang, level: state.currentLevel });
+            LocalPrefs.write({ lang: state.currentLang });
             renderTopLangStamps();
             showMainContent();
         } else {
@@ -753,15 +919,13 @@ auth.onAuthStateChanged(async (user) => {
 // localStorage — no login required.
 function boot() {
     const prefs = LocalPrefs.read();
-    // Default experience: French at intermediate — no picker screen shown.
+    // Default experience: French — no picker screen shown.
     // A saved local choice always overrides the default and is honored on return.
     state.hasLocalPref = !!(prefs.lang && LANGS[prefs.lang]);
     state.currentLang = state.hasLocalPref ? prefs.lang : 'french';
-    state.currentLevel = (prefs.level && SKILL_LEVELS[prefs.level]) ? prefs.level : 'intermediate';
 
     updateAuthUI();
     renderTopLangStamps();
-    renderLevelStamps();
     showScreen('mainApp');
     showMainContent();
 }

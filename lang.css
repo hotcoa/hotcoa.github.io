@@ -575,21 +575,157 @@ body {
     text-align: left;
 }
 
+/* ─── Quiz ─── */
+.phrase-container.quiz { text-align: left; }
+
+.quiz-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.quiz-prompt {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--burgundy);
+}
+
+.quiz-hint {
+    font-size: 1.15rem;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.85rem;
+    padding: 0.55rem 0.75rem;
+    background: rgba(201, 162, 39, 0.12);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    transition: opacity var(--transition-normal);
+}
+
+.quiz-sentence-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
 #demoPhrase {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--navy);
-    margin-bottom: 0.6rem;
+    line-height: 1.5;
     transition: opacity var(--transition-normal);
     font-family: var(--font-body);
+    flex: 1;
 }
 
-#demoMeaning {
+/* Clickable vocabulary word */
+.vocab-word {
+    display: inline-block;
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+button.vocab-word.has-gloss {
+    cursor: pointer;
+    border-bottom: 2px solid var(--gold);
+    border-radius: 2px 2px 0 0;
+    transition: background var(--transition-normal);
+}
+
+button.vocab-word.has-gloss:hover,
+button.vocab-word.has-gloss.is-open {
+    background: rgba(201, 162, 39, 0.18);
+}
+
+.vocab-word.is-answer {
+    color: var(--burgundy);
+    font-weight: 700;
+}
+
+/* Hidden word — blank or inline input */
+.quiz-blank {
+    display: inline-block;
+    min-width: 3ch;
+    border-bottom: 2px dashed var(--burgundy);
+    margin: 0 0.1em;
+    vertical-align: baseline;
+}
+
+/* Multiple-choice options */
+.quiz-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1.1rem;
+}
+
+.quiz-choice {
+    font-family: var(--font-body);
     font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--ivory);
+    border: 2px solid rgba(11, 31, 58, 0.18);
+    border-radius: 6px;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.quiz-choice:hover:not(:disabled) {
+    border-color: var(--navy);
+    transform: translateY(-1px);
+}
+
+.quiz-choice.is-wrong {
+    border-color: var(--burgundy);
+    background: rgba(158, 43, 37, 0.12);
+    color: var(--burgundy);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Feedback + gloss lines */
+.quiz-feedback {
+    min-height: 1.3em;
+    margin-top: 0.85rem;
+    font-weight: 700;
+    font-size: 0.98rem;
+}
+
+.quiz-feedback.is-correct { color: #1f7a4d; }
+.quiz-feedback.is-wrong { color: var(--burgundy); }
+.quiz-feedback.is-reveal { color: var(--navy); }
+
+.word-gloss {
+    min-height: 1.2em;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
-    font-weight: 300;
-    font-style: italic;
+    opacity: 0;
     transition: opacity var(--transition-normal);
+}
+
+.word-gloss.is-active { opacity: 1; color: var(--navy); }
+
+.score-badge {
+    background: rgba(201, 162, 39, 0.16);
+    color: var(--burgundy);
+    font-weight: 700;
+    padding: 0.15rem 0.7rem;
+    border-radius: 999px;
+    border-bottom: 2px solid var(--gold);
 }
 
 /* ─── Buttons ─── */
@@ -609,6 +745,8 @@ body {
     justify-content: center;
     margin-top: 0.9rem;
 }
+
+.quiz-sentence-row .speak-btn { margin-top: 0; flex-shrink: 0; }
 
 .speak-btn:hover { transform: scale(1.1); }
 .speak-btn:active { transform: scale(0.95); }
@@ -892,6 +1030,19 @@ body {
     text-align: right;
     direction: rtl;
 }
+
+/* Quiz layout mirrors for RTL (Hebrew) */
+.rtl-lang .quiz-head,
+.rtl-lang .quiz-choices { flex-direction: row-reverse; }
+
+.rtl-lang .quiz-hint,
+.rtl-lang .quiz-feedback,
+.rtl-lang .word-gloss,
+.rtl-lang .quiz-prompt { text-align: right; direction: rtl; }
+
+.rtl-lang .quiz-hint { border-left: none; border-right: 3px solid var(--gold); }
+
+.rtl-lang .quiz-sentence-row { flex-direction: row-reverse; }
 
 .rtl-lang .phrase-container {
     border-left: 4px solid var(--navy);
